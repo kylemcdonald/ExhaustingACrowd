@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "express": "~4.9.x",
-    "node-sass-middleware": "^0.5.0"
+    "node-sass-middleware": "^0.5.0",
+    "pg": "^4.3.0",
+    "pg-query": "^0.11.0"
   },
   "engines": {
     "node": "0.10.x"
