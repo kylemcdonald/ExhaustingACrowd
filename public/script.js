@@ -1,5 +1,5 @@
 var ytaspect = 16.0/9.0;
-
+var animationEnabled = true;
 var ytplayer;
 
 
@@ -76,12 +76,15 @@ var resetZoom = function(){
 
 var updatePlayerSize = function(){
   var player = $('#ytplayer');
-  player.width($( window ).width()*videoZoom);
-  player.height($( window ).height()*videoZoom);
+
+  var left = 0;
+  var top = 0;
+  var width = $( window ).width()*videoZoom;
+  var height = $( window ).height()*videoZoom;
+
 
   if(videoZoom == 1){
     // No Zoom
-    player.css({left: 0, top: 0, position:'relative'});
   } else {
     // Zoom
     var windowZoomPos = videoToClientCoord(videoPos.x, videoPos.y);
@@ -100,7 +103,24 @@ var updatePlayerSize = function(){
     if(diff.y < -($(window).height()*videoZoom-$(window).height()))
       diff.y = -($(window).height()*videoZoom-$(window).height());
 
-    player.css({left: diff.x, top: diff.y, position:'absolute'});
+    left= diff.x;
+    top = diff.y;
+  }
+
+  if(animationEnabled) {
+    player.animate({
+      left: left,
+      top: top,
+      width: width,
+      height: height
+    });
+  } else {
+    player.css({
+      left: left,
+      top: top,
+      width: width,
+      height: height
+    })
   }
 
   if(ytplayer && ytplayer.pauseVideo) {
