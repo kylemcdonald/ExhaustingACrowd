@@ -62,7 +62,7 @@ var videoToClientCoord = function(videoX, videoY){
 };
 
 var zoom = function(pos){
-  videoZoom = 2;
+  videoZoom = 4;
   paused = true;
   videoPos = pos;
   updatePlayerSize();
@@ -95,8 +95,10 @@ var updatePlayerSize = function(){
 
     if(diff.x > 0) diff.x = 0;
     if(diff.y > 0) diff.y = 0;
-    if(diff.x < -$(window).width()) diff.x = -$(window).width();
-    if(diff.y < -$(window).height()) diff.y = -$(window).height();
+    if(diff.x < -($(window).width()*videoZoom-$(window).width()))
+      diff.x = -($(window).width()*videoZoom-$(window).width());
+    if(diff.y < -($(window).height()*videoZoom-$(window).height()))
+      diff.y = -($(window).height()*videoZoom-$(window).height());
 
     player.css({left: diff.x, top: diff.y, position:'absolute'});
   }
