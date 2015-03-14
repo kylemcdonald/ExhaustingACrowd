@@ -1,3 +1,12 @@
+@mixin filter($filter-type,$filter-amount) {
+  -webkit-filter: $filter-type+unquote('(#{$filter-amount})');
+  -moz-filter: $filter-type+unquote('(#{$filter-amount})');
+  -ms-filter: $filter-type+unquote('(#{$filter-amount})');
+  -o-filter: $filter-type+unquote('(#{$filter-amount})');
+  filter: $filter-type+unquote('(#{$filter-amount})');
+}
+
+
 body {
   padding:0;
   margin:0;
@@ -15,10 +24,52 @@ body {
   }
 }
 
-#ytblock {
+#overlay {
   height:100%;
   width:100%;
   position:absolute;
-  top:0px;
+  top:0;
+
+  z-index: 99;
+
+  .note {
+    width:20px;
+    height:20px;
+    position:absolute;
+    background-color: rgba(255,255,255,0.7);
+  }
+
+  #addNoteInterface {
+    right:0;
+    width: 50%;
+    background-color: rgba(255,255,255,0.9);
+    height:100%;
+    position: absolute;
+
+  }
+
 }
 
+
+
+#transition {
+  background-color: white;
+  display:none;
+  width:100%;
+  height:100%;
+  left:0px;
+  top:0px;
+  position: absolute;
+  z-index: 100;
+}
+
+#loading {
+  text-align: center;
+  color:gray;
+  font-size:40px;
+  top:50%;
+  position:relative;
+  margin-top:-40px;
+  font-family: sans-serif;
+
+}

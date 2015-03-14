@@ -8,8 +8,18 @@ module.exports = {
   setup: function(){
     this.api = express();
 //    this.api.set('port', (process.env.PORT || 5000));
-    this.api.get('/', function (req, res) {
-      res.send('Admin Homepage');
+    this.api.get('/notes', function (req, res) {
+      var notes = [
+        {
+          id: 1,
+          position: {
+            x: 0.3,
+            y: 0.5
+          },
+          note: 'blahblah blaaah'
+        }
+      ];
+      res.send(notes);
     })
 
   }

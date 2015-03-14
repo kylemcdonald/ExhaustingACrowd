@@ -2,13 +2,14 @@ var ytaspect = 16.0/9.0;
 var animationEnabled = false;
 var ytplayer;
 
+var loading = true;
 
 var videoZoom = 1;
 var videoPos = {x:0, y:0};
 var paused = false;
 
 $(document).ready(function(){
-  $("#ytblock").click(function(e){
+  $("#overlay").click(function(e){
     if(videoZoom == 1){
       zoom(clientToVideoCoord(e.clientX, e.clientY));
     } else {
@@ -62,15 +63,25 @@ var videoToClientCoord = function(videoX, videoY){
 };
 
 var zoom = function(pos){
-  videoZoom = 4;
-  paused = true;
-  videoPos = pos;
-  updatePlayerSize();
+  transitionToZoom(function(){
+
+    videoZoom = 4;
+    paused = true;
+    videoPos = pos;
+    updatePlayerSize();
+
+    $('#notes').hide();
+    $('#addNoteInterface').show();
+  })
+
+
 };
 
 var resetZoom = function(){
   videoZoom = 1;
   paused = false;
+  $('#notes').show();
+  $('#addNoteInterface').hide();
   updatePlayerSize();
 };
 
@@ -92,7 +103,7 @@ var updatePlayerSize = function(){
     windowZoomPos.y *= videoZoom;
 
     var diff = {
-      x: $(window).width() * 0.5 - windowZoomPos.x,
+      x: $(window).width() * 0.25 - windowZoomPos.x,
       y: $(window).height() * 0.5 - windowZoomPos.y
     };
 
@@ -144,6 +155,60 @@ setInterval(function(){
   }
 },100);
 
+//
+// API fetching
+//
+var notes = [];
+
+var fetchNotes = function(){
+  $.ajax({
+    dataType: "json",
+    url: "/api/notes",
+    data: {},
+    success: function(data){
+      for(var i=0;i<data.length;i++) {
+        var note = data[i];
+        var existingNote = _.where(notes, {id: note.id});
+        if (existingNote.length == 0) {
+          addNote(note);
+        }
+      }
+
+      updateNotes();
+    }
+  });
+};
+
+var addNote = function(note){
+  var elm = $('<div class="note">');
+
+  $('#notes').append(elm);
+  elm.attr('id', note.id);
+
+  //note.elm = elm;
+  notes.push(note);
+
+  console.log("Add note ", note);
+};
+
+var remoteNote = function(note){
+
+}
+
+var updateNotes = function(){
+  for(var i=0;i<notes.length;i++){
+    var note = notes[i];
+
+    var pos = videoToClientCoord(note.position.x, note.position.y);
+    $('#'+note.id).css({
+      top: pos.y,
+      left: pos.x
+    })
+  }
+};
+
+setInterval(fetchNotes, 2000);
+setInterval(fetchNotes, 1000);
 
 //
 // Youtube video
@@ -154,12 +219,14 @@ var onPlayerReady = function(){
 };
 
 var onPlayerStateChange = function(){
+  if(loading && ytplayer.getPlayerState() == 1){
+    setTimeout(transitionLoadComplete, 300);
+  }
 };
 
 var onPlayerPlaybackQualityChange = function(){
   console.log("Youtube play quality: ",ytplayer.getPlaybackQuality());
-
-}
+};
 
 var onYouTubePlayerAPIReady = function(){
   ytplayer = new YT.Player('ytplayer', {
