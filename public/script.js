@@ -1,5 +1,5 @@
 var ytaspect = 16.0/9.0;
-var animationEnabled = true;
+var animationEnabled = false;
 var ytplayer;
 
 
@@ -149,7 +149,7 @@ setInterval(function(){
 // Youtube video
 //
 var onPlayerReady = function(){
-  ytplayer.setPlaybackQuality('highres');
+ // ytplayer.setPlaybackQuality('highres');
   updatePlayerSize();
 };
 
