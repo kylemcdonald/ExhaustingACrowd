@@ -1,5 +1,4 @@
 var ytaspect = 16.0/9.0;
-var animationEnabled = false;
 var ytplayer;
 
 var loading = true;
@@ -7,6 +6,7 @@ var loading = true;
 var videoZoom = 1;
 var videoPos = {x:0, y:0};
 var paused = false;
+var mousePos;
 
 $(document).ready(function(){
   $("#overlay").click(function(e){
@@ -15,7 +15,10 @@ $(document).ready(function(){
     } else {
       resetZoom();
     }
-  });
+  })
+    .mousemove(function( event ) {
+      mousePos = clientToVideoCoord(event.pageX, event.pageY);
+    });
 
   // Update player on window resize
   $(window).resize(updatePlayerSize);
@@ -24,41 +27,34 @@ $(document).ready(function(){
 
 
 var clientToVideoCoord = function(clientX, clientY){
+  var playerSize = calculatePlayerSize();
+
   var ret = {
-    x: clientX / $(window).width(),
-    y: clientY / $(window).height()
+    x: clientX,
+    y: clientY
   };
 
-  if($(window).width() / $(window).height() >  ytaspect){
-    t = $(window).height() * ytaspect;
-    ret.x -= (1-(t/$(window).width()))*0.5;
-    ret.x *=  $(window).width() / t;
-  } else {
-    t = $(window).width() / ytaspect;
-    ret.y -= (1-(t/$(window).height()))*0.5;
-    ret.y *=  $(window).height() / t;
-  }
+  ret.x -= playerSize.left;
+  ret.y -= playerSize.top;
+  ret.x /= playerSize.width;
+  ret.y /= playerSize.height;
+
   return ret;
 };
 
 var videoToClientCoord = function(videoX, videoY){
+  var playerSize = calculatePlayerSize();
+
   var ret = {
     x: videoX,
     y: videoY
   };
 
-  if($(window).width() / $(window).height() >  ytaspect){
-    t = $(window).height() * ytaspect;
-    ret.x /=  $(window).width() / t;
-    ret.x += (1-(t/$(window).width()))*0.5;
-  } else {
-    t = $(window).width() / ytaspect;
-    ret.y /=  $(window).height() / t;
-    ret.y += (1-(t/$(window).height()))*0.5;
-  }
+  ret.x *= playerSize.width;
+  ret.y *= playerSize.height;
+  ret.x += playerSize.left;
+  ret.y += playerSize.top;
 
-  ret.x *= $(window).width();
-  ret.y *= $(window).height();
   return ret;
 };
 
@@ -85,54 +81,44 @@ var resetZoom = function(){
   updatePlayerSize();
 };
 
+var calculatePlayerSize = function(){
+  var left = 0;
+  var top = 0;
+
+  if($(window).width() / $(window).height() >  ytaspect){
+    var width = $(window).width() ;
+    var height = $(window).width() / ytaspect;
+    top = -(height - $(window).height())/2;
+
+  } else {
+    var width = $(window).height() * ytaspect;
+    var height = $(window).height();
+    left = -(width - $(window).width())/2;
+  }
+
+  if(videoZoom != 1){
+    width *= videoZoom;
+    height*= videoZoom;
+
+    left = -videoPos.x * width + $(window).width() * 0.25;
+    top = -videoPos.y * height + $(window).height() * 0.5;
+  }
+
+  return {left: left, top: top, width:width, height:height};
+};
+
 var updatePlayerSize = function(){
   var player = $('#ytplayer');
 
-  var left = 0;
-  var top = 0;
-  var width = $( window ).width()*videoZoom;
-  var height = $( window ).height()*videoZoom;
+  var size = calculatePlayerSize();
 
+  player.css({
+    left: size.left,
+    top: size.top-50,
+    width: size.width,
+    height: size.height+100
+  });
 
-  if(videoZoom == 1){
-    // No Zoom
-  } else {
-    // Zoom
-    var windowZoomPos = videoToClientCoord(videoPos.x, videoPos.y);
-    windowZoomPos.x *= videoZoom;
-    windowZoomPos.y *= videoZoom;
-
-    var diff = {
-      x: $(window).width() * 0.25 - windowZoomPos.x,
-      y: $(window).height() * 0.5 - windowZoomPos.y
-    };
-
-    if(diff.x > 0) diff.x = 0;
-    if(diff.y > 0) diff.y = 0;
-    if(diff.x < -($(window).width()*videoZoom-$(window).width()))
-      diff.x = -($(window).width()*videoZoom-$(window).width());
-    if(diff.y < -($(window).height()*videoZoom-$(window).height()))
-      diff.y = -($(window).height()*videoZoom-$(window).height());
-
-    left= diff.x;
-    top = diff.y;
-  }
-
-  if(animationEnabled) {
-    player.animate({
-      left: left,
-      top: top,
-      width: width,
-      height: height
-    });
-  } else {
-    player.css({
-      left: left,
-      top: top,
-      width: width,
-      height: height
-    })
-  }
 
   if(ytplayer && ytplayer.pauseVideo) {
     if (paused) {
@@ -208,13 +194,13 @@ var updateNotes = function(){
 };
 
 setInterval(fetchNotes, 2000);
-setInterval(fetchNotes, 1000);
+setInterval(updateNotes, 1000);
 
 //
 // Youtube video
 //
 var onPlayerReady = function(){
- // ytplayer.setPlaybackQuality('highres');
+  // ytplayer.setPlaybackQuality('highres');
   updatePlayerSize();
 };
 
@@ -226,6 +212,7 @@ var onPlayerStateChange = function(){
 
 var onPlayerPlaybackQualityChange = function(){
   console.log("Youtube play quality: ",ytplayer.getPlaybackQuality());
+
 };
 
 var onYouTubePlayerAPIReady = function(){
