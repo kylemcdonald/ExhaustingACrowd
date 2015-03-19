@@ -207,8 +207,23 @@ var updateNotes = function(){
   }
 };
 
+var blink = function(elm) {
+  if(elm.css('opacity') == '1') {
+    elm.css('opacity', '0');
+  } else {
+    elm.css('opacity', '1');
+  }
+}
+
+var colon = $('#colon');
+var flashColon = function() {
+  blink(colon);
+}
+
 setInterval(fetchNotes, 2000);
 setInterval(fetchNotes, 1000);
+
+setInterval(flashColon, 1000);
 
 //
 // Youtube video
