@@ -3,3 +3,5 @@ node_modules
 public/style.css
 .DS_Store
 client_secret.json
+.sass-cache
+*.css.map

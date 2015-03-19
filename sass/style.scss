@@ -10,6 +10,8 @@
 body {
   padding:0;
   margin:0;
+  font-family: 'Dosis', sans-serif;
+  font-weight: 300;
 }
 
 #videocontainer {
@@ -21,6 +23,34 @@ body {
 
   #ytplayer {
     position:absolute;
+  }
+}
+
+#infoHeader {
+  color: white;
+  background-color: rgba(0,0,0,0.5);
+  display: inline-block;
+  margin: 10px;
+  padding: 0 5px 5px;
+
+  h1 {
+    font-size: 42px;
+    font-weight: 300;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  p {
+    font-size: 18.5px;
+    font-weight: 400;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .light {
+    font-weight: 300;
   }
 }
 
@@ -70,6 +100,4 @@ body {
   top:50%;
   position:relative;
   margin-top:-40px;
-  font-family: sans-serif;
-
 }
