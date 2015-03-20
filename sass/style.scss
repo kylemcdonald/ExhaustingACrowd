@@ -6,6 +6,7 @@
   filter: $filter-type+unquote('(#{$filter-amount})');
 }
 
+$edgePad: 3vmin;
 
 body {
   padding:0;
@@ -29,25 +30,23 @@ body {
 
 #infoHeader {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: $edgePad;
+  left: $edgePad;
   background-color: rgba(0,0,0,0.5);
   display: inline-block;
-  padding: 0 5px 5px;
+  padding: 0 1vmin 1vmin;
 
   h1 {
-    font-size: 42px;
+    font-size: 5vmin;
     font-weight: 300;
-    text-align: center;
-    margin: 0;
+    margin: auto;
     padding: 0;
   }
 
   p {
-    font-size: 18.5px;
+    font-size: 2.2vmin;
     font-weight: 400;
-    text-align: center;
-    margin: 0;
+    margin: auto;
     padding: 0;
   }
 
@@ -58,25 +57,33 @@ body {
 
 #timeAndDate {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  bottom: $edgePad;
+  right: $edgePad;
   background-color: rgba(0,0,0,0.5);
   display: inline-block;
-  padding: 0 10px 10px;
+  padding: 0 1vmin 1vmin;
   font-weight: 200;
 
   .time {
-    font-size: 50px;
+    font-size: 6vmin;
     text-align: center;
     margin: 0;
     padding: 0;
   }
   .date {
-    font-size: 23px;
+    font-size: 3vmin;
     text-align: center;
     margin: 0;
     padding: 0;
   }
+}
+
+#rewind {
+  position: absolute;
+  left: 1.5*$edgePad;
+  bottom: 1.5*$edgePad;
+  width: 10vmin;
+  height: 10vmin;
 }
 
 #overlay {
