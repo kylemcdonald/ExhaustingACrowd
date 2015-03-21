@@ -4,8 +4,6 @@ var transitionLoadComplete = function(){
     opacity: "0"
   }, {
     complete: function(){
-      console.log("POKAPSODK");
-
       $('#loading').hide()
     }
   },200);
@@ -17,18 +15,23 @@ $(document).ready(function(){
 });
 
 
-var transitionToZoom = function(cb){
+var hideVideo = function(cb){
   var e = $('#transition');
 
   e.css({
-    opacity:100,
+    opacity:0,
     display:"none",
-    left: "100%",
+    left: "0",
     top:0
   });
   e.show();
 
-  e.animate({ left: "0" }, { complete: cb },1000)
-    .delay(100)
-    .animate({  opacity: "0"})
+  e.animate({ opacity: "100" }, { complete: cb },1000)
+    //.delay(100)
+    //.animate({  opacity: "0"})
+}
+
+var showVideo = function(cb){
+  var e = $('#transition');
+  e.animate({ opacity: "0" }, { complete: cb },1000)
 }

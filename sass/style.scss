@@ -10,6 +10,7 @@
 body {
   padding:0;
   margin:0;
+  overflow:hidden;
 }
 
 #videocontainer {
@@ -20,7 +21,15 @@ body {
   overflow:hidden;
 
   #ytplayer {
+    width:100%;
+    height:100%;
+  }
+
+  #videoCanvas {
     position:absolute;
+    top:50px;
+    left:0;
+
   }
 }
 
