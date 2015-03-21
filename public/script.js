@@ -91,8 +91,21 @@ var gotoEditor = function(){
 var getPosAtTimeFromPath = function(time, path){
   console.log(time,path[0].time);
   for(var i=0;i<path.length;i++){
-    if(path[i].time <= time ){
-      return path[i];
+    if(path[i].time >= time ){
+      if(i == 0){
+        return path[i];
+      }
+
+      var p = path[i-1];
+      var n = path[i];
+
+      var pct = (time - p.time) / (n.time - p.time);
+
+      return {
+        x: p.x * (1-pct) + n.x*pct,
+        y: p.y * (1-pct) + n.y*pct,
+        time: time
+      };
     }
   }
 }
@@ -100,18 +113,27 @@ var getPosAtTimeFromPath = function(time, path){
 var circle;
 var updateAnimation = function(){
   if(mode == "EDITOR"){
-  /*  var p = getPosAtTimeFromPath(current_time_msec, mousePath);
+    var p = getPosAtTimeFromPath(current_time_msec, mousePath);
     console.log(p);
 
-    var c = $('#videoCanvas');
-    var scaleX = c.attr('width');
-    var scaleY = c.attr('height');
+    if(p) {
+      var c = $('#drawing')
 
-    if(!circle){
-      circle = new paper.Path.Circle(new paper.Point(0,0), 50);
+      var scaleX = c.width();
+      var scaleY = c.height()
+
+      if (!circle) {
+        circle = drawing.circle(50).attr({fill: '#f06'})
+      }
+
+//    circle.position = new paper.Point(p.x*scaleX, p.y*scaleY);
+      circle.move(p.x * scaleX - 25, p.y * scaleY - 25);
+
+      videoPos.x = p.x;
+      videoPos.y = p.y;
+      updatePlayerPosition();
     }
 
-    circle.position = new paper.Point(p.x*scaleX, p.y*scaleY);
 /*
     var canvas = document.getElementById('videoCanvas');
     var context = canvas.getContext('2d');
@@ -128,24 +150,6 @@ var updateAnimation = function(){
 
 }
 
-// Mouse trail
-var lastDrawnIndex = 0;
-var path;
-var resetCanvas = function(){
-
-
-  if(path){
-    path.remove();
-  }
-  path = new paper.Path();
-
-  path.strokeColor = new paper.Color(0.8,0,0,0.5);
-  path.strokeWidth = 4*(retinaSvg?2:1);
-
-  lastDrawnIndex = -1;
-
-  updateMouseTrail();
-};
 
 var polyline;
 var updateMouseTrail = function(){
@@ -161,7 +165,7 @@ var updateMouseTrail = function(){
 
 
   var p = [];
-  for(var i=lastDrawnIndex+1;i<mousePath.length;i++){
+  for(var i=0;i<mousePath.length;i++){
     p.push([mousePath[i].x*scaleX, mousePath[i].y*scaleY]);
   }
   polyline.plot(p)
@@ -171,13 +175,6 @@ var simplifyMouseTrail = function(){
   console.log("Mouse path length before simplification: "+mousePath.length);
   mousePath = simplify(mousePath, 0.002);
   console.log("Mouse path length after simplification: "+mousePath.length);
-
- // resetCanvas();
-}
-
-var redrawCanvas = function(){
- // resetCanvas();
-  updateMouseTrail();
 }
 
 
@@ -262,6 +259,22 @@ var calculatePlayerSize = function(){
   return {left: left, top: top, width:width, height:height};
 };
 
+var updatePlayerPosition = function(){
+  var player = $('#videocontainer');
+
+  var size = calculatePlayerSize();
+
+  player.css({
+    left: size.left,
+    top: size.top-50
+  });
+
+ /* player.animate({
+    left: size.left,
+    top: size.top-50
+  }, 10)*/
+}
+
 var updatePlayerSize = function(){
   var player = $('#videocontainer');
 
@@ -274,23 +287,15 @@ var updatePlayerSize = function(){
     height: size.height+100
   });
 
- /* $('#videoCanvas')
-    .attr('width', size.width*(retinaSvg?2:1))
-    .attr('height', size.height*(retinaSvg?2:1))
-    .css({
-      width: size.width,
-      height: size.height
-    })
-  */
-  redrawCanvas();
+  updateMouseTrail();
 
-  if(ytplayer && ytplayer.pauseVideo) {
+  /*if(ytplayer && ytplayer.pauseVideo) {
     if (paused) {
       ytplayer.pauseVideo();
     } else {
       ytplayer.playVideo();
     }
-  }
+  }*/
 };
 
 
@@ -385,7 +390,7 @@ var onPlayerStateChange = function(){
   if(loading && ytplayer.getPlayerState() == 1){
     loading = false;
     setTimeout(transitionLoadComplete, 300);
-    setInterval(tween_time, 50);
+    setInterval(tween_time, 10);
   }
 };
 
@@ -432,7 +437,7 @@ function tween_time() {
   if (playing==1) {
 
     if (last_time_update == time_update) {
-      current_time_msec += 50;
+      current_time_msec += 10;
     }
 
     if (last_time_update != time_update) {
