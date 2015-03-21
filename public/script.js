@@ -15,6 +15,7 @@ var lastMouseTime;
 var mode = "PLAYER";
 
 var canvasScaleFactor;
+var drawing;
 
 $(document).ready(function(){
   $("#overlay").mousedown(function(e){
@@ -24,7 +25,6 @@ $(document).ready(function(){
      resetZoom();
      }*/
     mousePath = [];
-    resetCanvas();
 
 
     $("#overlay").mousemove(function(e) {
@@ -59,11 +59,9 @@ $(document).ready(function(){
   // Update player on window resize
   $(window).resize(updatePlayerSize);
 
-  var paperCanvas = document.getElementById('videoCanvas');
-  // Create an empty project and a view for the canvas:
-  paper.setup(paperCanvas);
+  drawing = SVG('drawing')
 
-  resetCanvas();
+
 });
 
 
@@ -102,10 +100,10 @@ var getPosAtTimeFromPath = function(time, path){
 var circle;
 var updateAnimation = function(){
   if(mode == "EDITOR"){
-    var p = getPosAtTimeFromPath(current_time_msec, mousePath);
+  /*  var p = getPosAtTimeFromPath(current_time_msec, mousePath);
     console.log(p);
 
-    var c = $('#videoCanvas')
+    var c = $('#videoCanvas');
     var scaleX = c.attr('width');
     var scaleY = c.attr('height');
 
@@ -122,9 +120,9 @@ var updateAnimation = function(){
     //paper.view.draw();
 
   } else {
-    if(circle){
+   /* if(circle){
       circle.remove();
-    }
+    }*/
   }
 
 
@@ -132,7 +130,6 @@ var updateAnimation = function(){
 
 // Mouse trail
 var lastDrawnIndex = 0;
-var paperCanvas;
 var path;
 var resetCanvas = function(){
 
@@ -150,37 +147,37 @@ var resetCanvas = function(){
   updateMouseTrail();
 };
 
+var polyline;
 var updateMouseTrail = function(){
-  var canvas = document.getElementById('videoCanvas');
-  var context = canvas.getContext('2d');
-  context.clearRect(0, 0, canvas.width, canvas.height);
 
-  var c = $('#videoCanvas')
-
-  var scaleX = c.attr('width');
-  var scaleY = c.attr('height');
-
-  if(mousePath.length) {
-    for(var i=lastDrawnIndex+1;i<mousePath.length;i++){
-      path.add(new paper.Point(mousePath[i].x*scaleX, mousePath[i].y*scaleY));
-    }
+  if(!polyline){
+    polyline = drawing.polyline([]).fill('none').stroke({ width: 5,  color: '#f06' })
   }
-  // path.smooth();
-  lastDrawnIndex = mousePath.length-1;
 
-  paper.view.draw();
-}
+  var c = $('#drawing')
+
+  var scaleX = c.width();
+  var scaleY = c.height()
+
+
+  var p = [];
+  for(var i=lastDrawnIndex+1;i<mousePath.length;i++){
+    p.push([mousePath[i].x*scaleX, mousePath[i].y*scaleY]);
+  }
+  polyline.plot(p)
+};
 
 var simplifyMouseTrail = function(){
   console.log("Mouse path length before simplification: "+mousePath.length);
-  mousePath = simplify(mousePath, 0.002)
+  mousePath = simplify(mousePath, 0.002);
   console.log("Mouse path length after simplification: "+mousePath.length);
 
-  resetCanvas();
+ // resetCanvas();
 }
 
 var redrawCanvas = function(){
-  resetCanvas();
+ // resetCanvas();
+  updateMouseTrail();
 }
 
 
@@ -277,14 +274,14 @@ var updatePlayerSize = function(){
     height: size.height+100
   });
 
-  $('#videoCanvas')
+ /* $('#videoCanvas')
     .attr('width', size.width*(retinaSvg?2:1))
     .attr('height', size.height*(retinaSvg?2:1))
     .css({
       width: size.width,
       height: size.height
     })
-
+  */
   redrawCanvas();
 
   if(ytplayer && ytplayer.pauseVideo) {
