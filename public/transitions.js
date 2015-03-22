@@ -1,9 +1,9 @@
 var transitionLoadComplete = function(){
   $('#transition').animate({
-    //left: "100%",
     opacity: "0"
   }, {
     complete: function(){
+      $('#transition').hide();
       $('#loading').hide()
     }
   },200);
@@ -18,20 +18,19 @@ $(document).ready(function(){
 var hideVideo = function(cb){
   var e = $('#transition');
 
-  e.css({
-    opacity:0,
-    display:"none",
-    left: "0",
-    top:0
-  });
   e.show();
 
-  e.animate({ opacity: "100" }, { complete: cb },1000)
-    //.delay(100)
-    //.animate({  opacity: "0"})
-}
+  e.animate({ opacity: "100" }, { complete: function(){
+    if(cb)
+      cb()
+  } },1000)
+};
 
 var showVideo = function(cb){
   var e = $('#transition');
-  e.animate({ opacity: "0" }, { complete: cb },1000)
-}
+  e.animate({ opacity: "0" }, { complete: function(){
+    $('#transition').hide();
+    if(cb)
+      cb();
+  } },1000)
+};

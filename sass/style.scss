@@ -122,6 +122,22 @@ body {
     height:100%;
     position: absolute;
 
+    #submitButton {
+      right: 0px;
+      left: 0px;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.1);
+      color: black;
+      position: absolute;
+      margin: 20px;
+      padding: 20px;
+      font-size: 3em;
+
+      &:hover {
+        background-color: rgba(0,0,0,0.3);
+
+      }
+    }
   }
 
 }

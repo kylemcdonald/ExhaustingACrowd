@@ -19,39 +19,45 @@ var drawing;
 
 $(document).ready(function(){
   $("#overlay").mousedown(function(e){
-    /* if(videoZoom == 1){
-     zoom(clientToVideoCoord(e.clientX, e.clientY));
-     } else {
-     resetZoom();
-     }*/
-    mousePath = [];
+
+    if(mode == "PLAYER") {
+      /* if(videoZoom == 1){
+       zoom(clientToVideoCoord(e.clientX, e.clientY));
+       } else {
+       resetZoom();
+       }*/
+      mousePath = [];
 
 
-    $("#overlay").mousemove(function(e) {
-      if(event.which == 0){
-        isDragging = false;
-        $("#overlay").unbind("mousemove");
-      } else {
-        isDragging = true;
-        mousePos = clientToVideoCoord(event.pageX, event.pageY);
-        mousePos.time = current_time_msec;
-        if(lastMouseTime != mousePos.time) {
-          lastMouseTime = mousePos.time;
-          console.log(mousePos.time);
-          mousePath.push(mousePos);
-          updateMouseTrail();
+      $("#overlay").mousemove(function (e) {
+        if (event.which == 0) {
+          isDragging = false;
+          $("#overlay").unbind("mousemove");
+        } else {
+          isDragging = true;
+          mousePos = clientToVideoCoord(event.pageX, event.pageY);
+          mousePos.time = current_time_msec;
+          if (lastMouseTime != mousePos.time) {
+            lastMouseTime = mousePos.time;
+            console.log(mousePos.time);
+            mousePath.push(mousePos);
+            updateMouseTrail();
+          }
         }
-      }
-    });
+      });
+    }
   })
     .mouseup(function() {
-      var wasDragging = isDragging;
-      isDragging = false;
-      $("#overlay").unbind("mousemove");
 
-      if(wasDragging){
-        simplifyMouseTrail();
-        gotoEditor();
+      if(mode == "PLAYER") {
+        var wasDragging = isDragging;
+        isDragging = false;
+        $("#overlay").unbind("mousemove");
+
+        if (wasDragging) {
+          simplifyMouseTrail();
+          gotoEditor();
+        }
       }
     });
 
@@ -83,13 +89,37 @@ var gotoEditor = function(){
     videoPos = mousePath[0];
     updatePlayerSize();
 
-   // $('#notes').hide();
-   // $('#addNoteInterface').show();
+    $('#notes').hide();
+    $('#addNoteInterface').show();
+
+  })
+
+  $('#submitButton').click(function(){
+
+    submitNote(mousePath);
+
+    gotoVideo();
   })
 };
 
+var gotoVideo = function(){
+
+  console.log("AAA");
+  hideVideo(function(){
+    console.log("ASKDPOAS");
+    mode = "PLAYER";
+    videoZoom = 1;
+
+    updatePlayerSize();
+
+    showVideo();
+
+    $('#notes').show();
+    $('#addNoteInterface').hide();
+  })
+}
+
 var getPosAtTimeFromPath = function(time, path){
-  console.log(time,path[0].time);
   for(var i=0;i<path.length;i++){
     if(path[i].time >= time ){
       if(i == 0){
@@ -114,7 +144,7 @@ var circle;
 var updateAnimation = function(){
   if(mode == "EDITOR"){
     var p = getPosAtTimeFromPath(current_time_msec, mousePath);
-    console.log(p);
+    //<console.log(p);
 
     if(p) {
       var c = $('#drawing')
@@ -125,22 +155,12 @@ var updateAnimation = function(){
       if (!circle) {
         circle = drawing.circle(50).attr({fill: '#f06'})
       }
-
-//    circle.position = new paper.Point(p.x*scaleX, p.y*scaleY);
       circle.move(p.x * scaleX - 25, p.y * scaleY - 25);
 
       videoPos.x = p.x;
       videoPos.y = p.y;
       updatePlayerPosition();
     }
-
-/*
-    var canvas = document.getElementById('videoCanvas');
-    var context = canvas.getContext('2d');
-    context.clearRect(0, 0, canvas.width, canvas.height);
-*/
-    //paper.view.draw();
-
   } else {
    /* if(circle){
       circle.remove();
