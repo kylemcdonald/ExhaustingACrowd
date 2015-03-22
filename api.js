@@ -11,7 +11,7 @@ module.exports = {
     this.api.use(bodyParser.json());
     this.api.enable('trust proxy')
 
-    query("SELECT * FROM information_schema.tables where table_name = 'paths'", function(rows, ret){
+   /*query("SELECT * FROM information_schema.tables where table_name = 'paths'", function(rows, ret){
       if(ret.length == 0){
         query('CREATE TABLE "public"."paths" (\
     "id" serial,\
@@ -20,7 +20,7 @@ module.exports = {
       "note_id" int,\
       PRIMARY KEY ("id"));')
       }
-    });
+    });*/
 
     query("SELECT * FROM information_schema.tables where table_name = 'notes'", function(rows, ret){
       if(ret.length == 0){
@@ -31,22 +31,33 @@ module.exports = {
       "note" text,\
       "ip" cidr,\
       "timestamp" timestamp,\
+      "path" float[][],\
       PRIMARY KEY ("id"));')
       }
     });
 
     this.api.get('/notes', function (req, res) {
-      var notes = [
-        {
-          id: 1,
-          position: {
-            x: 0.3,
-            y: 0.5
-          },
-          note: 'blahblah blaaah'
+      var startTime = req.query.timeframeStart;
+      var endTime = req.query.timeframeEnd;
+
+      //if(endTime - startTime > )
+
+      query('SELECT notes.id, time_begin, time_end, note, path ' +
+      'FROM "notes" ' +
+      'where time_begin > $1 and time_begin < $2 ' +
+      'limit 100',
+
+        [startTime, endTime], function(err, ret){
+        if(err ){
+          res.status(500).send('Could not select notes');
+          console.log(err);
+          return;
         }
-      ];
-      res.send(notes);
+
+        res.send(ret)
+      })
+
+
     });
 
 
@@ -60,8 +71,33 @@ module.exports = {
       }
 
       // TODO value testing
+      var q = [];
+      for(var i=0;i<paths.length;i++){
+        q.push('{'+paths[i].x+','+paths[i].y+','+Math.round(paths[i].time)+'}');
+      }
 
-      query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp") VALUES ($1, $2, $3, $4, now()) RETURNING id',
+
+      query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
+        [
+          Math.round(paths[0].time),
+          Math.round(paths[paths.length-1].time),
+          "test",
+          req.ip,
+          "{"+ q.join(",")+"}"
+        ], function(err, ret) {
+
+          if(err || ret.length == 0){
+            res.status(500).send('Could not submit note');
+            console.log(err);
+            return;
+          }
+
+          var note_id = ret[0].id;
+          res.send({id:note_id});
+        }
+      );
+
+/*      query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp") VALUES ($1, $2, $3, $4, now()) RETURNING id',
       [
         Math.round(paths[0].time),
         Math.round(paths[paths.length-1].time),
@@ -93,7 +129,7 @@ module.exports = {
 
           });
 
-        });
+        });*/
 
 
     })
