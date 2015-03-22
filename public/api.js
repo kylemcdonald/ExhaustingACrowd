@@ -23,6 +23,18 @@ var fetchNotes = function(){
   });
 };
 
+var submitNote = function(path){
+  console.log("Submit ", path);
+
+  $.ajax({
+    type: "POST",
+    dataType: "json",
+    url: "/api/notes",
+    data: JSON.stringify({ path: path }),
+    contentType: "application/json; charset=utf-8",
+  });
+};
+
 var addNote = function(note){
   var elm = $('<div class="note">');
 
