@@ -28,6 +28,10 @@ $(document).ready(function(){
        }*/
       mousePath = [];
 
+      mousePos = clientToVideoCoord(event.pageX, event.pageY);
+      mousePos.time = current_time_msec;
+      mousePath.push(mousePos);
+      lastMouseTime = 0;
 
       $("#overlay").mousemove(function (e) {
         if (event.which == 0) {
@@ -55,6 +59,7 @@ $(document).ready(function(){
         $("#overlay").unbind("mousemove");
 
         if (wasDragging) {
+
           simplifyMouseTrail();
           gotoEditor();
         }
@@ -120,6 +125,14 @@ var gotoVideo = function(){
 }
 
 var getPosAtTimeFromPath = function(time, path){
+  if(path.length == 0){
+    return;
+  }
+
+  if(time < path[0].time){
+    return undefined;
+  }
+
   for(var i=0;i<path.length;i++){
     if(path[i].time >= time ){
       if(i == 0){
@@ -162,9 +175,9 @@ var updateAnimation = function(){
       updatePlayerPosition();
     }
   } else {
-   /* if(circle){
-      circle.remove();
-    }*/
+    /* if(circle){
+     circle.remove();
+     }*/
   }
 
 
@@ -192,9 +205,9 @@ var updateMouseTrail = function(){
 };
 
 var simplifyMouseTrail = function(){
-  console.log("Mouse path length before simplification: "+mousePath.length);
+  console.log("Mouse path length before simplification: "+mousePath.length,mousePath);
   mousePath = simplify(mousePath, 0.002);
-  console.log("Mouse path length after simplification: "+mousePath.length);
+  console.log("Mouse path length after simplification: "+mousePath.length,mousePath);
 }
 
 
@@ -289,10 +302,10 @@ var updatePlayerPosition = function(){
     top: size.top-50
   });
 
- /* player.animate({
-    left: size.left,
-    top: size.top-50
-  }, 10)*/
+  /* player.animate({
+   left: size.left,
+   top: size.top-50
+   }, 10)*/
 }
 
 var updatePlayerSize = function(){
@@ -310,12 +323,12 @@ var updatePlayerSize = function(){
   updateMouseTrail();
 
   /*if(ytplayer && ytplayer.pauseVideo) {
-    if (paused) {
-      ytplayer.pauseVideo();
-    } else {
-      ytplayer.playVideo();
-    }
-  }*/
+   if (paused) {
+   ytplayer.pauseVideo();
+   } else {
+   ytplayer.playVideo();
+   }
+   }*/
 };
 
 
@@ -330,58 +343,10 @@ setInterval(function(){
   }
 },100);
 
+
 //
-// API fetching
+// Time
 //
-var notes = [];
-
-var fetchNotes = function(){
-  $.ajax({
-    dataType: "json",
-    url: "/api/notes",
-    data: {},
-    success: function(data){
-      for(var i=0;i<data.length;i++) {
-        var note = data[i];
-        var existingNote = _.where(notes, {id: note.id});
-        if (existingNote.length == 0) {
-          addNote(note);
-        }
-      }
-
-      updateNotes();
-    }
-  });
-};
-
-var addNote = function(note){
-  var elm = $('<div class="note">');
-
-  $('#notes').append(elm);
-  elm.attr('id', note.id);
-
-  //note.elm = elm;
-  notes.push(note);
-
-  console.log("Add note ", note);
-};
-
-var remoteNote = function(note){
-
-}
-
-var updateNotes = function(){
-  for(var i=0;i<notes.length;i++){
-    var note = notes[i];
-
-    var pos = videoToClientCoord(note.position.x, note.position.y);
-    $('#'+note.id).css({
-      top: pos.y,
-      left: pos.x
-    })
-  }
-};
-
 var blink = function(elm) {
   if(elm.css('opacity') == '1') {
     elm.css('opacity', '0');
@@ -469,4 +434,65 @@ function tween_time() {
   last_time_update = time_update;
 
   updateAnimation();
+  updateNotes();
 }
+
+
+// Notes
+
+var updateNotes = function(){
+  for(var i=0;i<notes.length;i++){
+    var note = notes[i];
+
+    var p = getPosAtTimeFromPath(current_time_msec, note.path);
+
+    if(p) {
+      if(!note.elm){
+        console.log("ADD NOTE");
+        note.elm = $('<div class="note">');
+        $('#notes').append(note.elm);
+        note.elm.attr('id', note.id);
+      }
+
+      updateNoteElm(note, p);
+    } else if(note.elm && note.path[note.path.length-1].time+100 < current_time_msec){
+      removeNote(note);
+      notes.splice(i,1);
+      i--;
+    }
+  }
+};
+
+var updateNoteElm = function(note, p){
+
+  if(p) {
+    var pos = videoToClientCoord(p.x, p.y);
+    if(pos != note._lastPos) {
+      note._lastPos = pos;
+
+      note.elm.css({
+        top: pos.y,
+        left: pos.x
+      })
+    }
+  }
+}
+
+var addNote = function(note){
+  /*var elm = $('<div class="note">');
+
+  $('#notes').append(elm);
+  elm.attr('id', note.id);
+
+  updateNoteElm(note, note.path[0])
+*/
+  //note.elm = elm;
+  notes.push(note);
+
+  console.log("Add note ", note);
+};
+
+var removeNote = function(note){
+  console.log("Remove ", note);
+  note.elm.remove();
+};
