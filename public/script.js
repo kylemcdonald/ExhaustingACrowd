@@ -18,49 +18,54 @@ var canvasScaleFactor;
 var drawing;
 
 $(document).ready(function(){
-  $("#overlay").mousedown(function(e){
+  $("#overlay")
+    .mousedown(function(e){
 
-    if(mode == "PLAYER") {
-      /* if(videoZoom == 1){
-       zoom(clientToVideoCoord(e.clientX, e.clientY));
-       } else {
-       resetZoom();
-       }*/
-      mousePath = [];
+      if(mode == "PLAYER") {
+        // Reset the mousePath
+        mousePath = [];
 
-      mousePos = clientToVideoCoord(event.pageX, event.pageY);
-      mousePos.time = current_time_msec;
-      mousePath.push(mousePos);
-      lastMouseTime = 0;
+        // Calculate the % position clicked
+        mousePos = clientToVideoCoord(event.pageX, event.pageY);
+        mousePos.time = current_time_msec;
 
-      $("#overlay").mousemove(function (e) {
-        if (event.which == 0) {
-          isDragging = false;
-          $("#overlay").unbind("mousemove");
-        } else {
-          isDragging = true;
-          mousePos = clientToVideoCoord(event.pageX, event.pageY);
-          mousePos.time = current_time_msec;
-          if (lastMouseTime != mousePos.time) {
-            lastMouseTime = mousePos.time;
-            mousePath.push(mousePos);
-            updateMouseTrail();
+        // Add the position to the mousePath
+        mousePath.push(mousePos);
+        lastMouseTime = 0;
+
+        // Listen for mouse drag
+        $("#overlay").mousemove(function (e) {
+          if (event.which == 0) {
+            // Stop dragging
+            isDragging = false;
+            $("#overlay").unbind("mousemove");
+          } else {
+
+            // Add the mouse position to the path, if the time has changed
+            isDragging = true;
+            mousePos = clientToVideoCoord(event.pageX, event.pageY);
+            mousePos.time = current_time_msec;
+            if (lastMouseTime != mousePos.time) {
+              lastMouseTime = mousePos.time;
+              mousePath.push(mousePos);
+              updateMouseTrail();
+            }
           }
-        }
-      });
-    }
-  })
+        });
+      }
+    })
     .mouseup(function() {
 
       if(mode == "PLAYER") {
+        // Listen for mouseUp events
         var wasDragging = isDragging;
         isDragging = false;
         $("#overlay").unbind("mousemove");
-
         if (wasDragging) {
-
+          // Simplify the mouse trail
           simplifyMouseTrail();
 
+          // And go to the editor mode
           gotoEditor();
         }
       }
@@ -70,9 +75,8 @@ $(document).ready(function(){
   // Update player on window resize
   $(window).resize(updatePlayerSize);
 
-  drawing = SVG('drawing')
-
-
+  // Setup the drawing canvas
+  drawing = SVG('drawing');
 });
 
 
@@ -80,31 +84,39 @@ var gotoEditor = function(){
   hideVideo(function(){
     mode = "EDITOR";
     videoZoom = 4;
-    ytplayer.seekTo(mousePath[0].time/1000);
-    console.log("Seek to " + mousePath[0].time / 1000);
 
-    // Wait for the video having seeked
-    var stateChange = function(e){
-      if(e.data == 1) {
-        ytplayer.removeEventListener("onStateChange", stateChange);
-        showVideo();
-      }
-    };
-    ytplayer.addEventListener("onStateChange", stateChange)
+    // Seek to the path start time
+    seekVideo(mousePath[0].time, function(){
+      showVideo();
+    });
+
+    // Set the video zoom position
     videoPos = {x: mousePath[0].x, y:mousePath[0].y};
     updatePlayerSize();
 
+    // Update the interface
     $('#notes').hide();
     $('#addNoteInterface').show();
 
-  })
+    $('#note-text').text('').focus();
 
-  $('#submitButton').click(function(){
+  });
 
-    submitNote(mousePath);
+  var trySubmit = function(){
+    var text = $('#note-text').val();
+    if(text) {
+      // Submit the path to the API
+      submitNote(mousePath, text);
 
-    gotoVideo();
-  })
+      // GOTO video mode again
+      gotoVideo();
+    } else {
+      $('#note-text').attr('placeholder', 'Please write something').focus();
+      $('#submitButton').click(trySubmit)
+    }
+  }
+
+  $('#submitButton').click(trySubmit)
 };
 
 var gotoVideo = function(){
@@ -114,8 +126,12 @@ var gotoVideo = function(){
     videoZoom = 1;
 
     updatePlayerSize();
+    clearMouseTrail();
 
-    showVideo();
+    // Seek to the path start time
+    seekVideo(mousePath[0].time, function(){
+      showVideo();
+    });
 
     $('#notes').show();
     $('#addNoteInterface').hide();
@@ -155,7 +171,7 @@ var circle;
 var updateAnimation = function(){
   if(mode == "EDITOR"){
     var p = getPosAtTimeFromPath(current_time_msec, mousePath);
-    //<console.log(p);
+    //<mousePath.log(p);
 
     if(p) {
       var c = $('#drawing')
@@ -201,6 +217,10 @@ var updateMouseTrail = function(){
   }
   polyline.plot(p)
 };
+
+var clearMouseTrail = function(){
+  polyline.plot([]);
+}
 
 var simplifyMouseTrail = function(){
   console.log("Mouse path length before simplification: "+mousePath.length);
@@ -328,6 +348,20 @@ var updatePlayerSize = function(){
    }
    }*/
 };
+
+var seekVideo = function(ms, cb){
+  console.log("Seek to " + ms / 1000);
+  ytplayer.seekTo(ms/1000);
+
+  // Wait for the video having seeked
+  var stateChange = function(e){
+    if(e.data == 1) {
+      ytplayer.removeEventListener("onStateChange", stateChange);
+      if(cb)cb();
+    }
+  };
+  ytplayer.addEventListener("onStateChange", stateChange)
+}
 
 
 // Continuous test the playstate
@@ -479,11 +513,11 @@ var updateNoteElm = function(note, p){
 var addNote = function(note){
   /*var elm = $('<div class="note">');
 
-  $('#notes').append(elm);
-  elm.attr('id', note.id);
+   $('#notes').append(elm);
+   elm.attr('id', note.id);
 
-  updateNoteElm(note, note.path[0])
-*/
+   updateNoteElm(note, note.path[0])
+   */
   //note.elm = elm;
   notes.push(note);
 

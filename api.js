@@ -76,9 +76,15 @@ module.exports = {
     this.api.post('/notes', function (req, res) {
 
       var paths = req.body.path;
+      var text = req.body.text;
 
       if(paths.length < 2){
         res.status(500).send('At least 2 points in a path are required');
+        return;
+      }
+
+      if(!text){
+        res.status(500).send('Text is missing');
         return;
       }
 
@@ -93,7 +99,7 @@ module.exports = {
         [
           Math.round(paths[0].time),
           Math.round(paths[paths.length-1].time),
-          "test",
+          text,
           req.ip,
           "{"+ q.join(",")+"}"
         ], function(err, ret) {

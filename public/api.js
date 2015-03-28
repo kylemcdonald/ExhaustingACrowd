@@ -39,14 +39,14 @@ var fetchNotes = function(){
   });
 };
 
-var submitNote = function(path){
-  console.log("Submit ", path);
+var submitNote = function(path, text){
+  console.log("Submit ", path, text);
 
   $.ajax({
     type: "POST",
     dataType: "json",
     url: "/api/notes",
-    data: JSON.stringify({ path: path }),
+    data: JSON.stringify({ path: path, text: text }),
     contentType: "application/json; charset=utf-8"
   });
 };
