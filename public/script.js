@@ -43,7 +43,6 @@ $(document).ready(function(){
           mousePos.time = current_time_msec;
           if (lastMouseTime != mousePos.time) {
             lastMouseTime = mousePos.time;
-            console.log(mousePos.time);
             mousePath.push(mousePos);
             updateMouseTrail();
           }
@@ -61,6 +60,7 @@ $(document).ready(function(){
         if (wasDragging) {
 
           simplifyMouseTrail();
+
           gotoEditor();
         }
       }
@@ -91,7 +91,7 @@ var gotoEditor = function(){
       }
     };
     ytplayer.addEventListener("onStateChange", stateChange)
-    videoPos = mousePath[0];
+    videoPos = {x: mousePath[0].x, y:mousePath[0].y};
     updatePlayerSize();
 
     $('#notes').hide();
@@ -109,9 +109,7 @@ var gotoEditor = function(){
 
 var gotoVideo = function(){
 
-  console.log("AAA");
   hideVideo(function(){
-    console.log("ASKDPOAS");
     mode = "PLAYER";
     videoZoom = 1;
 
@@ -205,9 +203,9 @@ var updateMouseTrail = function(){
 };
 
 var simplifyMouseTrail = function(){
-  console.log("Mouse path length before simplification: "+mousePath.length,mousePath);
+  console.log("Mouse path length before simplification: "+mousePath.length);
   mousePath = simplify(mousePath, 0.002);
-  console.log("Mouse path length after simplification: "+mousePath.length,mousePath);
+  console.log("Mouse path length after simplification: "+mousePath.length);
 }
 
 

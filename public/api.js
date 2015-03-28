@@ -47,7 +47,7 @@ var submitNote = function(path){
     dataType: "json",
     url: "/api/notes",
     data: JSON.stringify({ path: path }),
-    contentType: "application/json; charset=utf-8",
+    contentType: "application/json; charset=utf-8"
   });
 };
 
