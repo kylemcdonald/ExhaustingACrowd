@@ -5,14 +5,12 @@
 var notes = [];
 
 var fetchNotes = function(){
-  if(!current_time_msec) return;
-
   $.ajax({
     dataType: "json",
     url: "/api/notes",
     data: {
       timeframeStart: current_time_msec,
-      timeframeEnd: current_time_msec+10000
+      timeframeEnd: current_time_msec+20000
     },
     success: function(data){
       /*  for(var i=0;i<notes.length;i++){
@@ -49,7 +47,9 @@ var submitNote = function(path, text){
     data: JSON.stringify({ path: path, text: text }),
     contentType: "application/json; charset=utf-8"
   });
+  fetchNotes();
 };
 
 
-setInterval(fetchNotes, 2000);
+setInterval(fetchNotes, 10000);
+fetchNotes();

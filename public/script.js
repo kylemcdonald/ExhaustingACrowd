@@ -392,7 +392,6 @@ var flashColon = function() {
   blink(colon);
 }
 
-setInterval(fetchNotes, 2000);
 setInterval(flashColon, 1000);
 
 //
@@ -442,7 +441,7 @@ var onYouTubePlayerAPIReady = function(){
 
 };
 
-var current_time_msec;
+var current_time_msec = 0;
 var last_time_update;
 
 function tween_time() {
