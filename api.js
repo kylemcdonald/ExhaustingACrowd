@@ -94,26 +94,50 @@ module.exports = {
         q.push('{'+paths[i].x+','+paths[i].y+','+Math.round(paths[i].time)+'}');
       }
 
-
-      query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
-        [
-          Math.round(paths[0].time),
-          Math.round(paths[paths.length-1].time),
-          text,
-          req.ip,
-          "{"+ q.join(",")+"}"
-        ], function(err, ret) {
-
-          if(err || ret.length == 0){
-            res.status(500).send('Could not submit note');
+      // Get the last entry by the IP
+      query('SELECT notes.id, time_begin, time_end, note, path, timestamp ' +
+        'FROM "notes" ' +
+        'where ip = $1 ' +
+        'order by id desc ' +
+        'limit 1',
+        [req.ip], function(err, ret){
+          if(err ){
+            res.status(500).send('Could not select notes');
             console.log(err);
             return;
           }
 
-          var note_id = ret[0].id;
-          res.send({id:note_id});
-        }
-      );
+          if(ret.length > 0){
+            console.log(ret);
+            if(ret.time_begin == Math.round(paths[0].time) &&  ret.time_end ==  Math.round(paths[paths.length-1].time)){
+              res.status(500).send('Duplicate entry');
+              return;
+            }
+          }
+
+
+          query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
+            [
+              Math.round(paths[0].time),
+              Math.round(paths[paths.length-1].time),
+              text,
+              req.ip,
+              "{"+ q.join(",")+"}"
+            ], function(err, ret) {
+
+              if(err || ret.length == 0){
+                res.status(500).send('Could not submit note');
+                console.log(err);
+                return;
+              }
+
+              var note_id = ret[0].id;
+              res.send({id:note_id});
+            }
+          );
+        })
+
+
 
       /*      query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp") VALUES ($1, $2, $3, $4, now()) RETURNING id',
        [
