@@ -30,7 +30,7 @@ $(document).ready(function(){
   });
 
   $('#rewind').click(function(){
-    seekVideo(current_time_msec-3000);
+    seekVideo(current_time_msec-30000);
   });
 
   $("#clickArea")
@@ -120,7 +120,7 @@ var gotoEditor = function(){
     $('#notes').hide();
     $('#addNoteInterface').show();
 
-    $('#note-text').text('').focus();
+    $('#note-text').val('').focus();
 
   });
 
@@ -152,7 +152,7 @@ var gotoVideo = function(){
     clearMouseTrail();
 
     // Seek to the path start time
-    seekVideo(mousePath[0].time, function(){
+    seekVideo(mousePath[0].time-5000, function(){
       showVideo();
     });
 
