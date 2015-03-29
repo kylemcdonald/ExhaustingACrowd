@@ -45,9 +45,12 @@ var submitNote = function(path, text){
     dataType: "json",
     url: "/api/notes",
     data: JSON.stringify({ path: path, text: text }),
-    contentType: "application/json; charset=utf-8"
+    contentType: "application/json; charset=utf-8",
+    success: function() {
+      fetchNotes();
+    }
   });
-  fetchNotes();
+
 };
 
 

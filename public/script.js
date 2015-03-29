@@ -18,7 +18,22 @@ var canvasScaleFactor;
 var drawing;
 
 $(document).ready(function(){
-  $("#overlay")
+
+  $(document).keyup(function(e) {
+
+    // escape key maps to keycode `27`
+    if (e.keyCode == 27) {
+      if(mode=="EDITOR"){
+        gotoVideo();
+      }
+    }
+  });
+
+  $('#rewind').click(function(){
+    seekVideo(current_time_msec-3000);
+  });
+
+  $("#clickArea")
     .mousedown(function(e){
 
       if(mode == "PLAYER") {
@@ -34,11 +49,11 @@ $(document).ready(function(){
         lastMouseTime = 0;
 
         // Listen for mouse drag
-        $("#overlay").mousemove(function (e) {
+        $("#clickArea").mousemove(function (e) {
           if (event.which == 0) {
             // Stop dragging
             isDragging = false;
-            $("#overlay").unbind("mousemove");
+            $("#clickArea").unbind("mousemove");
           } else {
 
             // Add the mouse position to the path, if the time has changed
@@ -60,14 +75,21 @@ $(document).ready(function(){
         // Listen for mouseUp events
         var wasDragging = isDragging;
         isDragging = false;
-        $("#overlay").unbind("mousemove");
-        if (wasDragging) {
-          // Simplify the mouse trail
-          simplifyMouseTrail();
+        $("#clickArea").unbind("mousemove");
+        //   if (wasDragging) {
+        // Simplify the mouse trail
+        simplifyMouseTrail();
 
-          // And go to the editor mode
-          gotoEditor();
-        }
+        // Calculate the % position clicked
+        mousePos = clientToVideoCoord(event.pageX, event.pageY);
+        mousePos.time = current_time_msec;
+
+        // Add the position to the mousePath
+        mousePath.push(mousePos);
+
+        // And go to the editor mode
+        gotoEditor();
+        //  }
       }
     });
 
@@ -112,11 +134,12 @@ var gotoEditor = function(){
       gotoVideo();
     } else {
       $('#note-text').attr('placeholder', 'Please write something').focus();
-      $('#submitButton').click(trySubmit)
+      $('#submitButton').unbind('click').click(trySubmit)
     }
   }
 
-  $('#submitButton').click(trySubmit)
+
+  $('#submitButton').unbind('click').click(trySubmit)
 };
 
 var gotoVideo = function(){
@@ -136,7 +159,7 @@ var gotoVideo = function(){
     $('#notes').show();
     $('#addNoteInterface').hide();
   })
-}
+};
 
 var getPosAtTimeFromPath = function(time, path){
   if(path.length == 0){
@@ -352,6 +375,7 @@ var updatePlayerSize = function(){
 var seekVideo = function(ms, cb){
   console.log("Seek to " + ms / 1000);
   ytplayer.seekTo(ms/1000);
+  current_time_msec = ms;
 
   // Wait for the video having seeked
   var stateChange = function(e){
@@ -470,7 +494,6 @@ function tween_time() {
 
 
 // Notes
-
 var updateNotes = function(){
   for(var i=0;i<notes.length;i++){
     var note = notes[i];
@@ -481,6 +504,8 @@ var updateNotes = function(){
       if(!note.elm){
         console.log("ADD NOTE");
         note.elm = $('<div class="note">');
+        note.elm.append('<div class="note-white">');
+        note.elm.append('<div class="note-text">'+note.note+'</div>');
         $('#notes').append(note.elm);
         note.elm.attr('id', note.id);
       }

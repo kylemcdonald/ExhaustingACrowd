@@ -8,6 +8,10 @@
 
 $edgePad: 3vmin;
 
+$noteWhiteWidth: 50px;
+$noteWhiteHeight: 80px;
+$noteTextWidth: 100px;
+
 body {
   padding:0;
   margin:0;
@@ -93,30 +97,75 @@ body {
   }
 }
 
-#rewind {
-  position: absolute;
-  left: 1.5*$edgePad;
-  bottom: 1.5*$edgePad;
-  width: 10vmin;
-  height: 10vmin;
-}
 
-#overlay {
+
+#clickArea {
   height:100%;
   width:100%;
   position:absolute;
   top:0;
-  cursor: pointer;
-  z-index: 99;
+  cursor: crosshair;
+  z-index: 90;
+}
+
+#overlay {
+  /*height:100%;
+  width:100%;
+  position:absolute;
+  top:0;
+  z-index: 99;*/
+
+  #rewind {
+    position: absolute;
+    left: 1.5*$edgePad;
+    bottom: 1.5*$edgePad;
+    width: 10vmin;
+    height: 10vmin;
+    z-index: 100;
+    cursor: pointer;
+  }
 
   .note {
-    width:20px;
-    height:20px;
+    z-index: 95;
+
+    width:1px;
+    height:1px;
     position:absolute;
-    background-color: rgba(255,255,255,0.7);
+    background-color: red;
+    .note-white {
+      width:$noteWhiteWidth;
+      height: $noteWhiteHeight;
+      top:-$noteWhiteHeight/2;
+      left:-$noteWhiteWidth/2;
+      position: absolute;
+      background-color: rgba(255,255,255,0.7);
+      transition: background-color 0.5s ease;
+
+    }
+
+    &:hover {
+      .note-white {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+      // border:1px solid rgba(255,255,255,0.4);
+    }
+
+    .note-text {
+      position: absolute;
+      left:$noteWhiteWidth/2;
+      top:-$noteWhiteHeight/2;
+      width:$noteTextWidth - 10px;
+      height: $noteWhiteHeight - 10px;
+      background-color: rgba(0,0,0,0.4);
+      padding:5px;
+      font-size: 0.7em;
+    }
+
   }
 
   #addNoteInterface {
+    z-index: 100;
+
     right:0;
     width: 50%;
     background-color: rgba(255,255,255,0.9);
