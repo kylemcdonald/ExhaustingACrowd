@@ -1,6 +1,5 @@
 var ytaspect = 16.0/9.0;
 var ytplayer;
-var retinaSvg = true;
 
 var loading = true;
 
@@ -13,8 +12,8 @@ var isDragging = false;
 var mousePath = [];
 var lastMouseTime;
 var mode = "PLAYER";
+var current_time_msec = 0;
 
-var canvasScaleFactor;
 var drawing;
 
 $(document).ready(function(){
@@ -121,7 +120,6 @@ var gotoEditor = function(){
     $('#addNoteInterface').show();
 
     $('#note-text').val('').focus();
-
   });
 
   var trySubmit = function(){
@@ -136,7 +134,7 @@ var gotoEditor = function(){
       $('#note-text').attr('placeholder', 'Please write something').focus();
       $('#submitButton').unbind('click').click(trySubmit)
     }
-  }
+  };
 
 
   $('#submitButton').unbind('click').click(trySubmit)
@@ -284,29 +282,6 @@ var videoToClientCoord = function(videoX, videoY){
   return ret;
 };
 
-var zoom = function(pos){
-  transitionToZoom(function(){
-
-    videoZoom = 4;
-    paused = true;
-    videoPos = pos;
-    updatePlayerSize();
-
-    $('#notes').hide();
-    $('#addNoteInterface').show();
-  })
-
-
-};
-
-var resetZoom = function(){
-  videoZoom = 1;
-  paused = false;
-  $('#notes').show();
-  $('#addNoteInterface').hide();
-  updatePlayerSize();
-};
-
 var calculatePlayerSize = function(){
   var left = 0;
   var top = 0;
@@ -342,11 +317,6 @@ var updatePlayerPosition = function(){
     left: size.left,
     top: size.top-50
   });
-
-  /* player.animate({
-   left: size.left,
-   top: size.top-50
-   }, 10)*/
 }
 
 var updatePlayerSize = function(){
@@ -362,14 +332,6 @@ var updatePlayerSize = function(){
   });
 
   updateMouseTrail();
-
-  /*if(ytplayer && ytplayer.pauseVideo) {
-   if (paused) {
-   ytplayer.pauseVideo();
-   } else {
-   ytplayer.playVideo();
-   }
-   }*/
 };
 
 var seekVideo = function(ms, cb){
@@ -430,7 +392,7 @@ var onPlayerStateChange = function(){
   if(loading && ytplayer.getPlayerState() == 1){
     loading = false;
     setTimeout(transitionLoadComplete, 300);
-    setInterval(tween_time, 10);
+    setInterval(frameUpdate, 10);
   }
 };
 
@@ -465,10 +427,11 @@ var onYouTubePlayerAPIReady = function(){
 
 };
 
-var current_time_msec = 0;
-var last_time_update;
+var _last_time_update;
 
-function tween_time() {
+// frame update, called every 10ms, updates the current time,
+// and calls other update functions
+function frameUpdate() {
 
   var time_update = (ytplayer.getCurrentTime()*1000)
 
@@ -476,24 +439,27 @@ function tween_time() {
 
   if (playing==1) {
 
-    if (last_time_update == time_update) {
+    if (_last_time_update == time_update) {
       current_time_msec += 10;
     }
 
-    if (last_time_update != time_update) {
+    if (_last_time_update != time_update) {
       current_time_msec = time_update;
     }
 
   }
 
-  last_time_update = time_update;
+  _last_time_update = time_update;
 
   updateAnimation();
   updateNotes();
 }
 
-
+//
 // Notes
+//
+
+// Update notes is called in every "frame" to update notes position
 var updateNotes = function(){
   for(var i=0;i<notes.length;i++){
     var note = notes[i];
@@ -519,8 +485,8 @@ var updateNotes = function(){
   }
 };
 
+// Update a specific notes visual elements position
 var updateNoteElm = function(note, p){
-
   if(p) {
     var pos = videoToClientCoord(p.x, p.y);
     if(pos != note._lastPos) {
@@ -532,22 +498,15 @@ var updateNoteElm = function(note, p){
       })
     }
   }
-}
-
-var addNote = function(note){
-  /*var elm = $('<div class="note">');
-
-   $('#notes').append(elm);
-   elm.attr('id', note.id);
-
-   updateNoteElm(note, note.path[0])
-   */
-  //note.elm = elm;
-  notes.push(note);
-
-  console.log("Add note ", note);
 };
 
+// Called from the api controller, adding a new note
+var addNote = function(note){
+  console.log("Add note ", note);
+  notes.push(note);
+};
+
+// Called from the api controller, removing notes
 var removeNote = function(note){
   console.log("Remove ", note);
   note.elm.remove();
