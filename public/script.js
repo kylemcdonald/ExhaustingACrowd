@@ -423,9 +423,15 @@ var onYouTubePlayerAPIReady = function(){
       'onPlaybackQualityChange': onPlayerPlaybackQualityChange
     }
   });
-
-
 };
+
+var updateVideoLoop = function(){
+  if(mode == "EDITOR"){
+    if(current_time_msec > mousePath[mousePath.length-1].time){
+      seekVideo(mousePath[0].time)
+    }
+  }
+}
 
 var _last_time_update;
 
@@ -453,6 +459,7 @@ function frameUpdate() {
 
   updateAnimation();
   updateNotes();
+  updateVideoLoop();
 }
 
 //
