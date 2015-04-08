@@ -435,7 +435,14 @@ var onYouTubePlayerAPIReady = function(){
 
 var updateVideoLoop = function(){
   if(mode == "EDITOR"){
-    if(current_time_msec > mousePath[mousePath.length-1].time){
+    var time = mousePath[mousePath.length-1].time;
+
+    var diff = time- mousePath[0].time;
+    if(diff < 3000){
+      time += 3000 - diff;
+    }
+
+    if(current_time_msec > time){
       seekVideo(mousePath[0].time)
     }
   }
@@ -519,8 +526,8 @@ var updateNoteElm = function(note, p){
 var addNote = function(note){
   // Check if the note is very short duration
   var diff = note.path[note.path.length-1].time - note.path[0].time;
-  if(diff < 2000){
-    note.path[note.path.length-1].time += 2000 - diff;
+  if(diff < 3000){
+    note.path[note.path.length-1].time += 3000 - diff;
   }
   console.log("Add note ", note);
   notes.push(note);
