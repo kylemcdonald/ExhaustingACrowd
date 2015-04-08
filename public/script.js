@@ -33,7 +33,7 @@ $(document).ready(function(){
   });
 
   $("#clickArea")
-    .mousedown(function(e){
+    .mousedown(function(event){
 
       if(mode == "PLAYER") {
         // Reset the mousePath
@@ -48,7 +48,7 @@ $(document).ready(function(){
         lastMouseTime = 0;
 
         // Listen for mouse drag
-        $("#clickArea").mousemove(function (e) {
+        $("#clickArea").mousemove(function (event) {
           if (event.which == 0) {
             // Stop dragging
             isDragging = false;
@@ -68,7 +68,7 @@ $(document).ready(function(){
         });
       }
     })
-    .mouseup(function() {
+    .mouseup(function(event) {
 
       if(mode == "PLAYER") {
         // Listen for mouseUp events
@@ -336,8 +336,6 @@ var updatePlayerSize = function(){
 
 var seekVideo = function(ms, cb){
   console.log("Seek to " + ms / 1000);
-  ytplayer.seekTo(ms/1000);
-  current_time_msec = ms;
 
   // Wait for the video having seeked
   var stateChange = function(e){
@@ -346,8 +344,18 @@ var seekVideo = function(ms, cb){
       if(cb)cb();
     }
   };
-  ytplayer.addEventListener("onStateChange", stateChange)
-}
+
+  // In safari, seekTo doesn't trigger a state change, so we just callback
+  if(bowser.safari) {
+    if(cb)cb();
+  } else {
+    ytplayer.addEventListener("onStateChange", stateChange)
+  }
+
+  ytplayer.seekTo(ms/1000);
+  current_time_msec = ms;
+
+};
 
 
 // Continuous test the playstate
@@ -475,7 +483,6 @@ var updateNotes = function(){
 
     if(p) {
       if(!note.elm){
-        console.log("ADD NOTE");
         note.elm = $('<div class="note">');
         note.elm.append('<div class="note-white">');
         note.elm.append('<div class="note-text">'+note.note+'</div>');
@@ -485,6 +492,7 @@ var updateNotes = function(){
 
       updateNoteElm(note, p);
     } else if(note.elm && note.path[note.path.length-1].time+100 < current_time_msec){
+      // Remove old notes
       removeNote(note);
       notes.splice(i,1);
       i--;
@@ -509,6 +517,11 @@ var updateNoteElm = function(note, p){
 
 // Called from the api controller, adding a new note
 var addNote = function(note){
+  // Check if the note is very short duration
+  var diff = note.path[note.path.length-1].time - note.path[0].time;
+  if(diff < 2000){
+    note.path[note.path.length-1].time += 2000 - diff;
+  }
   console.log("Add note ", note);
   notes.push(note);
 };
