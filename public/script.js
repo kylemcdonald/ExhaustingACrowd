@@ -127,6 +127,13 @@ var gotoEditor = function(){
     $('#addNoteInterface').show();
 
     $('#note-text').val('').focus();
+
+    $('#rewind').hide();
+    $('#back').show();
+
+    $('#back').click(function(){
+      gotoVideo();
+    })
   });
 
   var trySubmit = function(){
@@ -145,6 +152,8 @@ var gotoEditor = function(){
 
 
   $('#submitButton').unbind('click').click(trySubmit)
+
+
 };
 
 var gotoVideo = function(){
@@ -163,6 +172,9 @@ var gotoVideo = function(){
 
     $('#notes').show();
     $('#addNoteInterface').hide();
+
+    $('#rewind').show();
+    $('#back').hide();
   })
 };
 
