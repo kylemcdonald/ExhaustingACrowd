@@ -16,7 +16,14 @@ var current_time_msec = 0;
 
 var drawing;
 
+if( bowser.mobile || bowser.tablet || (!bowser.chrome && !bowser.safari)){
+  window.location.replace("/browser.html");
+}
+
+
 $(document).ready(function(){
+
+
 
   $(document).keyup(function(e) {
 

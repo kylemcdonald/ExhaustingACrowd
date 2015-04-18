@@ -247,3 +247,32 @@ body {
   position:relative;
   margin-top:-40px;
 }
+
+
+#browser-error {
+  color:black;
+  text-align:center;
+  top: 100px;
+  position:relative;
+  font-size:2em;
+
+  #title {
+    font-size:2em;
+    line-height: 2em;
+  }
+
+  #error, #error-mobile {
+    line-height: 1.6em;
+  }
+
+  b {
+    font-weight: 400;
+  }
+}
+
+@media only screen and (max-device-width: 480px) {
+  #browser-error {
+    top: 50px;
+    font-size: 1em;
+  }
+}
