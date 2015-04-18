@@ -377,23 +377,6 @@ setInterval(function(){
 },100);
 
 
-//
-// Time
-//
-var blink = function(elm) {
-  if(elm.css('opacity') == '1') {
-    elm.css('opacity', '0');
-  } else {
-    elm.css('opacity', '1');
-  }
-}
-
-var colon = $('#colon');
-var flashColon = function() {
-  blink(colon);
-}
-
-setInterval(flashColon, 1000);
 
 //
 // Youtube video
@@ -473,11 +456,15 @@ function frameUpdate() {
 
     if (_last_time_update != time_update) {
       current_time_msec = time_update;
+
+      clockTime = new Date("April 15, 2015 11:13:00");
+      clockTime.setSeconds(clockTime.getSeconds()+ time_update/1000)
     }
 
   }
 
   _last_time_update = time_update;
+
 
   updateAnimation();
   updateNotes();
