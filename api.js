@@ -1,6 +1,7 @@
 var query = require('pg-query');
 var express = require('express');
 var bodyParser = require("body-parser");
+var request = require('request');
 
 query.connectionParameters = process.env.DATABASE_URL;
 
@@ -128,24 +129,37 @@ module.exports = {
                 return;
               }
 
-              query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
-                [
-                  Math.round(paths[0].time),
-                  Math.round(paths[paths.length-1].time),
-                  text,
-                  req.ip,
-                  "{"+ q.join(",")+"}"
-                ], function(err, ret) {
+              request('http://www.wdyl.com/profanity?q='+text, function(err, profanityTest){
+                var profanity = false;
+                try {
+                  var p = JSON.parse(profanityTest.body);
+                  profanity = p.response;
+                } catch(e){};
 
-                  if(err || ret.length == 0){
-                    res.status(500).send('Could not submit note');
-                    console.log(err);
-                    return;
-                  }
+                if(profanity){
+                  res.status(500).send('Note contains profanity');
+                  return;
+                }
+                
+                query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
+                  [
+                    Math.round(paths[0].time),
+                    Math.round(paths[paths.length-1].time),
+                    text,
+                    req.ip,
+                    "{"+ q.join(",")+"}"
+                  ], function(err, ret) {
 
-                  var note_id = ret[0].id;
-                  res.send({id:note_id});
-                })
+                    if(err || ret.length == 0){
+                      res.status(500).send('Could not submit note');
+                      console.log(err);
+                      return;
+                    }
+
+                    var note_id = ret[0].id;
+                    res.send({id:note_id});
+                  })
+              })
             }
           );
         })
