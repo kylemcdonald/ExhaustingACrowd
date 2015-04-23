@@ -54,5 +54,5 @@ var submitNote = function(path, text){
 };
 
 
-setInterval(fetchNotes, 10000);
+setInterval(fetchNotes, 15000);
 fetchNotes();
