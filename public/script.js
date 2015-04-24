@@ -14,6 +14,10 @@ var lastMouseTime;
 var mode = "PLAYER";
 var current_time_msec = 0;
 
+var startTimes = [
+  0
+]
+
 var drawing;
 
 if( bowser.mobile || bowser.tablet || (!bowser.chrome && !bowser.safari)){
@@ -356,6 +360,21 @@ var updatePlayerSize = function(){
 var seekVideo = function(ms, cb){
   console.log("Seek to " + ms / 1000);
 
+  for(var i=0;i<startTimes.length-1;i++){
+    if(ms < startTimes[i+1]){
+      if(ytplayer.getPlaylistIndex() != i){
+        ytplayer.playVideoAt(i);
+      }
+      if(startTimes[i]) {
+        ms -= startTimes[i];
+      }
+      break;
+    }
+  }
+
+  if(ms < 0){
+    ms = 0;
+  }
   // Wait for the video having seeked
   var stateChange = function(e){
     if(e.data == 1) {
@@ -373,6 +392,9 @@ var seekVideo = function(ms, cb){
 
   ytplayer.seekTo(ms/1000);
   current_time_msec = ms;
+  if(startTimes[ytplayer.getPlaylistIndex()]){
+    current_time_msec += startTimes[ytplayer.getPlaylistIndex()];
+  }
 
 };
 
@@ -395,6 +417,11 @@ setInterval(function(){
 //
 var onPlayerReady = function(){
   // ytplayer.setPlaybackQuality('highres');
+  /*ytplayer.cuePlaylist({
+    list: 'PLE0F1140AF364926E',
+    listType: 'playlist'
+  });
+*/
   updatePlayerSize();
 };
 
@@ -468,6 +495,9 @@ function frameUpdate() {
 
     if (_last_time_update != time_update) {
       current_time_msec = time_update;
+      if(startTimes[ytplayer.getPlaylistIndex()]){
+        current_time_msec += startTimes[ytplayer.getPlaylistIndex()];
+      }
 
       clockTime = new Date("April 15, 2015 11:13:00");
       clockTime.setSeconds(clockTime.getSeconds()+ time_update/1000)
