@@ -4,9 +4,17 @@ Inspired by the classic 60-page piece of experimental literature from Georges Pe
 
 Commissioned by the V&A for "[All of This Belongs to You](http://www.vam.ac.uk/content/exhibitions/all-of-this-belongs-to-you/)", when it opens, the site will also go live, with the process of categorization and description happening in real time. Visitors to the site will label activities, individuals, themes, patterns, the site will update with a visualization for visitors to explore.
 
+## Development dependencies
+- The project is written with TypeScript, and is getting TypeScript definitions with `tsd`. Install it with
+```sh
+npm install tsd@next -g
+```
+
+
 ## Running Locally
 ```sh
 $ npm install
+$ tsd reinstall
 $ npm start
 ```
 

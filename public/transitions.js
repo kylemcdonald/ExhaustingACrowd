@@ -16,6 +16,7 @@ $(document).ready(function(){
 
 
 var hideVideo = function(cb){
+  console.log("Hide video");
   var e = $('#transition');
 
   e.show();
@@ -27,6 +28,7 @@ var hideVideo = function(cb){
 };
 
 var showVideo = function(cb){
+  console.log("show video");
   var e = $('#transition');
   e.animate({ opacity: "0" }, { complete: function(){
     $('#transition').hide();

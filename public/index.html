@@ -8,10 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/1.0.1/svg.min.js"></script>
-    <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>
-
-
-
+ <!--   <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>-->
 </head>
 <body>
 <div id="videocontainer">
@@ -53,22 +50,30 @@
 
 <script src="bowser.min.js"></script>
 <script src="simplify.js"></script>
-<script src="clock.js"></script>
+<!--<script src="clock.js"></script>
 <script src="script.js"></script>
 <script src="api.js"></script>
 <script src="transitions.js"></script>
-
+-->
+<script src="compiled/global.js"></script>
+<script src="compiled/VideoPlayer.js"></script>
+<script src="compiled/Clock.js"></script>
+<script src="compiled/drawingCanvas.js"></script>
+<script src="compiled/interface.js"></script>
+<script src="compiled/note.js"></script>
+<script src="compiled/api.js"></script>
+<script src="compiled/frontend.js"></script>
 <script src="https://www.youtube.com/player_api"></script>
 
 
 <script>
-    Raven.config('https://220652e2c0a34efb9ec575d8d732cba7@app.getsentry.com/41347', {
+  /*  Raven.config('https://220652e2c0a34efb9ec575d8d732cba7@app.getsentry.com/41347', {
         // pass along the version of your application
         //release: '1.0.0',
 
         // we highly recommend restricting exceptions to a domain in order to filter out clutter
         whitelistUrls: ['exhaustingacrowd.herokuapp.com', 'exhaustingacrowd.com']
-    }).install();
+    }).install();*/
 </script>
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

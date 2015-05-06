@@ -16,7 +16,7 @@ var current_time_msec = 0;
 
 var startTimes = [
   0
-]
+];
 
 var drawing;
 
@@ -27,10 +27,8 @@ if( bowser.mobile || bowser.tablet || (!bowser.chrome && !bowser.safari)){
 
 $(document).ready(function(){
 
-
-
+  // Escape key
   $(document).keyup(function(e) {
-
     // escape key maps to keycode `27`
     if (e.keyCode == 27) {
       if(mode=="EDITOR"){
@@ -133,11 +131,11 @@ var gotoEditor = function(){
     $('#note-text').val('').focus();
 
     $('#rewind').hide();
-    $('#back').show();
 
-    $('#back').click(function(){
+    $('#back').show().click(function(){
       gotoVideo();
-    })
+    });
+
   });
 
   var trySubmit = function(){
@@ -252,7 +250,7 @@ var updateMouseTrail = function(){
   var c = $('#drawing')
 
   var scaleX = c.width();
-  var scaleY = c.height()
+  var scaleY = c.height()s
 
 
   var p = [];
@@ -520,17 +518,20 @@ function frameUpdate() {
 // Update notes is called in every "frame" to update notes position
 var updateNotes = function(){
   for(var i=0;i<notes.length;i++){
-    var note = notes[i];
+    var note+ = notes[i];
 
     var p = getPosAtTimeFromPath(current_time_msec, note.path);
 
     if(p) {
       if(!note.elm){
         note.elm = $('<div class="note">');
-        note.elm.append('<div class="note-white">');
+      //  note.elm.append('<div class="note-white">');
         note.elm.append('<div class="note-text">'+note.note+'</div>');
         $('#notes').append(note.elm);
         note.elm.attr('id', note.id);
+
+        note.line = drawing.polyline([]).fill('none').stroke({ width: 3,  color: '#fff' })
+
       }
 
       updateNoteElm(note, p);
@@ -547,13 +548,38 @@ var updateNotes = function(){
 var updateNoteElm = function(note, p){
   if(p) {
     var pos = videoToClientCoord(p.x, p.y);
-    if(pos != note._lastPos) {
-      note._lastPos = pos;
+    if(pos != note.curPos) {
+      if(!note.curPos){
+        note.curPos = pos;
+      }
+
+      var dirVec = {x: (pos.x - note.curPos.x),
+                    y: (pos.y - note.curPos.y)};
+
+      var length = Math.sqrt(dirVec.x*dirVec.x + dirVec.y*dirVec.y);
+
+      var dirUnitVec = {x: dirVec.x / length,
+                        y: dirVec.y / length};
+
+      var goalDir = {x: dirVec.x - dirUnitVec.x*40,
+                     y: dirVec.y - dirUnitVec.y*40};
+
+      note.curPos.x += goalDir.x * 0.1;
+      note.curPos.y += goalDir.y * 0.1;
 
       note.elm.css({
-        top: pos.y,
-        left: pos.x
-      })
+        top: note.curPos.y,
+        left: note.curPos.x
+      });
+
+      var c = $('#drawing');
+      var scaleX = c.width();
+      var scaleY = c.height();
+
+      var p2 = clientToVideoCoord(note.curPos.x, note.curPos.y);
+
+      note.line.plot([[ p2.x*scaleX , p2.y*scaleY],
+                      [ p.x*scaleX ,  p.y*scaleY]])
     }
   }
 };
@@ -573,4 +599,7 @@ var addNote = function(note){
 var removeNote = function(note){
   console.log("Remove ", note);
   note.elm.remove();
+  note.line.plot([]);
+  delete note.line;
+  delete note;
 };

@@ -133,14 +133,15 @@ module.exports = {
                 var profanity = false;
                 try {
                   var p = JSON.parse(profanityTest.body);
-                  profanity = p.response;
+                  profanity = (p.response != "false");
                 } catch(e){};
 
                 if(profanity){
+                  console.log(profanityTest.body, text);
                   res.status(500).send('Note contains profanity');
                   return;
                 }
-                
+
                 query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
                   [
                     Math.round(paths[0].time),

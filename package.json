@@ -13,7 +13,9 @@
     "pg": "^4.3.0",
     "pg-query": "^0.11.0",
     "raven": "^0.7.3",
-    "request": "^2.55.0"
+    "request": "^2.55.0",
+    "typescript-compiler": "^1.4.1-2",
+    "typescript-middleware": "^0.5.3"
   },
   "engines": {
     "node": "0.10.x"
