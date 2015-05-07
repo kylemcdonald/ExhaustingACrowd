@@ -3,7 +3,7 @@
 var Clock = (function () {
     function Clock() {
         var _this = this;
-        this.clockTime = new Date("April 15, 2015 11:13:00");
+        this.clockTime = new Date("April 15, 2015 11:20:00");
         this.colon = $('#colon');
         setInterval(function () {
             _this.updateClock();
@@ -27,11 +27,11 @@ var Clock = (function () {
     Clock.prototype.updateClock = function () {
         this.clockTime.setSeconds(this.clockTime.getSeconds() + 1);
         this.blink(this.colon);
-        $('#hour').html("" + (this.clockTime.getHours() % 12));
-        $('#minute').html(this.formatAMPM(this.clockTime));
+        $('#hour').html(("" + (this.clockTime.getHours() % 12)).replace(/0/g, 'O'));
+        $('#minute').html(this.formatAMPM(this.clockTime).replace(/0/g, 'O'));
     };
     Clock.prototype.frameUpdate = function (ytplayer) {
-        this.clockTime = new Date("April 15, 2015 11:13:00");
+        this.clockTime = new Date("April 15, 2015 11:20:00");
         this.clockTime.setSeconds(this.clockTime.getSeconds() + ytplayer.currentTime / 1000.0);
     };
     return Clock;
