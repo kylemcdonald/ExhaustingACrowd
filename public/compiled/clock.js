@@ -27,7 +27,7 @@ var Clock = (function () {
     Clock.prototype.updateClock = function () {
         this.clockTime.setSeconds(this.clockTime.getSeconds() + 1);
         this.blink(this.colon);
-        $('#hour').html(this.clockTime.getHours() % 12);
+        $('#hour').html("" + (this.clockTime.getHours() % 12));
         $('#minute').html(this.formatAMPM(this.clockTime));
     };
     Clock.prototype.frameUpdate = function (ytplayer) {

@@ -165,7 +165,7 @@ class DrawingCanvas {
                     $('#notes').append(note.elm);
                     note.elm.attr('id', note.id);
 
-                    //note.line = drawing.polyline([]).fill('none').stroke({ width: 3,  color: '#fff' })
+                    note.line = this.drawing.polyline([]).fill('none').stroke({ width: 2,  color: 'rgba(0,0,0,0.5)' })
 
                 }
 
@@ -190,26 +190,43 @@ class DrawingCanvas {
             var pos = video.videoToClientCoord(p.x, p.y);
           //  console.log(p,pos);
             if(pos != note.curPos) {
-              //  if(!note.curPos){
+                if(!note.curPos){
                     note.curPos = pos;
-                //}
-                /* var dirVec = {x: (pos.x - note.curPos.x),
+                }
+                 var dirVec = {x: (pos.x - note.curPos.x),
                     y: (pos.y - note.curPos.y)};
 
                 var length = Math.sqrt(dirVec.x*dirVec.x + dirVec.y*dirVec.y);
+                if(length > 0) {
+                    var dirUnitVec = {
+                        x: dirVec.x / length,
+                        y: dirVec.y / length
+                    };
 
-                var dirUnitVec = {x: dirVec.x / length,
-                    y: dirVec.y / length};
+                    var dist = 40;
 
-                var goalDir = {x: dirVec.x - dirUnitVec.x*40,
-                    y: dirVec.y - dirUnitVec.y*40};
+                    var goalDir = {
+                        x: dirVec.x - dirUnitVec.x * dist,
+                        y: dirVec.y - dirUnitVec.y * dist
+                    };
 
-                note.curPos.x += goalDir.x * 0.1;
-                note.curPos.y += goalDir.y * 0.1;*/
+                    note.curPos.x += goalDir.x * 0.1;
+                    note.curPos.y += goalDir.y * 0.1;
+                }
 
+
+                var offset = {x:0, y:0};
+                if(dirUnitVec.x > 0.1){
+                    offset.x = -note.elm.children(".note-text").outerWidth()+4;
+                }
+
+                if(dirUnitVec.y > 0.5){
+                    offset.y = -note.elm.children(".note-text").outerHeight()+4;
+                }
+                //console.log(offset);
                 note.elm.css({
-                    top: note.curPos.y,
-                    left: note.curPos.x
+                    top: note.curPos.y + offset.y,
+                    left: note.curPos.x + offset.x
                 });
 
                /* console.log({
@@ -223,8 +240,9 @@ class DrawingCanvas {
 
                 var p2 = video.clientToVideoCoord(note.curPos.x, note.curPos.y);
 
-                /*   note.line.plot([[ p2.x*scaleX , p2.y*scaleY],
-                 [ p.x*scaleX ,  p.y*scaleY]])*/
+
+                note.line.plot([[ p2.x*scaleX+2.0 , p2.y*scaleY+2],
+                 [ p.x*scaleX ,  p.y*scaleY]])
             }
         }
     }
@@ -233,8 +251,8 @@ class DrawingCanvas {
     removeNote(note : Note){
         console.log("Remove ", note);
         note.elm.remove();
-      //  note.line.plot([]);
-       // delete note.line;
+        note.line.plot([]);
+        delete note.line;
     }
 
 

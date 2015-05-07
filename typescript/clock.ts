@@ -37,7 +37,7 @@ class Clock {
 
         this.blink(this.colon);
 
-        $('#hour').html(this.clockTime.getHours() % 12);
+        $('#hour').html(""+(this.clockTime.getHours() % 12));
         $('#minute').html(this.formatAMPM(this.clockTime));
 
     }

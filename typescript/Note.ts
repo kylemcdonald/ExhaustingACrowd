@@ -85,6 +85,7 @@ class Note {
     path:Path;
 
     elm: JQuery;
+    line : any;
     curPos: any;
 
     constructor(json){
