@@ -135,14 +135,20 @@ var DrawingCanvas = (function () {
                         x: dirVec.x / length,
                         y: dirVec.y / length
                     };
-                    var dist = 40;
-                    var goalDir = {
-                        x: dirVec.x - dirUnitVec.x * dist,
-                        y: dirVec.y - dirUnitVec.y * dist
-                    };
-                    note.curPos.x += goalDir.x * 0.1;
-                    note.curPos.y += goalDir.y * 0.1;
                 }
+                else {
+                    var dirUnitVec = {
+                        x: 1.0,
+                        y: 0.0
+                    };
+                }
+                var dist = 40;
+                var goalDir = {
+                    x: dirVec.x - dirUnitVec.x * dist,
+                    y: dirVec.y - dirUnitVec.y * dist
+                };
+                note.curPos.x += goalDir.x * 0.1;
+                note.curPos.y += goalDir.y * 0.1;
                 var offset = { x: 0, y: 0 };
                 if (dirUnitVec.x > 0.1) {
                     offset.x = -note.elm.children(".note-text").outerWidth() + 4;

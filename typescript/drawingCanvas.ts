@@ -202,17 +202,23 @@ class DrawingCanvas {
                         x: dirVec.x / length,
                         y: dirVec.y / length
                     };
-
-                    var dist = 40;
-
-                    var goalDir = {
-                        x: dirVec.x - dirUnitVec.x * dist,
-                        y: dirVec.y - dirUnitVec.y * dist
+                } else {
+                    var dirUnitVec = {
+                        x: 1.0,
+                        y: 0.0
                     };
 
-                    note.curPos.x += goalDir.x * 0.1;
-                    note.curPos.y += goalDir.y * 0.1;
                 }
+                var dist = 40;
+
+                var goalDir = {
+                    x: dirVec.x - dirUnitVec.x * dist,
+                    y: dirVec.y - dirUnitVec.y * dist
+                };
+
+                note.curPos.x += goalDir.x * 0.1;
+                note.curPos.y += goalDir.y * 0.1;
+
 
 
                 var offset = {x:0, y:0};
