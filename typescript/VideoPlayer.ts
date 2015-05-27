@@ -182,7 +182,7 @@ class VideoPlayer {
 
     }
 
-    seek(ms:number, cb:(()=>void)){
+    seek(ms:number, cb?:(()=>void)){
         ms = ms % this.totalDur;
         console.log(ms, this.startTimes);
         for(var i=0;i<this.startTimes.length-1;i++){
@@ -246,7 +246,7 @@ class VideoPlayer {
         }
     }
 
-    setClock(time:string, cb:(()=>void)){
+    setClock(time:string, cb?:(()=>void)){
         var t = moment(time,['H:mm', 'HH:mm']);
         var t2 = moment(Clock.startTime);
         t2.hour(t.hour())
