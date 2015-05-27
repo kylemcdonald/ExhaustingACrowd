@@ -6,13 +6,14 @@ var VideoPlayer = (function () {
         this.zoom = 1.0;
         this.zoomPos = { x: 0, y: 0 };
         this.loading = true;
-        this.startTimes = [0];
+        this.startTimes = [0, 60 * 60 * 2 * 1000, 60 * 60 * 4 * 1000, 60 * 60 * 6 * 1000];
+        /** Current time in millis **/
         this.currentTime = 0;
         this.events = events;
         this.ytplayer = new YT.Player('ytplayer', {
             height: 390,
             width: 640,
-            videoId: 'qY_TWhJe-Qk',
+            // videoId: '',
             playerVars: {
                 autoplay: 1,
                 controls: 0,
@@ -22,7 +23,10 @@ var VideoPlayer = (function () {
                 modestbranding: 1,
                 origin: 'localhost',
                 rel: 0,
-                showinfo: 0 //< Hide info
+                showinfo: 0,
+                list: 'PLscUku2aaZnFE-7wKovrbi76b26VKxIT-',
+                listType: 'playlist',
+                start: 0
             },
             events: {
                 'onReady': function () {
@@ -92,6 +96,7 @@ var VideoPlayer = (function () {
     };
     VideoPlayer.prototype.frameUpdate = function () {
         var time_update = this.ytplayer.getCurrentTime() * 1000;
+        //console.log(time_update);
         var playing = this.ytplayer.getPlayerState();
         if (playing == 1) {
             if (this._last_time_update == time_update) {
@@ -99,6 +104,7 @@ var VideoPlayer = (function () {
             }
             if (this._last_time_update != time_update) {
                 this.currentTime = time_update;
+                //console.log(time_update);
                 if (this.startTimes[this.ytplayer.getPlaylistIndex()]) {
                     this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
                 }
@@ -151,6 +157,7 @@ var VideoPlayer = (function () {
         }
     };
     VideoPlayer.prototype.onPlayerReady = function () {
+        //    this.seek(0, ()=>{});
         this.updatePlayerSize();
     };
     VideoPlayer.prototype.onPlayerStateChange = function () {

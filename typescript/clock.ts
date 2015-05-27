@@ -4,11 +4,12 @@
 
 class Clock {
 
+    private startTime  = "April 15, 2015 15:00:00";
     private colon : JQuery;
     public clockTime : Date;
 
     constructor(){
-        this.clockTime = new Date("April 15, 2015 11:20:00");
+        this.clockTime = new Date(this.startTime);
         this.colon = $('#colon');
 
         setInterval(()=>{this.updateClock()}, 1000);
@@ -43,7 +44,8 @@ class Clock {
 
 
     frameUpdate(ytplayer : VideoPlayer) {
-        this.clockTime = new Date("April 15, 2015 11:20:00");
+        //console.log(ytplayer.currentTime);
+        this.clockTime = new Date(this.startTime);
         this.clockTime.setSeconds(this.clockTime.getSeconds()+ ytplayer.currentTime/1000.0)
 
     }

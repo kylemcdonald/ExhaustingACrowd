@@ -18,8 +18,9 @@ class VideoPlayer {
     zoom = 1.0;
     zoomPos = {x:0, y:0};
     loading = true;
-    startTimes = [0];
+    startTimes = [0, 60*60*2*1000, 60*60*4*1000, 60*60*6*1000];
 
+    /** Current time in millis **/
     currentTime: number = 0;
 
     // Events
@@ -31,7 +32,7 @@ class VideoPlayer {
         this.ytplayer = new YT.Player('ytplayer', {
             height: 390,
             width: 640,
-            videoId: 'qY_TWhJe-Qk',
+	       // videoId: '',
             playerVars: {
                 autoplay: 1,    //< Play on start
                 controls: 0,    //< Hide controls
@@ -41,7 +42,10 @@ class VideoPlayer {
                 modestbranding: 1, //< Thank you youtube for the offer of branding, but no thanks
                 origin:'localhost', // Should be set for security
                 rel: 0,          //< Dont show related videos
-                showinfo: 0    //< Hide info
+                showinfo: 0,    //< Hide info
+                list: 'PLscUku2aaZnFE-7wKovrbi76b26VKxIT-',
+                listType: 'playlist',
+                start:0
             },
             events: {
                 'onReady': () => {this.onPlayerReady()},
@@ -133,7 +137,7 @@ class VideoPlayer {
     private _last_time_update:number;
     frameUpdate(){
         var time_update = this.ytplayer.getCurrentTime()*1000;
-
+        //console.log(time_update);
         var playing = this.ytplayer.getPlayerState();
 
         if (playing==1) {
@@ -144,6 +148,7 @@ class VideoPlayer {
 
             if (this._last_time_update != time_update) {
                 this.currentTime = time_update;
+                //console.log(time_update);
                 if(this.startTimes[this.ytplayer.getPlaylistIndex()]){
                     this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
                 }
@@ -166,7 +171,6 @@ class VideoPlayer {
     }
 
     seek(ms:number, cb:(()=>void)){
-
         for(var i=0;i<this.startTimes.length-1;i++){
             if(ms < this.startTimes[i+1]){
                 if(this.ytplayer.getPlaylistIndex() != i){
@@ -206,7 +210,9 @@ class VideoPlayer {
     }
 
     onPlayerReady(){
+    //    this.seek(0, ()=>{});
         this.updatePlayerSize();
+
     }
 
     onPlayerStateChange(){
