@@ -183,7 +183,8 @@ class VideoPlayer {
     }
 
     seek(ms:number, cb:(()=>void)){
-        //console.log(ms, this.startTimes);
+        ms = ms % this.totalDur;
+        console.log(ms, this.startTimes);
         for(var i=0;i<this.startTimes.length-1;i++){
             if(ms < this.startTimes[i+1]){
                 if(this.ytplayer.getPlaylistIndex() != i){
@@ -230,6 +231,10 @@ class VideoPlayer {
     onPlayerStateChange(){
 
         this.ytplayer.mute();
+
+        if(this.ytplayer.getPlayerState() == 0){
+            this.seek(0);
+        }
 
         if(this.loading && this.ytplayer.getPlayerState() == 1){
             this.loading = false;

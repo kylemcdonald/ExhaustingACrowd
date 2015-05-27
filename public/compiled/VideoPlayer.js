@@ -129,6 +129,8 @@ var VideoPlayer = (function () {
     };
     VideoPlayer.prototype.seek = function (ms, cb) {
         var _this = this;
+        ms = ms % this.totalDur;
+        console.log(ms, this.startTimes);
         for (var i = 0; i < this.startTimes.length - 1; i++) {
             if (ms < this.startTimes[i + 1]) {
                 if (this.ytplayer.getPlaylistIndex() != i) {
@@ -173,6 +175,9 @@ var VideoPlayer = (function () {
     VideoPlayer.prototype.onPlayerStateChange = function () {
         var _this = this;
         this.ytplayer.mute();
+        if (this.ytplayer.getPlayerState() == 0) {
+            this.seek(0);
+        }
         if (this.loading && this.ytplayer.getPlayerState() == 1) {
             this.loading = false;
             if (this.events.onLoadComplete) {
