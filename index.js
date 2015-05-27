@@ -15,6 +15,27 @@ api.setup();
 // Setup express app
 var app = express();
 
+// Put everything behind a username / password if PASSWORD is set
+if(process.env.PASSWORD) {
+	var basicAuth = require('basic-auth');
+	var auth = function (req, res, next) {
+	  function unauthorized(res) {
+	    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+	    return res.sendStatus(401);
+	  };
+	  var user = basicAuth(req);
+	  if (!user || !user.name || !user.pass) {
+	    return unauthorized(res);
+	  };
+	  if (user.name === process.env.PASSWORD && user.pass === process.env.PASSWORD) {
+	    return next();
+	  } else {
+	    return unauthorized(res);
+	  };
+	};
+	app.use('/', auth);
+}
+
 app.set('port', (process.env.PORT || 5000));
 
 // adding the sass middleware
@@ -27,7 +48,7 @@ app.use(sassMiddleware({
 
 app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348'));
 
-app.use(express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/public'));
 
 
 // Host the api on /api
