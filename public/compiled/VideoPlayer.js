@@ -6,9 +6,19 @@ var VideoPlayer = (function () {
         this.zoom = 1.0;
         this.zoomPos = { x: 0, y: 0 };
         this.loading = true;
-        this.startTimes = [0, 60 * 60 * 2 * 1000, 60 * 60 * 4 * 1000, 60 * 60 * 6 * 1000];
+        this.startTimes = [];
+        this.durations = [7650, 4941, 7424, 7264, 6835, 7128];
+        this.totalDur = 0;
         /** Current time in millis **/
         this.currentTime = 0;
+        // Populate the startTimes array
+        var _dur = 0;
+        for (var i = 0; i < this.durations.length; i++) {
+            this.startTimes.push(_dur);
+            _dur += this.durations[i] * 1000;
+        }
+        this.startTimes.push(_dur);
+        this.totalDur = _dur;
         this.events = events;
         this.ytplayer = new YT.Player('ytplayer', {
             height: 390,
@@ -114,14 +124,15 @@ var VideoPlayer = (function () {
         if (this.events.onNewFrame)
             this.events.onNewFrame(this);
         /*        updateAnimation();
-                updateNotes();
-                updateVideoLoop();*/
+         updateNotes();
+         updateVideoLoop();*/
     };
     VideoPlayer.prototype.seek = function (ms, cb) {
         var _this = this;
         for (var i = 0; i < this.startTimes.length - 1; i++) {
             if (ms < this.startTimes[i + 1]) {
                 if (this.ytplayer.getPlaylistIndex() != i) {
+                    console.log("Play video at " + i);
                     this.ytplayer.playVideoAt(i);
                 }
                 if (this.startTimes[i]) {
@@ -157,7 +168,6 @@ var VideoPlayer = (function () {
         }
     };
     VideoPlayer.prototype.onPlayerReady = function () {
-        //    this.seek(0, ()=>{});
         this.updatePlayerSize();
     };
     VideoPlayer.prototype.onPlayerStateChange = function () {
@@ -172,6 +182,19 @@ var VideoPlayer = (function () {
                 _this.frameUpdate();
             }, 10);
         }
+    };
+    VideoPlayer.prototype.setClock = function (time, cb) {
+        var t = moment(time, ['H:mm', 'HH:mm']);
+        var t2 = moment(Clock.startTime);
+        t2.hour(t.hour());
+        t2.minute(t.minute());
+        if (t2.isBefore(moment(Clock.startTime))) {
+            t2 = t2.add(1, 'days');
+        }
+        var diff = -moment(Clock.startTime).diff(t2) % (1000 * 60 * 60 * 12);
+        if (diff < 0)
+            diff += video.totalDur;
+        video.seek(diff, cb);
     };
     return VideoPlayer;
 })();

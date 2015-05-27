@@ -3,8 +3,7 @@
 var Clock = (function () {
     function Clock() {
         var _this = this;
-        this.startTime = "April 15, 2015 15:00:00";
-        this.clockTime = new Date(this.startTime);
+        this.clockTime = new Date(Clock.startTime);
         this.colon = $('#colon');
         setInterval(function () {
             _this.updateClock();
@@ -33,9 +32,11 @@ var Clock = (function () {
     };
     Clock.prototype.frameUpdate = function (ytplayer) {
         //console.log(ytplayer.currentTime);
-        this.clockTime = new Date(this.startTime);
+        //console.log(ytplayer.currentTime);
+        this.clockTime = new Date(Clock.startTime);
         this.clockTime.setSeconds(this.clockTime.getSeconds() + ytplayer.currentTime / 1000.0);
     };
+    Clock.startTime = "April 15, 2015 15:00:00";
     return Clock;
 })();
 //# sourceMappingURL=clock.js.map

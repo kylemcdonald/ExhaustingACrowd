@@ -35,7 +35,16 @@ var Interface = (function () {
                 cb();
         });
     };
-    Interface.prototype.transitionToEditor = function () {
+    Interface.prototype.showCredits = function () {
+        $('#overlay').animate({ opacity: "0" }, 200);
+        $('#credits').show().animate({ opacity: "100" }, 500);
+    };
+    Interface.prototype.hideCredits = function () {
+        var e = $('#credits');
+        e.animate({ opacity: "0" }, 500, function () {
+            $('#credits').hide();
+        });
+        $('#overlay').animate({ opacity: "100" }, 500);
     };
     return Interface;
 })();

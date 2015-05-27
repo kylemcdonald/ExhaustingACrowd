@@ -51,7 +51,6 @@ body {
   position: absolute;
   top: $edgePad;
   left: $edgePad;
-  background-color: rgba(0,0,0,0.5);
   display: inline-block;
   padding: 0 1vmin 1vmin;
 
@@ -71,6 +70,30 @@ body {
 
   .light {
     font-weight: 300;
+  }
+}
+
+#vaHeader {
+  position:absolute;
+  top: $edgePad;
+  right: $edgePad;
+  display: inline-block;
+  padding: 2vmin;
+  height:6vmin;
+  width:10vmin;
+  img {
+    height:100%;
+  }
+}
+
+#vaHeader, #infoHeader {
+  z-index: 100;
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.5);
+
+  &:hover {
+    background-color: rgba(0,0,0,0.7);
+
   }
 }
 
@@ -106,6 +129,54 @@ body {
   top:0;
   cursor: crosshair;
   z-index: 90;
+}
+
+#credits {
+  opacity:0;
+  display:none;
+  background-color: rgba(0,0,0,0.5);
+  //display:none;
+  width:100%;
+  height:100%;
+  left:0px;
+  top:0px;
+  position: absolute;
+  z-index: 100;
+
+  text-align: center;
+  line-height: 0.4;
+  
+  #credits-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 30%;
+    width: 50%;
+    margin: -15% 0 0 -25%;
+  }
+
+  #credits-year {
+    span {
+      border-bottom: 1px solid white;
+      position: relative;
+      width: 100px;
+      display: inline-block;
+      top: -5px;
+      margin: 0px 8px;
+
+    }
+  }
+  h1 {
+    font-weight: 100;
+
+  }
+  p {
+    font-weight: 400;
+  }
+  .for {
+    font-weight: 100;
+    margin: 0 4px;
+  }
 }
 
 #overlay {

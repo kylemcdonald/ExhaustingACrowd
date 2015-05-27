@@ -21,9 +21,11 @@ var clock : Clock;
 var onYouTubePlayerAPIReady = () => {
     video = new VideoPlayer({
         onLoadComplete : () => {
-            setTimeout(()=>{
-                ui.hideLoadingScreen();
-            }, 300);
+            video.setClock(moment().format('H:mm'), ()=>{
+                setTimeout(()=>{
+                    ui.hideLoadingScreen();
+                }, 300);
+            })
         },
         onNewFrame:(player:VideoPlayer) => {
             api.currentTime = player.currentTime;
@@ -59,6 +61,10 @@ var onYouTubePlayerAPIReady = () => {
         $('#back').click(function(){
             gotoVideo(video.currentTime);
         });
+
+        $('#vaHeader').click(ui.showCredits);
+        $('#infoHeader').click(ui.showCredits);
+        $('#credits').click(ui.hideCredits);
     });
 
 }
@@ -146,3 +152,4 @@ function updateVideoLoop(){
         }
     }
 }
+

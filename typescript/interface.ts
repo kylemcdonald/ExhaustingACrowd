@@ -48,8 +48,21 @@ class Interface {
         })
     }
 
-    transitionToEditor(){
+
+    showCredits(){
+        $('#overlay').animate({opacity:"0"},200);
+        $('#credits')
+            .show()
+            .animate({opacity:"100"}, 500);
     }
 
+    hideCredits(){
+        var e = $('#credits');
+        e.animate({ opacity: "0" }, 500, ()=>{
+            $('#credits').hide();
+        })
+        $('#overlay').animate({opacity:"100"},500);
+
+    }
 
 }
