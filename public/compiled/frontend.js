@@ -47,6 +47,14 @@ var onYouTubePlayerAPIReady = function () {
         $('#vaHeader').click(ui.showCredits);
         $('#infoHeader').click(ui.showCredits);
         $('#credits').click(ui.hideCredits);
+        // Rewind button
+        $('#rewind').click(function () {
+            ui.hideVideo(function () {
+                video.seek(video.currentTime - 30000, function () {
+                    ui.showVideo();
+                });
+            });
+        });
     });
 };
 function gotoEditor(path) {

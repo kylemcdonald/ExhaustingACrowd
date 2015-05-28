@@ -65,6 +65,15 @@ var onYouTubePlayerAPIReady = () => {
         $('#vaHeader').click(ui.showCredits);
         $('#infoHeader').click(ui.showCredits);
         $('#credits').click(ui.hideCredits);
+
+        // Rewind button
+        $('#rewind').click(()=>{
+            ui.hideVideo(() => {
+                video.seek(video.currentTime - 30000, ()=>{
+                    ui.showVideo();
+                });
+            })
+        })
     });
 
 }
