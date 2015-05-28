@@ -89,6 +89,7 @@ body {
   display: inline-block;
   padding: $innerPad;
   height: 4vmin;
+  width: 7vmin;
   img {
     height:100%;
   }
@@ -288,7 +289,7 @@ body {
       margin-left: 4vmin;
       margin-right: 4vmin;
       height: auto;
-      top: 14vmin;
+      top: 4vmin;
       bottom: 18vmin;
       position: absolute;
       right: 0;
@@ -322,6 +323,7 @@ body {
       padding: 2vmin;
       font-size: 6vmin;
       cursor: pointer;
+      text-align: center;
 
       &:hover {
         background-color: rgba(0,0,0,0.3);
@@ -332,10 +334,14 @@ body {
 
 }
 
-
+.spinner {
+  width: 4vh;
+  height: 4vh;
+  opacity: .5;
+}
 
 #transition {
-  background-color: white;
+  //background-color: white;
   //display:none;
   width:100%;
   height:100%;
@@ -344,31 +350,46 @@ body {
   position: absolute;
   z-index: 100;
   text-align: center;
+
+  #persistent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -2vh;
+    margin-top: -2vh;
+    display: none;
+  }
 }
 
 #loading {
-  position:relative;
-  top:35vh;
-  cursor: default;
-  text-rendering: geometricPrecision;
+  width:100%;
+  height:100%;
+  left:0;
+  top:0;
+  position: absolute;
+  z-index: 100;
+  text-align: center;
+  background-color:white;
 
-  p {
-    margin: 0;
-    color:gray;
-    font-size:5vh;
-  }
+  #loading-middle {
+    position: relative;
+    top: 35vh;
+    cursor: default;
+    color: gray;
+    text-rendering: geometricPrecision;
 
-  .description {
-    font-size:2vh;
-  }
+    * {
+      margin: 2vh;
+    }
 
-  #spinner {
-    // position: relative;
-    margin: 2vh;
-    // top: 50vh;
-    width: 4vh;
-    height: 4vh;
-    opacity: .2;
+    p {
+      margin: 0;
+      font-size: 5vh;
+    }
+
+    .subtext {
+      font-size: 2vh;
+    }
   }
 }
 

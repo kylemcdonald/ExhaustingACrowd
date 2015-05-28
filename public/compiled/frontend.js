@@ -73,6 +73,7 @@ function gotoEditor(path) {
         $('#notes').hide();
         $('#linedrawing').hide();
         $('#vaHeader').hide();
+        $('#timeAndDate').hide();
         $('#addNoteInterface').show();
         $('#note-text').val('').focus();
         $('#rewind').hide();
@@ -109,6 +110,7 @@ function gotoVideo(seekTime) {
         $('#notes').show();
         $('#addNoteInterface').hide();
         $('#linedrawing').show();
+        $('#timeAndDate').show();
         $('#rewind').show();
         $('#back').hide();
         $('#vaHeader').show();

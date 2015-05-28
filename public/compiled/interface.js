@@ -10,17 +10,20 @@ var Interface = (function () {
         });
     }
     Interface.prototype.hideLoadingScreen = function () {
-        $('#transition').animate({
+        $('#loading').animate({
             opacity: "0"
         }, 200, function () {
             $('#transition').hide();
             $('#loading').hide();
+            $('#loading').hide();
+            $('#persistent').show();
         });
     };
     Interface.prototype.hideVideo = function (cb) {
         console.log("Hide video");
-        var e = $('#videocontainer');
-        e.addClass('blur');
+        $('#videocontainer').addClass('blur');
+        ;
+        $('#transition').show();
         /*e.show();
 
         e.animate({ opacity: "1" }, 1000, ()=>{
@@ -30,12 +33,13 @@ var Interface = (function () {
     };
     Interface.prototype.showVideo = function (cb) {
         console.log("show video");
-        var e = $('#videocontainer'); /*
+        $('#videocontainer').removeClass('blur');
+        $('#transition').hide();
+        /*
         e.animate({ opacity: "0" }, 1000, ()=>{
             $('#transition').hide();
             if(cb) cb();
         })*/
-        e.removeClass('blur');
         setTimeout(cb, 300);
     };
     Interface.prototype.showCredits = function () {
