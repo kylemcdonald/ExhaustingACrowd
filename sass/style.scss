@@ -322,11 +322,12 @@ body {
   position: absolute;
   z-index: 100;
   text-align: center;
+  background-image: url('bg/a.jpg');
 }
 
 #loading {
   position:relative;
-  top:40vh;
+  top:35vh;
   cursor: default;
 
   p {
