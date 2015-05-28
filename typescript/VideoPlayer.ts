@@ -205,26 +205,26 @@ class VideoPlayer {
             ms = 0;
         }
 
-        // In safari, seekTo doesn't trigger a state change, so we just callback
-        if(bowser.safari) {
-            if(cb)cb();
-        } else {
-            // Wait for the video having seeked
-            this.stateChangeCallback = (state) => {
-                if(state == 1) {
-                    if(cb)cb();
-
-                    // Reset the callback to not doing anything
-                    this.stateChangeCallback = (state)=>{};
-                }
+        // Wait for the video having seeked
+        this.stateChangeCallback = (state) => {
+            if(state == 1) {
+                if(cb)cb();
+                // Reset the callback to not doing anything
+                this.stateChangeCallback = (state)=>{};
             }
-        }
+        };
 
         this.ytplayer.seekTo(ms/1000, true);
         this.currentTime = ms;
         if(this.startTimes[this.ytplayer.getPlaylistIndex()]){
             this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
         }
+
+        setTimeout(()=>{
+            if(this.ytplayer.getPlayerState() == 1){
+                this.stateChangeCallback(1);
+            }
+        },300);
     }
 
     onPlayerReady(){
