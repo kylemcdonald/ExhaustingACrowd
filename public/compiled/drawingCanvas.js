@@ -9,6 +9,7 @@ var DrawingCanvas = (function () {
         this.isDragging = false;
         // Setup the drawing canvas
         this.drawing = SVG('drawing');
+        this.linedrawing = SVG('linedrawing');
         $("#clickArea").mousedown(function (event) {
             if (GLOBAL.playerMode()) {
                 // Reset the mousePath
@@ -93,8 +94,10 @@ var DrawingCanvas = (function () {
         }
     };
     DrawingCanvas.prototype.clearMouseTrail = function () {
-        var casted = this.mousePolyline;
-        casted.plot([]);
+        if (this.mousePolyline) {
+            var casted = this.mousePolyline;
+            casted.plot([]);
+        }
     };
     DrawingCanvas.prototype.updateNotes = function (notes) {
         for (var i = 0; i < notes.length; i++) {
@@ -107,7 +110,7 @@ var DrawingCanvas = (function () {
                     note.elm.append('<div class="note-text">' + note.text + '</div>');
                     $('#notes').append(note.elm);
                     note.elm.attr('id', note.id);
-                    note.line = this.drawing.polyline([]).fill('none').stroke({ width: 2, color: 'rgba(0,0,0,0.5)' });
+                    note.line = this.linedrawing.polyline([]).fill('none').stroke({ width: 2, color: 'rgba(0,0,0,0.5)' });
                 }
                 this.updateNoteElm(note, p);
             }

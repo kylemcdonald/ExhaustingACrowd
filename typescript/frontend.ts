@@ -97,6 +97,7 @@ function gotoEditor(path: Path){
 
         // Update the interface
         $('#notes').hide();
+        $('#linedrawing').hide();
         $('#vaHeader').hide();
         $('#addNoteInterface').show();
 
@@ -142,6 +143,7 @@ function gotoVideo(seekTime :number){
 
         $('#notes').show();
         $('#addNoteInterface').hide();
+        $('#linedrawing').show();
 
         $('#rewind').show();
         $('#back').hide();

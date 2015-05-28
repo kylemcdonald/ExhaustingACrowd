@@ -18,6 +18,7 @@ class DrawingCanvas {
     public mousePath : Path;
 
     drawing : svgjs.Element;
+    linedrawing : svgjs.Element;
     mousePolyline : svgjs.Element;
     circle: svgjs.Element;
 
@@ -30,6 +31,7 @@ class DrawingCanvas {
     constructor(){
         // Setup the drawing canvas
         this.drawing = SVG('drawing');
+        this.linedrawing = SVG('linedrawing');
 
 
         $("#clickArea")
@@ -145,8 +147,10 @@ class DrawingCanvas {
 
 
     clearMouseTrail(){
-        var casted : any = this.mousePolyline;
-        casted.plot([]);
+        if(this.mousePolyline) {
+            var casted:any = this.mousePolyline;
+            casted.plot([]);
+        }
     }
 
 
@@ -165,7 +169,7 @@ class DrawingCanvas {
                     $('#notes').append(note.elm);
                     note.elm.attr('id', note.id);
 
-                    note.line = this.drawing.polyline([]).fill('none').stroke({ width: 2,  color: 'rgba(0,0,0,0.5)' })
+                    note.line = this.linedrawing.polyline([]).fill('none').stroke({ width: 2,  color: 'rgba(0,0,0,0.5)' })
 
                 }
 
