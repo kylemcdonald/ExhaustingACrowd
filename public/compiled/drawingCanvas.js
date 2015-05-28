@@ -9,8 +9,7 @@ var DrawingCanvas = (function () {
         this.isDragging = false;
         // Setup the drawing canvas
         this.drawing = SVG('drawing');
-        $("#clickArea")
-            .mousedown(function (event) {
+        $("#clickArea").mousedown(function (event) {
             if (GLOBAL.playerMode()) {
                 // Reset the mousePath
                 _this.mousePath = new Path([]);
@@ -39,8 +38,7 @@ var DrawingCanvas = (function () {
                     }
                 });
             }
-        })
-            .mouseup(function (event) {
+        }).mouseup(function (event) {
             if (GLOBAL.playerMode()) {
                 // Listen for mouseUp events
                 var wasDragging = _this.isDragging;
@@ -130,8 +128,7 @@ var DrawingCanvas = (function () {
                 if (!note.curPos) {
                     note.curPos = pos;
                 }
-                var dirVec = { x: (pos.x - note.curPos.x),
-                    y: (pos.y - note.curPos.y) };
+                var dirVec = { x: (pos.x - note.curPos.x), y: (pos.y - note.curPos.y) };
                 var length = Math.sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
                 if (length > 0) {
                     var dirUnitVec = {
@@ -172,8 +169,7 @@ var DrawingCanvas = (function () {
                 var scaleX = c.width();
                 var scaleY = c.height();
                 var p2 = video.clientToVideoCoord(note.curPos.x, note.curPos.y);
-                note.line.plot([[p2.x * scaleX + 2.0, p2.y * scaleY + 2],
-                    [p.x * scaleX, p.y * scaleY]]);
+                note.line.plot([[p2.x * scaleX + 2.0, p2.y * scaleY + 2], [p.x * scaleX, p.y * scaleY]]);
             }
         }
     };
