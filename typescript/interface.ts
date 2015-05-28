@@ -22,7 +22,8 @@ class Interface {
             opacity: "0"
         }, 200, () =>{
                 $('#transition').hide();
-                $('#loading').hide()
+                $('#loading').hide();
+                $('#persistent').show();
             }
         );
     }
