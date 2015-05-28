@@ -31,11 +31,10 @@ body {
   height:100%;
   overflow:hidden;
 
-  -webkit-transition: all 100ms;
+  -webkit-transition: -webkit-filter 250ms;
 
   &.blur {
-    -webkit-filter: blur(20px);
-    filter: blur(10px);
+    -webkit-filter: blur(50px);
   }
 
   #ytplayer {
