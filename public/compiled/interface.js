@@ -19,21 +19,24 @@ var Interface = (function () {
     };
     Interface.prototype.hideVideo = function (cb) {
         console.log("Hide video");
-        var e = $('#transition');
-        e.show();
-        e.animate({ opacity: "1" }, 1000, function () {
-            if (cb)
-                cb();
-        });
+        var e = $('#videocontainer');
+        e.addClass('blur');
+        /*e.show();
+
+        e.animate({ opacity: "1" }, 1000, ()=>{
+            if(cb) cb();
+        })*/
+        setTimeout(cb, 300);
     };
     Interface.prototype.showVideo = function (cb) {
         console.log("show video");
-        var e = $('#transition');
-        e.animate({ opacity: "0" }, 1000, function () {
+        var e = $('#videocontainer'); /*
+        e.animate({ opacity: "0" }, 1000, ()=>{
             $('#transition').hide();
-            if (cb)
-                cb();
-        });
+            if(cb) cb();
+        })*/
+        e.removeClass('blur');
+        setTimeout(cb, 300);
     };
     Interface.prototype.showCredits = function () {
         $('#overlay').animate({ opacity: "0" }, 200);
