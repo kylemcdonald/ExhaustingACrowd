@@ -105,6 +105,7 @@ body {
   display: inline-block;
   padding: 0 $innerPad $innerPad;
   font-weight: 200;
+  text-rendering: geometricPrecision;
 
   .time {
     font-size: 6vmin;
@@ -329,6 +330,7 @@ body {
   position:relative;
   top:35vh;
   cursor: default;
+  text-rendering: geometricPrecision;
 
   p {
     margin: 0;
