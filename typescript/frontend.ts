@@ -88,6 +88,7 @@ function gotoEditor(path: Path){
 
         // Update the interface
         $('#notes').hide();
+        $('#vaHeader').hide();
         $('#addNoteInterface').show();
 
         $('#note-text').val('').focus();
@@ -135,6 +136,7 @@ function gotoVideo(seekTime :number){
 
         $('#rewind').show();
         $('#back').hide();
+        $('#vaHeader').show();
     })
 }
 

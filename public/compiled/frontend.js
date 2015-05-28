@@ -62,6 +62,7 @@ function gotoEditor(path) {
         video.updatePlayerSize();
         // Update the interface
         $('#notes').hide();
+        $('#vaHeader').hide();
         $('#addNoteInterface').show();
         $('#note-text').val('').focus();
         $('#rewind').hide();
@@ -99,6 +100,7 @@ function gotoVideo(seekTime) {
         $('#addNoteInterface').hide();
         $('#rewind').show();
         $('#back').hide();
+        $('#vaHeader').show();
     });
 }
 function updateVideoLoop() {
