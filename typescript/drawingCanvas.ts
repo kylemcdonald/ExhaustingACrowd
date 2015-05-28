@@ -95,7 +95,7 @@ class DrawingCanvas {
     updateMouseTrail(){
 
         if(!this.mousePolyline){
-            this.mousePolyline = this.drawing.polyline([]).fill('none').stroke({ width: 5,  color: '#f06' })
+            this.mousePolyline = this.drawing.polyline([]).fill('none').stroke({ width: 5,  color: 'white', opacity: .5 })
         }
 
         var c = $('#drawing')
@@ -125,7 +125,7 @@ class DrawingCanvas {
                 var scaleY = c.height()
 
                 if (!this.circle) {
-                    this.circle = this.drawing.circle(50).attr({fill: '#f06'})
+                    this.circle = this.drawing.circle(50).attr({ fill: 'white', opacity: .5 })
                 }
                 this.circle.move(p.x * scaleX - 25, p.y * scaleY - 25);
 

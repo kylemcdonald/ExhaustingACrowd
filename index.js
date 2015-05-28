@@ -17,23 +17,23 @@ var app = express();
 
 // Put everything behind a username / password if PASSWORD is set
 if(process.env.PASSWORD) {
-	var basicAuth = require('basic-auth');
-	var auth = function (req, res, next) {
-	  function unauthorized(res) {
-	    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-	    return res.sendStatus(401);
-	  };
-	  var user = basicAuth(req);
-	  if (!user || !user.name || !user.pass) {
-	    return unauthorized(res);
-	  };
-	  if (user.name === process.env.PASSWORD && user.pass === process.env.PASSWORD) {
-	    return next();
-	  } else {
-	    return unauthorized(res);
-	  };
-	};
-	app.use('/', auth);
+  var basicAuth = require('basic-auth');
+  var auth = function (req, res, next) {
+    function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+      return res.sendStatus(401);
+    };
+    var user = basicAuth(req);
+    if (!user || !user.name || !user.pass) {
+      return unauthorized(res);
+    };
+    if (user.name === process.env.PASSWORD && user.pass === process.env.PASSWORD) {
+      return next();
+    } else {
+      return unauthorized(res);
+    };
+  };
+  app.use('/', auth);
 }
 
 app.set('port', (process.env.PORT || 5000));

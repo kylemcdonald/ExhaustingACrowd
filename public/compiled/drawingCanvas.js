@@ -9,7 +9,8 @@ var DrawingCanvas = (function () {
         this.isDragging = false;
         // Setup the drawing canvas
         this.drawing = SVG('drawing');
-        $("#clickArea").mousedown(function (event) {
+        $("#clickArea")
+            .mousedown(function (event) {
             if (GLOBAL.playerMode()) {
                 // Reset the mousePath
                 _this.mousePath = new Path([]);
@@ -38,7 +39,8 @@ var DrawingCanvas = (function () {
                     }
                 });
             }
-        }).mouseup(function (event) {
+        })
+            .mouseup(function (event) {
             if (GLOBAL.playerMode()) {
                 // Listen for mouseUp events
                 var wasDragging = _this.isDragging;
@@ -60,7 +62,7 @@ var DrawingCanvas = (function () {
     }
     DrawingCanvas.prototype.updateMouseTrail = function () {
         if (!this.mousePolyline) {
-            this.mousePolyline = this.drawing.polyline([]).fill('none').stroke({ width: 5, color: '#f06' });
+            this.mousePolyline = this.drawing.polyline([]).fill('none').stroke({ width: 5, color: 'white', opacity: .5 });
         }
         var c = $('#drawing');
         var scaleX = c.width();
@@ -81,7 +83,7 @@ var DrawingCanvas = (function () {
                 var scaleX = c.width();
                 var scaleY = c.height();
                 if (!this.circle) {
-                    this.circle = this.drawing.circle(50).attr({ fill: '#f06' });
+                    this.circle = this.drawing.circle(50).attr({ fill: 'white', opacity: .5 });
                 }
                 this.circle.move(p.x * scaleX - 25, p.y * scaleY - 25);
                 this.video.zoomPos.x = p.x;
@@ -128,7 +130,8 @@ var DrawingCanvas = (function () {
                 if (!note.curPos) {
                     note.curPos = pos;
                 }
-                var dirVec = { x: (pos.x - note.curPos.x), y: (pos.y - note.curPos.y) };
+                var dirVec = { x: (pos.x - note.curPos.x),
+                    y: (pos.y - note.curPos.y) };
                 var length = Math.sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
                 if (length > 0) {
                     var dirUnitVec = {
@@ -169,7 +172,8 @@ var DrawingCanvas = (function () {
                 var scaleX = c.width();
                 var scaleY = c.height();
                 var p2 = video.clientToVideoCoord(note.curPos.x, note.curPos.y);
-                note.line.plot([[p2.x * scaleX + 2.0, p2.y * scaleY + 2], [p.x * scaleX, p.y * scaleY]]);
+                note.line.plot([[p2.x * scaleX + 2.0, p2.y * scaleY + 2],
+                    [p.x * scaleX, p.y * scaleY]]);
             }
         }
     };
