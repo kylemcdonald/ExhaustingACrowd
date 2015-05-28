@@ -42,6 +42,10 @@ class Path {
         return _.last(this.points);
     }
 
+    first(){
+        return _.first(this.points);
+    }
+
     getPosAtTime(time:number){
         if(this.points.length == 0){
             return;

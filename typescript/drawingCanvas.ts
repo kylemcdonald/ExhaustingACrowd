@@ -180,6 +180,9 @@ class DrawingCanvas {
                 this.removeNote(note);
                 notes.splice(i,1);
                 i--;
+            } else if(note.elm && note.path.first().time > video.currentTime){
+                // Hide notes not visible yet
+                this.removeNote(note);
             }
         }
     }
@@ -233,6 +236,24 @@ class DrawingCanvas {
                 if(dirUnitVec.y > 0.5){
                     offset.y = -note.elm.children(".note-text").outerHeight()+4;
                 }
+
+                var playerSize = video.calculatePlayerSize();
+
+                if(note.curPos.y + offset.y > playerSize.height){
+                    note.curPos.y =  playerSize.height -  offset.y;
+                }
+                if(note.curPos.y + offset.y < 0){
+                    note.curPos.y =  0-offset.y;
+                }
+
+                if(note.curPos.x + offset.x > playerSize.width){
+                    note.curPos.x =  playerSize.width -  offset.x;
+                }
+                if(note.curPos.x + offset.x < 0){
+                    note.curPos.x =  0-offset.x;
+                }
+                //console.log(note.curPos.y);
+
                 //console.log(offset);
                 note.elm.css({
                     top: note.curPos.y + offset.y,
@@ -263,6 +284,7 @@ class DrawingCanvas {
         note.elm.remove();
         note.line.plot([]);
         delete note.line;
+        delete note.elm;
     }
 
 

@@ -27,6 +27,9 @@ var Path = (function () {
     Path.prototype.last = function () {
         return _.last(this.points);
     };
+    Path.prototype.first = function () {
+        return _.first(this.points);
+    };
     Path.prototype.getPosAtTime = function (time) {
         if (this.points.length == 0) {
             return;
