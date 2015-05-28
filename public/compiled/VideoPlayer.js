@@ -194,10 +194,11 @@ var VideoPlayer = (function () {
         }
     };
     VideoPlayer.prototype.setClock = function (time, cb) {
-        var t = moment(time, ['H:mm', 'HH:mm']);
+        var t = moment(time, ['H:mm', 'HH:mm', 'HH:mm:ss', 'H:mm:ss']);
         var t2 = moment(Clock.startTime);
         t2.hour(t.hour());
         t2.minute(t.minute());
+        t2.second(t.second());
         if (t2.isBefore(moment(Clock.startTime))) {
             t2 = t2.add(1, 'days');
         }
