@@ -180,6 +180,9 @@ class DrawingCanvas {
                 this.removeNote(note);
                 notes.splice(i,1);
                 i--;
+            } else if(note.elm && note.path.first().time > video.currentTime){
+                // Hide notes not visible yet
+                this.removeNote(note);
             }
         }
     }
@@ -263,6 +266,7 @@ class DrawingCanvas {
         note.elm.remove();
         note.line.plot([]);
         delete note.line;
+        delete note.elm;
     }
 
 

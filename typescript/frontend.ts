@@ -70,11 +70,12 @@ var onYouTubePlayerAPIReady = () => {
         $('#rewind').click(()=>{
             ui.hideVideo(() => {
                 video.seek(video.currentTime - 30000, ()=>{
+                    api.fetchNotes();
                     ui.showVideo();
                 });
             })
         })
-    });
+    }); 
 
 }
 

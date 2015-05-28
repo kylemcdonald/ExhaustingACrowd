@@ -34,7 +34,7 @@ class NotesApi {
                 for(var i=0;i<data.length;i++) {
                     var existingNote = _.where(this.notes, {id: data[i].id});
                     if (existingNote.length == 0) {
-                        console.log("Add note");
+                        //console.log("Add note");
                         var note:Note = new Note(data[i]);
                         this.notes.push(note);
                         //addNote(note);

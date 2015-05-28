@@ -120,6 +120,10 @@ var DrawingCanvas = (function () {
                 notes.splice(i, 1);
                 i--;
             }
+            else if (note.elm && note.path.first().time > video.currentTime) {
+                // Hide notes not visible yet
+                this.removeNote(note);
+            }
         }
     };
     // Update a specific notes visual elements position
@@ -181,6 +185,7 @@ var DrawingCanvas = (function () {
         note.elm.remove();
         note.line.plot([]);
         delete note.line;
+        delete note.elm;
     };
     return DrawingCanvas;
 })();
