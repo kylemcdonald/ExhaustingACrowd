@@ -21,7 +21,7 @@ var Interface = (function () {
         console.log("Hide video");
         var e = $('#transition');
         e.show();
-        e.animate({ opacity: "100" }, 1000, function () {
+        e.animate({ opacity: "1" }, 1000, function () {
             if (cb)
                 cb();
         });
@@ -37,14 +37,16 @@ var Interface = (function () {
     };
     Interface.prototype.showCredits = function () {
         $('#overlay').animate({ opacity: "0" }, 200);
-        $('#credits').show().animate({ opacity: "100" }, 500);
+        $('#credits')
+            .show()
+            .animate({ opacity: "1" }, 500);
     };
     Interface.prototype.hideCredits = function () {
         var e = $('#credits');
         e.animate({ opacity: "0" }, 500, function () {
             $('#credits').hide();
         });
-        $('#overlay').animate({ opacity: "100" }, 500);
+        $('#overlay').animate({ opacity: "1" }, 500);
     };
     return Interface;
 })();

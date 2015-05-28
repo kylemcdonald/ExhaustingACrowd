@@ -34,7 +34,7 @@ class Interface {
 
         e.show();
 
-        e.animate({ opacity: "100" }, 1000, ()=>{
+        e.animate({ opacity: "1" }, 1000, ()=>{
             if(cb) cb();
         })
     }
@@ -53,7 +53,7 @@ class Interface {
         $('#overlay').animate({opacity:"0"},200);
         $('#credits')
             .show()
-            .animate({opacity:"100"}, 500);
+            .animate({opacity:"1"}, 500);
     }
 
     hideCredits(){
@@ -61,7 +61,7 @@ class Interface {
         e.animate({ opacity: "0" }, 500, ()=>{
             $('#credits').hide();
         })
-        $('#overlay').animate({opacity:"100"},500);
+        $('#overlay').animate({opacity:"1"},500);
 
     }
 
