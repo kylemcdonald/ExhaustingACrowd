@@ -27,6 +27,9 @@ class VideoPlayer {
     // Events
     events:IVideoPlayerCallbacks;
 
+    // onStateChange callback
+    stateChangeCallback = (state)=>{};
+
     constructor(events : IVideoPlayerCallbacks){
 
         // Populate the startTimes array
@@ -201,20 +204,20 @@ class VideoPlayer {
         if(ms < 0){
             ms = 0;
         }
-        // Wait for the video having seeked
-        var stateChange = (e)=>{
-            if(e.data == 1) {
-                var removeCast : any = this.ytplayer;
-                removeCast.removeEventListener("onStateChange", stateChange);
-                if(cb)cb();
-            }
-        };
 
         // In safari, seekTo doesn't trigger a state change, so we just callback
         if(bowser.safari) {
             if(cb)cb();
         } else {
-            this.ytplayer.addEventListener("onStateChange", stateChange)
+            // Wait for the video having seeked
+            this.stateChangeCallback = (state) => {
+                if(state == 1) {
+                    if(cb)cb();
+
+                    // Reset the callback to not doing anything
+                    this.stateChangeCallback = (state)=>{};
+                }
+            }
         }
 
         this.ytplayer.seekTo(ms/1000, true);
@@ -229,6 +232,8 @@ class VideoPlayer {
     }
 
     onPlayerStateChange(){
+
+        if(this.stateChangeCallback) this.stateChangeCallback(this.ytplayer.getPlayerState());
 
         this.ytplayer.mute();
 

@@ -37,9 +37,7 @@ var Interface = (function () {
     };
     Interface.prototype.showCredits = function () {
         $('#overlay').animate({ opacity: "0" }, 200);
-        $('#credits')
-            .show()
-            .animate({ opacity: "1" }, 500);
+        $('#credits').show().animate({ opacity: "1" }, 500);
     };
     Interface.prototype.hideCredits = function () {
         var e = $('#credits');
