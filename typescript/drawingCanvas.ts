@@ -91,7 +91,28 @@ class DrawingCanvas {
                     //gotoEditor();
                     if(this.events.onDrawingComplete) this.events.onDrawingComplete(this.mousePath);
                 }
-            });
+            })
+            .mouseleave((event)=>{
+                if(GLOBAL.playerMode()) {
+                    // Listen for mouseUp events
+                    var wasDragging = this.isDragging;
+                    this.isDragging = false;
+                    $("#clickArea").unbind("mousemove");
+                    //   if (wasDragging) {
+                    // Simplify the mouse trail
+                    this.mousePath.simplify();
+
+                    // Calculate the % position clicked
+                    var mousePos = this.video.clientToVideoCoord(event.pageX, event.pageY);
+
+                    // Add the position to the mousePath
+                    this.mousePath.push(new PathPoint(mousePos.x, mousePos.y, this.video.currentTime));
+
+                    // And go to the editor mode
+                    //gotoEditor();
+                    if(this.events.onDrawingComplete) this.events.onDrawingComplete(this.mousePath);
+                }
+            })
     }
 
     updateMouseTrail(){
