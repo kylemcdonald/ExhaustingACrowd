@@ -1,4 +1,5 @@
 var favicon = require('serve-favicon');
+var MobileDetect = require('mobile-detect');
 var express = require('express');
 var sassMiddleware = require('node-sass-middleware');
 
@@ -52,8 +53,17 @@ app.use(sassMiddleware({
 
 app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348'));
 
-app.use('/', express.static(__dirname + '/public'));
+app.get('/', function(req, res){
+  md = new MobileDetect(req.headers['user-agent']);
+  if(md.mobile()) {
+    res.sendFile(__dirname + '/public/mobile.html');
+  } else {
+    res.sendFile(__dirname + '/public/index.html');
+    // want to use "next()" here
+  }
+})
 
+app.use('/', express.static(__dirname + '/public'));
 
 // Host the api on /api
 app.use('/api', api.api);
