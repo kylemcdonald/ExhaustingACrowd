@@ -9,7 +9,9 @@ var NotesApi = (function () {
         var _this = this;
         this.fetchRate = fetchRate;
         this.fetchWindowSize = fetchWindowSize;
-        setInterval(function () { _this.fetchNotes(); }, 15000);
+        setInterval(function () {
+            _this.fetchNotes();
+        }, 15000);
         this.fetchNotes();
     };
     NotesApi.prototype.fetchNotes = function () {
@@ -59,7 +61,9 @@ var NotesApi = (function () {
             data: JSON.stringify({ path: note.path.points, text: note.text }),
             contentType: "application/json; charset=utf-8",
             success: function () {
-                _this.fetchNotes();
+                setTimeout(function () {
+                    _this.fetchNotes();
+                }, 300);
             }
         });
     };

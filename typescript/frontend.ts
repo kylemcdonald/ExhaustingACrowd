@@ -138,7 +138,7 @@ function gotoEditor(path: Path){
         }
     };
 
-    $('#note-text').keypress(watchForEnter);
+    $('#note-text').unbind('keypress').keypress(watchForEnter);
 }
 
 

@@ -93,7 +93,7 @@ class DrawingCanvas {
                 }
             })
             .mouseleave((event)=>{
-                if(GLOBAL.playerMode()) {
+                if(GLOBAL.playerMode() &&  this.isDragging) {
                     // Listen for mouseUp events
                     var wasDragging = this.isDragging;
                     this.isDragging = false;

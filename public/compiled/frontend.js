@@ -104,7 +104,7 @@ function gotoEditor(path) {
             return false;
         }
     };
-    $('#note-text').keypress(watchForEnter);
+    $('#note-text').unbind('keypress').keypress(watchForEnter);
 }
 function gotoVideo(seekTime) {
     ui.hideVideo(function () {

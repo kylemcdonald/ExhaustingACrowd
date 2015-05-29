@@ -72,7 +72,10 @@ class NotesApi {
             data: JSON.stringify({path: note.path.points, text: note.text}),
             contentType: "application/json; charset=utf-8",
             success: () => {
-                this.fetchNotes();
+                setTimeout(()=>{
+                    this.fetchNotes();
+                },300);
+
             }
         });
     }
