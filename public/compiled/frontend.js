@@ -96,6 +96,15 @@ function gotoEditor(path) {
         }
     };
     $('#submitButton').unbind('click').click(trySubmit);
+    var watchForEnter = function (e) {
+        if (e.which == 13) {
+            trySubmit();
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    };
+    $('#note-text').keypress(watchForEnter);
 }
 function gotoVideo(seekTime) {
     ui.hideVideo(function () {

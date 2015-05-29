@@ -18,11 +18,13 @@ class Interface {
     }
 
     hideLoadingScreen(){
+        $('#initial-spinner').animate({
+            opacity: '0'
+        }, 250);
         $('#loading').animate({
             opacity: "0"
-        }, 200, () =>{
+        }, 1000, () =>{
                 $('#transition').hide();
-                $('#loading').hide();
                 $('#loading').hide();
                 $('#persistent').show();
             }
@@ -32,32 +34,27 @@ class Interface {
 
     hideVideo(cb?:()=>void){
         console.log("Hide video");
-        $('#videocontainer').addClass('blur');;
-        $('#transition').show();
-        /*e.show();
-
-        e.animate({ opacity: "1" }, 1000, ()=>{
-            if(cb) cb();
-        })*/
-
-        setTimeout(cb, 300);
+        var e = $('#persistent-spinner');
+        e.show();
+        e.animate({ opacity: "1" }, 250, ()=>{
+            $('#videocontainer').addClass('blur');
+            setTimeout(cb, 250);
+        })
     }
 
     showVideo(cb?:()=>void){
         console.log("show video");
-        $('#videocontainer').removeClass('blur');
-        $('#transition').hide();
-        /*
-        e.animate({ opacity: "0" }, 1000, ()=>{
-            $('#transition').hide();
-            if(cb) cb();
-        })*/
-        setTimeout(cb, 300);
+        var e = $('#persistent-spinner');
+        e.animate({ opacity: "0" }, 250, ()=>{
+            e.hide();
+            $('#videocontainer').removeClass('blur');
+            setTimeout(cb, 250);
+        })
     }
 
 
     showCredits(){
-        $('#overlay').animate({opacity:"0"},200);
+        $('#overlay').animate({opacity:"0"},250);
         $('#credits')
             .show()
             .animate({opacity:"1"}, 500);

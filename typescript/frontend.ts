@@ -93,7 +93,7 @@ function gotoEditor(path: Path){
         });
 
         // Set the video zoom position
-        video.zoomPos= {x: path.points[0].x, y:path.points[0].y};
+        video.zoomPos = { x: path.points[0].x, y: path.points[0].y };
         video.updatePlayerSize();
 
         // Update the interface
@@ -127,6 +127,18 @@ function gotoEditor(path: Path){
     };
 
     $('#submitButton').unbind('click').click(trySubmit)
+
+
+    var watchForEnter = (e)=> {
+        if (e.which == 13) {
+            trySubmit();
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    };
+
+    $('#note-text').keypress(watchForEnter);
 }
 
 

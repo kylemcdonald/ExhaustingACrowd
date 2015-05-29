@@ -1,8 +1,10 @@
+var favicon = require('serve-favicon');
 var express = require('express');
 var sassMiddleware = require('node-sass-middleware');
 
 var path = require('path');
 var raven = require('raven');
+
 
 
 var client = new raven.Client('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348');
@@ -37,6 +39,8 @@ if(process.env.PASSWORD) {
 }
 
 app.set('port', (process.env.PORT || 5000));
+
+app.use(favicon(__dirname + '/public/favicon.ico'));
 
 // adding the sass middleware
 app.use(sassMiddleware({
