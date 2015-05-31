@@ -4,7 +4,7 @@
 
 class Clock {
 
-    static startTime  = "April 15, 2015 15:00:00";
+    static startTime  = "May 17, 2015 15:00:00";
     private colon : JQuery;
     public clockTime : Date;
 
@@ -13,15 +13,6 @@ class Clock {
         this.colon = $('#colon');
 
         setInterval(()=>{this.updateClock()}, 1000);
-
-
-    }
-    formatAMPM(date) {
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var ampm = hours >= 12 ? 'PM' : 'AM';
-        minutes = minutes < 10 ? '0'+minutes : minutes;
-        return minutes + ' ' + ampm;
     }
 
     blink(elm) {
@@ -33,13 +24,19 @@ class Clock {
     }
 
     updateClock(){
+        var date = this.clockTime;
+        date.setSeconds(date.getSeconds() + 1);
 
-        this.clockTime.setSeconds(this.clockTime.getSeconds() + 1);
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        var minutesString = minutes < 10 ? '0' + String(minutes) : String(minutes);
+        hours = hours % 12;
+        var hoursString = hours < 1 ? '12' : String(hours);
 
         this.blink(this.colon);
-        $('#hour').html((""+(this.clockTime.getHours() % 12)).replace(/0/g,'O'));
-        $('#minute').html(this.formatAMPM(this.clockTime).replace(/0/g,'O'));
-
+        $('#hour').html(hoursString.replace(/0/g, 'O'));
+        $('#minute').html(minutesString.replace(/0/g, 'O') + ' ' + ampm);
     }
 
 
