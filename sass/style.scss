@@ -12,6 +12,9 @@ $innerPad: 1vmin;
 $noteTextWidth: 120px;
 $noteTextPadding: 5px;
 
+$transparentBlack: rgba(0,0,0,0.5);
+$transparentBlackHover: rgba(0,0,0,0.7);
+
 body {
   padding:0;
   margin:0;
@@ -96,38 +99,28 @@ body {
 #vaHeader, #infoHeader {
   z-index: 100;
   cursor: pointer;
-  background-color: rgba(0,0,0,0.5);
+  background-color: $transparentBlack;
 
   &:hover {
-    background-color: rgba(0,0,0,0.7);
+    background-color: $transparentBlackHover;
   }
 }
 
 #timeAndDate {
+  background-color: $transparentBlack;
   position: absolute;
-  bottom: $edgePad;
   right: $edgePad;
-  background-color: rgba(0,0,0,0.5);
+  bottom: $edgePad;
+  padding: ($innerPad/2) $innerPad;
+  margin: 0;
   display: inline-block;
-  padding: 0 $innerPad $innerPad;
+  font-size: 4.5vmin;
   font-weight: 200;
+  text-align: center;
   text-rendering: geometricPrecision;
-
-  .time {
-    font-size: 4.5vmin;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    #colon {
-      position: relative;
-      top: -.5vmin;
-    }
-  }
-  .date {
-    font-size: 3vmin;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+  #colon {
+    position: relative;
+    top: -.5vmin;
   }
 }
 
@@ -145,7 +138,7 @@ body {
 #credits {
   opacity:0;
   display:none;
-  background-color: rgba(0,0,0,0.5);
+  background-color: $transparentBlack;
   //display:none;
   width:100%;
   height:100%;
@@ -248,7 +241,7 @@ body {
       left:0;
       top:0;
       width:$noteTextWidth - (2 * $noteTextPadding);
-      background-color: rgba(0,0,0,0.4);
+      background-color: $transparentBlack;
       padding:$noteTextPadding;
       font-size: 0.9em;
     }
@@ -260,7 +253,7 @@ body {
 
     right:0;
     width: 50%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: $transparentBlack;
     height:100%;
     position: absolute;
 
@@ -303,7 +296,7 @@ body {
       right: 0;
       left: 0;
       bottom: 0;
-      background-color: rgba(0,0,0,0.5);
+      background-color: $transparentBlack;
       color: white;
       position: absolute;
       margin: 4vmin;
