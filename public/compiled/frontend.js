@@ -50,7 +50,7 @@ var onYouTubePlayerAPIReady = function () {
         // Rewind button
         $('#rewind').click(function () {
             ui.hideVideo(function () {
-                video.seek(video.currentTime - 30000, function () {
+                video.seek(video.currentTime - (10 * 1000), function () {
                     api.fetchNotes();
                     ui.showVideo();
                 });
@@ -64,6 +64,7 @@ function gotoEditor(path) {
         video.zoom = 4;
         // Seek to the path start time
         video.seek(path.points[0].time, function () {
+            api.fetchNotes();
             ui.showVideo();
         });
         // Set the video zoom position
@@ -114,6 +115,7 @@ function gotoVideo(seekTime) {
         drawingCanvas.clearMouseTrail();
         // Seek to the path start time
         video.seek(seekTime, function () {
+            api.fetchNotes();
             ui.showVideo();
         });
         $('#notes').show();

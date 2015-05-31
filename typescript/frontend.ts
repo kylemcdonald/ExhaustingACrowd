@@ -69,7 +69,7 @@ var onYouTubePlayerAPIReady = () => {
         // Rewind button
         $('#rewind').click(()=>{
             ui.hideVideo(() => {
-                video.seek(video.currentTime - 30000, ()=>{
+                video.seek(video.currentTime - (10 * 1000), ()=>{
                     api.fetchNotes();
                     ui.showVideo();
                 });
@@ -88,7 +88,8 @@ function gotoEditor(path: Path){
         video.zoom = 4;
 
         // Seek to the path start time
-        video.seek(path.points[0].time, ()=>{
+        video.seek(path.points[0].time, () => {
+            api.fetchNotes();
             ui.showVideo();
         });
 
@@ -151,7 +152,8 @@ function gotoVideo(seekTime :number){
         drawingCanvas.clearMouseTrail();
 
         // Seek to the path start time
-        video.seek(seekTime, ()=>{
+        video.seek(seekTime, () => {
+            api.fetchNotes();
             ui.showVideo();
         });
 

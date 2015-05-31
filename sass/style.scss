@@ -9,9 +9,8 @@
 $edgePad: 3vmin;
 $innerPad: 1vmin;
 
-$noteWhiteWidth: 50px;
-$noteWhiteHeight: 80px;
-$noteTextWidth: 100px;
+$noteTextWidth: 120px;
+$noteTextPadding: 5px;
 
 body {
   padding:0;
@@ -236,17 +235,6 @@ body {
     width:1px;
     height:1px;
     position:absolute;
-    //background-color: red;
-   /* .note-white {
-      width:$noteWhiteWidth;
-      height: $noteWhiteHeight;
-      top:-$noteWhiteHeight/2;
-      left:-$noteWhiteWidth/2;
-      position: absolute;
-      background-color: rgba(255,255,255,0.7);
-      transition: background-color 0.5s ease;
-
-    }*/
 
     &:hover {
       .note-white {
@@ -259,11 +247,10 @@ body {
       position: absolute;
       left:0;
       top:0;
-      width:$noteTextWidth - 10px;
-     // height: $noteWhiteHeight - 10px;
+      width:$noteTextWidth - (2 * $noteTextPadding);
       background-color: rgba(0,0,0,0.4);
-      padding:5px;
-      font-size: 0.7em;
+      padding:$noteTextPadding;
+      font-size: 0.9em;
     }
 
   }
