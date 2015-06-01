@@ -186,6 +186,7 @@ class VideoPlayer {
     }
 
     seek(ms:number, cb?:(()=>void)){
+        var origMs = ms;
         ms = ms % this.totalDur;
         console.log(ms, this.startTimes);
         for(var i=0;i<this.startTimes.length-1;i++){
@@ -208,7 +209,7 @@ class VideoPlayer {
         // Wait for the video having seeked
         this.stateChangeCallback = (state) => {
             if(state == 1) {
-                api.fetchNotes(this.currentTime);
+                api.fetchNotes(origMs);
 
                 if(cb)cb();
                 // Reset the callback to not doing anything

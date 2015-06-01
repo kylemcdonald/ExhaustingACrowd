@@ -132,6 +132,7 @@ var VideoPlayer = (function () {
     };
     VideoPlayer.prototype.seek = function (ms, cb) {
         var _this = this;
+        var origMs = ms;
         ms = ms % this.totalDur;
         console.log(ms, this.startTimes);
         for (var i = 0; i < this.startTimes.length - 1; i++) {
@@ -152,7 +153,7 @@ var VideoPlayer = (function () {
         // Wait for the video having seeked
         this.stateChangeCallback = function (state) {
             if (state == 1) {
-                api.fetchNotes(_this.currentTime);
+                api.fetchNotes(origMs);
                 if (cb)
                     cb();
                 // Reset the callback to not doing anything
