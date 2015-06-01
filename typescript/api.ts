@@ -65,6 +65,8 @@ class NotesApi {
 
     submitNote(note:Note) {
         console.log("Submit ", note.path.points, note.text);
+        var _gaq = _gaq || [];
+        _gaq.push(['_trackEvent', 'API', 'SubmitNote', note.text]);
         $.ajax({
             type: "POST",
             dataType: "json",

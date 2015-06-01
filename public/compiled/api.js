@@ -9,7 +9,9 @@ var NotesApi = (function () {
         var _this = this;
         this.fetchRate = fetchRate;
         this.fetchWindowSize = fetchWindowSize;
-        setInterval(function () { _this.fetchNotes(); }, 15000);
+        setInterval(function () {
+            _this.fetchNotes();
+        }, 15000);
         this.fetchNotes();
     };
     NotesApi.prototype.fetchNotes = function () {
@@ -52,6 +54,8 @@ var NotesApi = (function () {
     NotesApi.prototype.submitNote = function (note) {
         var _this = this;
         console.log("Submit ", note.path.points, note.text);
+        var _gaq = _gaq || [];
+        _gaq.push(['_trackEvent', 'API', 'SubmitNote', note.text]);
         $.ajax({
             type: "POST",
             dataType: "json",
