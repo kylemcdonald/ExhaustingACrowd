@@ -34,7 +34,7 @@ var Clock = (function () {
         this.clockTime = new Date(Clock.startTime);
         this.clockTime.setSeconds(this.clockTime.getSeconds() + ytplayer.currentTime / 1000.0);
     };
-    Clock.startTime = "May 17, 2015 15:00:00";
+    Clock.startTime = "June 1, 2015 12:00:00 EDT";
     return Clock;
 })();
 //# sourceMappingURL=clock.js.map
