@@ -54,8 +54,7 @@ var NotesApi = (function () {
     NotesApi.prototype.submitNote = function (note) {
         var _this = this;
         console.log("Submit ", note.path.points, note.text);
-        var _gaq = _gaq || [];
-        _gaq.push(['_trackEvent', 'API', 'SubmitNote', note.text]);
+        ga('send', 'event', 'API', 'SubmitNote', 'submit');
         $.ajax({
             type: "POST",
             dataType: "json",
