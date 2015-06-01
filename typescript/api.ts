@@ -18,16 +18,20 @@ class NotesApi {
         this.fetchWindowSize = fetchWindowSize;
 
         setInterval(()=>{this.fetchNotes()}, 15000);
+
         this.fetchNotes();
     }
 
-    fetchNotes(){
-        console.log("Fetch",this.fetchWindowSize);
+    fetchNotes(_currentTime?:number){
+        if(_currentTime){
+            this.currentTime = _currentTime;
+        }
+        console.log("Fetch",this.fetchWindowSize,this.currentTime);
         $.ajax({
             dataType: "json",
             url: "/api/notes",
             data: {
-                timeframeStart: this.currentTime,
+                timeframeStart: this.currentTime-2000,
                 timeframeEnd: this.currentTime+this.fetchWindowSize
             },
             success: (data:any)=>{

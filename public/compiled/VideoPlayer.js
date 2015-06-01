@@ -152,6 +152,7 @@ var VideoPlayer = (function () {
         // Wait for the video having seeked
         this.stateChangeCallback = function (state) {
             if (state == 1) {
+                api.fetchNotes(_this.currentTime);
                 if (cb)
                     cb();
                 // Reset the callback to not doing anything
@@ -164,9 +165,6 @@ var VideoPlayer = (function () {
         if (this.startTimes[this.ytplayer.getPlaylistIndex()]) {
             this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
         }
-        setTimeout(function () {
-            api.fetchNotes();
-        }, 500);
         setTimeout(function () {
             if (_this.ytplayer.getPlayerState() == 1) {
                 _this.stateChangeCallback(1);

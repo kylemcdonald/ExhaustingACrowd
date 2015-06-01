@@ -208,6 +208,8 @@ class VideoPlayer {
         // Wait for the video having seeked
         this.stateChangeCallback = (state) => {
             if(state == 1) {
+                api.fetchNotes(this.currentTime);
+
                 if(cb)cb();
                 // Reset the callback to not doing anything
                 this.stateChangeCallback = (state)=>{};
@@ -220,9 +222,6 @@ class VideoPlayer {
             this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
         }
 
-        setTimeout(()=>{
-            api.fetchNotes();
-        },500);
 
         setTimeout(()=>{
             if(this.ytplayer.getPlayerState() == 1){
