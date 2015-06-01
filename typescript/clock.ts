@@ -4,7 +4,7 @@
 
 class Clock {
 
-    static startTime  = "June 1, 2015 12:00:00 EDT";
+    static startTime = "April 15, 2015 15:00:00";
     private colon : JQuery;
     public clockTime : Date;
 

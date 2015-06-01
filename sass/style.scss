@@ -242,7 +242,7 @@ body {
       top:0;
       width:$noteTextWidth - (2 * $noteTextPadding);
       background-color: $transparentBlack;
-      padding:$noteTextPadding;
+      padding: 0 $noteTextPadding $noteTextPadding;
       font-size: 0.9em;
     }
 
