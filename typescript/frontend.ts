@@ -57,6 +57,9 @@ var onYouTubePlayerAPIReady = () => {
 
         clock = new Clock();
 
+        window.onhashchange = () => {
+            video.seek(parseInt(location.hash.substring(1)));
+        };
 
         $('#back').click(function(){
             gotoVideo(video.currentTime);

@@ -41,6 +41,9 @@ var onYouTubePlayerAPIReady = function () {
         drawingCanvas.video = video;
         drawingCanvas.events.onDrawingComplete = gotoEditor;
         clock = new Clock();
+        window.onhashchange = function () {
+            video.seek(parseInt(location.hash.substring(1)));
+        };
         $('#back').click(function () {
             gotoVideo(video.currentTime);
         });
