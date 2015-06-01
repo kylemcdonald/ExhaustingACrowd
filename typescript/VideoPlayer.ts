@@ -221,6 +221,10 @@ class VideoPlayer {
         }
 
         setTimeout(()=>{
+            api.fetchNotes();
+        },500);
+
+        setTimeout(()=>{
             if(this.ytplayer.getPlayerState() == 1){
                 this.stateChangeCallback(1);
             }

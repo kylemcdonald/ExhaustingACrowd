@@ -12,7 +12,8 @@ var VideoPlayer = (function () {
         /** Current time in millis **/
         this.currentTime = 0;
         // onStateChange callback
-        this.stateChangeCallback = function (state) { };
+        this.stateChangeCallback = function (state) {
+        };
         // Populate the startTimes array
         var _dur = 0;
         for (var i = 0; i < this.durations.length; i++) {
@@ -41,8 +42,12 @@ var VideoPlayer = (function () {
                 start: 0
             },
             events: {
-                'onReady': function () { _this.onPlayerReady(); },
-                'onStateChange': function () { _this.onPlayerStateChange(); }
+                'onReady': function () {
+                    _this.onPlayerReady();
+                },
+                'onStateChange': function () {
+                    _this.onPlayerStateChange();
+                }
             }
         });
     }
@@ -150,7 +155,8 @@ var VideoPlayer = (function () {
                 if (cb)
                     cb();
                 // Reset the callback to not doing anything
-                _this.stateChangeCallback = function (state) { };
+                _this.stateChangeCallback = function (state) {
+                };
             }
         };
         this.ytplayer.seekTo(ms / 1000, true);
@@ -158,6 +164,9 @@ var VideoPlayer = (function () {
         if (this.startTimes[this.ytplayer.getPlaylistIndex()]) {
             this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
         }
+        setTimeout(function () {
+            api.fetchNotes();
+        }, 500);
         setTimeout(function () {
             if (_this.ytplayer.getPlayerState() == 1) {
                 _this.stateChangeCallback(1);
@@ -180,7 +189,9 @@ var VideoPlayer = (function () {
             if (this.events.onLoadComplete) {
                 this.events.onLoadComplete(this);
             }
-            setInterval(function () { _this.frameUpdate(); }, 10);
+            setInterval(function () {
+                _this.frameUpdate();
+            }, 10);
         }
     };
     VideoPlayer.prototype.setClock = function (time, cb) {

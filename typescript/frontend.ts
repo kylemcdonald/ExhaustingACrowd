@@ -70,7 +70,6 @@ var onYouTubePlayerAPIReady = () => {
         $('#rewind').click(()=>{
             ui.hideVideo(() => {
                 video.seek(video.currentTime - (10 * 1000), ()=>{
-                    api.fetchNotes();
                     ui.showVideo();
                 });
             })
