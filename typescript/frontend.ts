@@ -88,7 +88,6 @@ function gotoEditor(path: Path){
 
         // Seek to the path start time
         video.seek(path.points[0].time, () => {
-            api.fetchNotes();
             ui.showVideo();
         });
 
@@ -152,7 +151,6 @@ function gotoVideo(seekTime :number){
 
         // Seek to the path start time
         video.seek(seekTime, () => {
-            api.fetchNotes();
             ui.showVideo();
         });
 
