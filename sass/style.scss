@@ -6,6 +6,17 @@
   filter: $filter-type+unquote('(#{$filter-amount})');
 }
 
+@mixin font-smoothing($value: on) {
+    @if $value == on {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    @else {
+        -webkit-font-smoothing: subpixel-antialiased;
+        -moz-osx-font-smoothing: auto;
+    }
+}
+
 $edgePad: 3vmin;
 $innerPad: 1vmin;
 
@@ -20,6 +31,7 @@ body {
   margin:0;
   overflow:hidden;
   font-family: 'Dosis', sans-serif;
+  @include font-smoothing(on); /* good for light text on dark bg */
   font-weight: 300;
   color: white;
   background-color: black;
