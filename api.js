@@ -37,6 +37,22 @@ module.exports = {
       }
     });
 
+    this.api.get('/notes/count', function (req, res) {
+      query('SELECT count(*) FROM notes', [], function(err, ret){
+        if(err){
+          res.status(500).send('Could not select notes');
+          console.log(err);
+          return;
+        }
+        if(!ret.length){
+          res.status(500).send('SELECT returned no results');
+          console.log(err);
+          return;
+        }
+        res.send(ret[0]);
+      });
+    })
+
     this.api.get('/notes', function (req, res) {
       var startTime = Math.round(req.query.timeframeStart);
       var endTime = Math.round(req.query.timeframeEnd);
