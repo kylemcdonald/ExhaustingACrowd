@@ -57,6 +57,9 @@ var onYouTubePlayerAPIReady = () => {
 
         clock = new Clock();
 
+        window.onhashchange = () => {
+            video.seek(parseInt(location.hash.substring(1)));
+        };
 
         $('#back').click(function(){
             gotoVideo(video.currentTime);
@@ -108,7 +111,7 @@ function gotoEditor(path: Path){
         $('#back').show();
     });
 
-    var trySubmit = ()=>{
+    var trySubmit = ()=>{ 
         var text = $('#note-text').val();
         if(text) {
             var note = new Note([]);
