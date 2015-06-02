@@ -128,16 +128,24 @@ function gotoEditor(path: Path){
     $('#submitButton').unbind('click').click(trySubmit)
 
 
-    var watchForEnter = (e)=> {
+    var keypress = (e)=> {
         if (e.which == 13) {
             trySubmit();
             e.preventDefault();
             e.stopPropagation();
             return false;
         }
+
+        var textElm = $('#note-text');
+        if(textElm.val().length >= 140){
+            //textElm.val(textElm.val().substring(0,140));
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
     };
 
-    $('#note-text').unbind('keypress').keypress(watchForEnter);
+    $('#note-text').unbind('keypress').keypress(keypress);
 }
 
 
