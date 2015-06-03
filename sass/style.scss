@@ -20,8 +20,7 @@
 $edgePad: 3vmin;
 $innerPad: 1vmin;
 
-$noteTextWidth: 120px;
-$noteTextPadding: 5px;
+$noteTextWidth: 150px;
 
 $transparentBlack: rgba(0,0,0,0.5);
 $transparentBlackHover: rgba(0,0,0,0.7);
@@ -237,9 +236,8 @@ body {
   .note {
     z-index: 95;
 
-    width:1px;
-    height:1px;
     position:absolute;
+    max-width: $noteTextWidth;
 
     &:hover {
       .note-white {
@@ -249,12 +247,8 @@ body {
     }
 
     .note-text {
-      position: absolute;
-      left:0;
-      top:0;
-      width:$noteTextWidth - (2 * $noteTextPadding);
       background-color: $transparentBlack;
-      padding: 0 $noteTextPadding $noteTextPadding;
+      padding: 0.2em 0.4em 0.4em;
       font-size: 0.9em;
     }
 
