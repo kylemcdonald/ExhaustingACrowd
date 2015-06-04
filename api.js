@@ -2,6 +2,7 @@ var query = require('pg-query');
 var express = require('express');
 var bodyParser = require("body-parser");
 var request = require('request');
+var blacklist = require('./blacklist.json');
 
 query.connectionParameters = process.env.DATABASE_URL;
 
@@ -59,9 +60,9 @@ module.exports = {
 
       //if(endTime - startTime > )
 
-      query('SELECT notes.id, time_begin, time_end, note, path ' +
+      query('SELECT ip, notes.id, time_begin, time_end, note, path ' +
         'FROM "notes" ' +
-        'where time_end > $1 and time_begin < $2 ' +
+        'where time_end >= $1 and time_begin <= $2 ' +
         'limit 100',
 
         [startTime, endTime], function(err, ret){
@@ -82,6 +83,18 @@ module.exports = {
             }
             ret[u].path = path;
           }
+
+          // filter out blacklisted ips except to those people
+          var srcIp = req.query.ip || req.ip; // use ip arg to test this
+          ret = ret.filter(function(note) {
+            return blacklist.indexOf(note.ip) == -1 || note.ip == srcIp;
+          })
+
+          // don't reveal ip through api
+          ret = ret.map(function(note) {
+            delete note.ip;
+            return note;
+          })
 
           res.send(ret)
         })
