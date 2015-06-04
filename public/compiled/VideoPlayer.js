@@ -130,7 +130,7 @@ var VideoPlayer = (function () {
          updateNotes();
          updateVideoLoop();*/
     };
-    VideoPlayer.prototype.seek = function (ms, cb) {
+    VideoPlayer.prototype.seek = function (ms, cb, dontFetchApi) {
         var _this = this;
         var origMs = ms;
         ms = ms % this.totalDur;
@@ -150,27 +150,22 @@ var VideoPlayer = (function () {
         if (ms < 0) {
             ms = 0;
         }
-        // Wait for the video having seeked
-        this.stateChangeCallback = function (state) {
-            if (state == 1) {
-                api.fetchNotes(origMs);
-                if (cb)
-                    cb();
-                // Reset the callback to not doing anything
-                _this.stateChangeCallback = function (state) {
-                };
-            }
-        };
         this.ytplayer.seekTo(ms / 1000, true);
         this.currentTime = ms;
         if (this.startTimes[this.ytplayer.getPlaylistIndex()]) {
             this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
         }
-        setTimeout(function () {
+        // Start an interval and wait for the video to play again
+        var interval = setInterval(function () {
             if (_this.ytplayer.getPlayerState() == 1) {
-                _this.stateChangeCallback(1);
+                clearInterval(interval);
+                if (dontFetchApi != true) {
+                    api.fetchNotes(origMs);
+                }
+                if (cb)
+                    cb();
             }
-        }, 300);
+        }, 100);
     };
     VideoPlayer.prototype.onPlayerReady = function () {
         this.updatePlayerSize();
