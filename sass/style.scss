@@ -325,6 +325,7 @@ body {
       padding: 2vmin;
       font-size: 6vmin;
       @include no-select;
+      cursor: pointer;
       text-align: center;
 
       &:hover {
