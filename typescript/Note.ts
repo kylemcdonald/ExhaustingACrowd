@@ -103,11 +103,11 @@ class Note {
 
             if(this.text) {
                 var dur = this.time_end - this.time_begin;
-                var minDur = this.text.length / 140 * 6000; // 6 seconds to read 140 characters
+                var minDur = this.text.length / 140 * 6000 + 3000; // 6 seconds to read 140 characters
                 if (dur < minDur) {
                     var newPoint = new PathPoint(
                         this.path.last().x,
-                        this.path.last().y,
+                        this.path.last().y, 
                         this.path.first().time + minDur
                     );
                     this.path.push(newPoint);
