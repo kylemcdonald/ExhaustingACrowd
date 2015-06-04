@@ -6,6 +6,15 @@
   filter: $filter-type+unquote('(#{$filter-amount})');
 }
 
+@mixin no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 @mixin font-smoothing($value: on) {
     @if $value == on {
         -webkit-font-smoothing: antialiased;
@@ -109,6 +118,7 @@ body {
 
 #vaHeader, #infoHeader {
   z-index: 100;
+  @include no-select;
   cursor: pointer;
   background-color: $transparentBlack;
 
@@ -160,6 +170,9 @@ body {
 
   text-align: center;
   line-height: 0.4;
+
+  @include no-select;
+  cursor: default;
   
   #credits-content {
     position: relative;
@@ -208,7 +221,7 @@ body {
     height: 10vmin;
     z-index: 100;
     opacity: .60;
-    cursor: pointer;
+    @include no-select;
 
     img {
       width:100%;
@@ -227,6 +240,7 @@ body {
   }
 
   #rewind:hover, #back:hover {
+    cursor: pointer;
     opacity: .80;
     .tooltip {
       display:inline;
@@ -238,6 +252,8 @@ body {
 
     position:absolute;
     max-width: $noteTextWidth;
+    @include no-select;
+    cursor: crosshair;
 
     &:hover {
       .note-white {
@@ -308,7 +324,7 @@ body {
       margin: 4vmin;
       padding: 2vmin;
       font-size: 6vmin;
-      cursor: pointer;
+      @include no-select;
       text-align: center;
 
       &:hover {
@@ -344,11 +360,12 @@ body {
   z-index: 100;
   text-align: center;
   background-color:white;
+  @include no-select;
+  cursor: default;
 
   #loading-middle {
     position: relative;
     top: 35vh;
-    cursor: default;
     color: gray;
     text-rendering: geometricPrecision;
 
