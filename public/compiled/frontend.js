@@ -81,20 +81,23 @@ function gotoEditor(path) {
         $('#rewind').hide();
         $('#back').show();
     });
-    var trySubmit = function () {
-        var text = $('#note-text').val();
-        if (text) {
-            var note = new Note([]);
-            note.path = path;
-            note.text = text;
-            // Submit the path to the API
-            api.submitNote(note);
-            // GOTO video mode again
-            gotoVideo(path.points[0].time - 5000);
-        }
-        else {
-            $('#note-text').attr('placeholder', 'Please write something').focus();
-            $('#submitButton').unbind('click').click(trySubmit);
+    var trySubmit = function (e) {
+        if (e.handled !== true) {
+            e.handled = true;
+            var text = $('#note-text').val();
+            if (text) {
+                var note = new Note([]);
+                note.path = path;
+                note.text = text;
+                // Submit the path to the API
+                api.submitNote(note);
+                // GOTO video mode again
+                gotoVideo(path.points[0].time - 5000);
+            }
+            else {
+                $('#note-text').attr('placeholder', 'Please write something').focus();
+                $('#submitButton').unbind('click').click(trySubmit);
+            }
         }
     };
     $('#submitButton').unbind('click').click(trySubmit);

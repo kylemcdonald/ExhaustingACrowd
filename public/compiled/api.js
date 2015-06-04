@@ -2,8 +2,25 @@
 /// <reference path="note.ts" />
 var NotesApi = (function () {
     function NotesApi() {
+        var _this = this;
         this.notes = [];
         this.currentTime = 0;
+        this.submitNoteThrottle = _.throttle(function (note) {
+            console.log("Submit ", note.path.points, note.text);
+            ga('send', 'event', 'API', 'SubmitNote', 'submit');
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/api/notes",
+                data: JSON.stringify({ path: note.path.points, text: note.text }),
+                contentType: "application/json; charset=utf-8",
+                success: function () {
+                    setTimeout(function () {
+                        _this.fetchNotes();
+                    }, 300);
+                }
+            });
+        }, 5000);
     }
     NotesApi.prototype.startFetching = function (fetchRate, fetchWindowSize) {
         var _this = this;
@@ -55,21 +72,7 @@ var NotesApi = (function () {
         }
     };
     NotesApi.prototype.submitNote = function (note) {
-        var _this = this;
-        console.log("Submit ", note.path.points, note.text);
-        ga('send', 'event', 'API', 'SubmitNote', 'submit');
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "/api/notes",
-            data: JSON.stringify({ path: note.path.points, text: note.text }),
-            contentType: "application/json; charset=utf-8",
-            success: function () {
-                setTimeout(function () {
-                    _this.fetchNotes();
-                }, 300);
-            }
-        });
+        this.submitNoteThrottle(note);
     };
     return NotesApi;
 })();

@@ -67,22 +67,26 @@ class NotesApi {
     }
 
 
-    submitNote(note:Note) {
-        console.log("Submit ", note.path.points, note.text);
+    private submitNoteThrottle = _.throttle((note:Note) =>{
+            console.log("Submit ", note.path.points, note.text);
 
-        ga('send', 'event', 'API', 'SubmitNote', 'submit');
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: "/api/notes",
-            data: JSON.stringify({path: note.path.points, text: note.text}),
-            contentType: "application/json; charset=utf-8",
-            success: () => {
-                setTimeout(()=>{
-                    this.fetchNotes();
-                },300);
+            ga('send', 'event', 'API', 'SubmitNote', 'submit');
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/api/notes",
+                data: JSON.stringify({path: note.path.points, text: note.text}),
+                contentType: "application/json; charset=utf-8",
+                success: () => {
+                    setTimeout(()=>{
+                        this.fetchNotes();
+                    },300);
 
-            }
-        });
+                }
+            });
+    }, 5000);
+
+    submitNote(note:Note){
+        this.submitNoteThrottle(note);
     }
 }
