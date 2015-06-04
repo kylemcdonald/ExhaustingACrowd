@@ -53,23 +53,8 @@ var NotesApi = (function () {
                         _this.notes.push(note);
                     }
                 }
-                //Remove old notes
-                _this.removeOldNotes();
-                //updateNotes();
             }
         });
-    };
-    NotesApi.prototype.removeOldNotes = function () {
-        for (var i = 0; i < this.notes.length; i++) {
-            var note = this.notes[i];
-            if (note.path.last().time + 100 < this.currentTime) {
-                // Remove old notes
-                //removeNote(note);
-                console.log("Remove " + i);
-                this.notes.splice(i, 1);
-                i--;
-            }
-        }
     };
     NotesApi.prototype.submitNote = function (note) {
         this.submitNoteThrottle(note);

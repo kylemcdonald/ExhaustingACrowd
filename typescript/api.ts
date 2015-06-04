@@ -44,28 +44,9 @@ class NotesApi {
                         //addNote(note);
                     }
                 }
-
-                //Remove old notes
-                this.removeOldNotes();
-
-                //updateNotes();
             }
         });
     }
-
-    removeOldNotes(){
-        for(var i=0;i<this.notes.length;i++){
-            var note = this.notes[i];
-            if(note.path.last().time+100 < this.currentTime){
-                // Remove old notes
-                //removeNote(note);
-                console.log("Remove "+i);
-                this.notes.splice(i,1);
-                i--;
-            }
-        }
-    }
-
 
     private submitNoteThrottle = _.throttle((note:Note) =>{
             console.log("Submit ", note.path.points, note.text);

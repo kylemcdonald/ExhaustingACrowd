@@ -196,9 +196,11 @@ class DrawingCanvas {
 
 
                 this.updateNoteElm(note, p);
-            } else if(note.elm && note.path.last().time+100 < video.currentTime){
+            } else if(note.path.last().time+100 < video.currentTime){
                 // Remove old notes
-                this.removeNote(note);
+                if(note.elm) {
+                    this.removeNote(note);
+                }
                 notes.splice(i,1);
                 i--;
             } else if(note.elm && note.path.first().time > video.currentTime){
