@@ -185,7 +185,7 @@ class VideoPlayer {
 
     }
 
-    seek(ms:number, cb?:(()=>void)){
+    seek(ms:number, cb?:(()=>void), dontFetchApi?:boolean){
         var origMs = ms;
         ms = ms % this.totalDur;
         console.log(ms, this.startTimes);
@@ -206,29 +206,23 @@ class VideoPlayer {
             ms = 0;
         }
 
-        // Wait for the video having seeked
-        this.stateChangeCallback = (state) => {
-            if(state == 1) {
-                api.fetchNotes(origMs);
-
-                if(cb)cb();
-                // Reset the callback to not doing anything
-                this.stateChangeCallback = (state)=>{};
-            }
-        };
-
         this.ytplayer.seekTo(ms/1000, true);
         this.currentTime = ms;
         if(this.startTimes[this.ytplayer.getPlaylistIndex()]){
             this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
         }
 
-
-        setTimeout(()=>{
+        // Start an interval and wait for the video to play again
+        var interval = setInterval(()=>{
             if(this.ytplayer.getPlayerState() == 1){
-                this.stateChangeCallback(1);
+                clearInterval(interval);
+
+                if(dontFetchApi != true) {
+                    api.fetchNotes(origMs);
+                }
+                if(cb) cb();
             }
-        },300);
+        },100);
     }
 
     onPlayerReady(){

@@ -192,7 +192,7 @@ function updateVideoLoop(){
         }
 
         if(video.currentTime > time){
-            this.video.seek(drawingCanvas.mousePath.points[0].time);
+            this.video.seek(drawingCanvas.mousePath.points[0].time, undefined, true);
         }
     }
 }
