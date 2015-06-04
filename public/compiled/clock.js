@@ -5,7 +5,9 @@ var Clock = (function () {
         var _this = this;
         this.clockTime = new Date(Clock.startTime);
         this.colon = $('#colon');
-        setInterval(function () { _this.updateClock(); }, 1000);
+        setInterval(function () {
+            _this.updateClock();
+        }, 1000);
     }
     Clock.prototype.blink = function (elm) {
         if (elm.css('opacity') == '1') {
@@ -37,4 +39,3 @@ var Clock = (function () {
     Clock.startTime = "April 15, 2015 15:00:00";
     return Clock;
 })();
-//# sourceMappingURL=clock.js.map

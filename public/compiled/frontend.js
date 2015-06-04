@@ -146,4 +146,3 @@ function updateVideoLoop() {
         }
     }
 }
-//# sourceMappingURL=frontend.js.map

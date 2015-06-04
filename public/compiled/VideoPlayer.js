@@ -209,4 +209,3 @@ var VideoPlayer = (function () {
     };
     return VideoPlayer;
 })();
-//# sourceMappingURL=VideoPlayer.js.map

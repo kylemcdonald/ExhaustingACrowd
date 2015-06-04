@@ -79,4 +79,3 @@ var Note = (function () {
     }
     return Note;
 })();
-//# sourceMappingURL=note.js.map

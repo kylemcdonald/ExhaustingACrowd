@@ -10,4 +10,3 @@ var GLOBAL = (function () {
     GLOBAL.MODE = "PLAYER";
     return GLOBAL;
 })();
-//# sourceMappingURL=global.js.map

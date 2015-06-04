@@ -87,7 +87,7 @@ module.exports = {
           // filter out blacklisted ips except to those people
           var srcIp = req.query.ip || req.ip; // use ip arg to test this
           ret = ret.filter(function(note) {
-            return blacklist.indexOf(note.ip) == -1 || note.ip == srcIp;
+            return srcIp == '::1' || blacklist.indexOf(note.ip) == -1 || note.ip == srcIp;
           })
 
           // don't reveal ip through api
@@ -98,7 +98,6 @@ module.exports = {
 
           res.send(ret)
         })
-
 
     });
 
