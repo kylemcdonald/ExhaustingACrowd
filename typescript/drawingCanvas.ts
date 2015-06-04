@@ -92,7 +92,8 @@ class DrawingCanvas {
                     if(this.events.onDrawingComplete) this.events.onDrawingComplete(this.mousePath);
                 }
             })
-            .mouseleave((event)=>{
+
+        $(window).mouseleave((event)=>{
                 if(GLOBAL.playerMode() &&  this.isDragging) {
                     // Listen for mouseUp events
                     var wasDragging = this.isDragging;

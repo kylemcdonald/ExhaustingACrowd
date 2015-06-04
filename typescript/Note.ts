@@ -107,7 +107,7 @@ class Note {
                 if (dur < minDur) {
                     var newPoint = new PathPoint(
                         this.path.last().x,
-                        this.path.last().y, 
+                        this.path.last().y,
                         this.path.first().time + minDur
                     );
                     this.path.push(newPoint);
