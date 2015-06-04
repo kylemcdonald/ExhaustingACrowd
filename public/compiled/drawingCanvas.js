@@ -57,7 +57,8 @@ var DrawingCanvas = (function () {
                 if (_this.events.onDrawingComplete)
                     _this.events.onDrawingComplete(_this.mousePath);
             }
-        }).mouseleave(function (event) {
+        });
+        $(window).mouseleave(function (event) {
             if (GLOBAL.playerMode() && _this.isDragging) {
                 // Listen for mouseUp events
                 var wasDragging = _this.isDragging;
