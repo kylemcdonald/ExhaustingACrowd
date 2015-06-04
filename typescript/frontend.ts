@@ -111,27 +111,21 @@ function gotoEditor(path: Path){
         $('#back').show();
     });
 
-    var trySubmit = (e)=>{
-        if(e.handled !== true) // This will prevent event triggering more then once
-        {
-            e.handled = true;
+    var trySubmit = ()=>{
+        var text = $('#note-text').val();
+        if(text) {
+            var note = new Note([]);
+            note.path = path;
+            note.text = text;
+            // Submit the path to the API
+            api.submitNote(note);
 
-            var text = $('#note-text').val();
-            if(text) {
-                var note = new Note([]);
-                note.path = path;
-                note.text = text;
-                // Submit the path to the API
-                api.submitNote(note);
-
-                // GOTO video mode again
-                gotoVideo(path.points[0].time-5000);
-            } else {
-                $('#note-text').attr('placeholder', 'Please write something').focus();
-                $('#submitButton').unbind('click').click(trySubmit)
-            }
+            // GOTO video mode again
+            gotoVideo(path.points[0].time-5000);
+        } else {
+            $('#note-text').attr('placeholder', 'Please write something').focus();
+            $('#submitButton').unbind('click').click(trySubmit)
         }
-
     };
 
     $('#submitButton').unbind('click').click(trySubmit)
