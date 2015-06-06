@@ -2,7 +2,6 @@ var query = require('pg-query');
 var express = require('express');
 var bodyParser = require("body-parser");
 var request = require('request');
-var blacklist = require('./blacklist.json');
 
 query.connectionParameters = process.env.DATABASE_URL;
 
@@ -34,7 +33,16 @@ module.exports = {
       "ip" cidr,\
       "timestamp" timestamp,\
       "path" float[][],\
+      "hidden" boolean,\
       PRIMARY KEY ("id"));')
+      }
+    });
+
+    query("SELECT * FROM information_schema.tables where table_name = 'blacklist'", function(rows, ret){
+      if(ret.length == 0){
+        query('CREATE TABLE "public"."blacklist" (\
+      "ip" cidr,\
+      PRIMARY KEY ("ip"));')
       }
     });
 
@@ -57,13 +65,26 @@ module.exports = {
     this.api.get('/notes', function (req, res) {
       var startTime = Math.round(req.query.timeframeStart);
       var endTime = Math.round(req.query.timeframeEnd);
+      var ip = req.query.ip || req.ip;
 
-      query('SELECT ip, notes.id, time_begin, time_end, note, path ' +
-        'FROM "notes" ' +
-        'where time_end >= $1 and time_begin <= $2 ' +
+      query(
+        'select id, time_begin, time_end, note, path ' +
+        'from notes ' +
+        'where time_end >= $1 ' +
+        'and time_begin <= $2 ' +
+        'and ( ' +
+          'ip = $3 ' +
+          'or not ( ' +
+            'hidden is true ' +
+            'or ( ' +
+              'hidden is null ' +
+              'and exists( ' +
+                'select 1 ' +
+                'from blacklist ' +
+                'where ip = notes.ip)))) ' +
         'limit 100',
 
-        [startTime, endTime], function(err, ret){
+        [startTime, endTime, ip], function(err, ret){
           if(err ){
             res.status(500).send('Could not select notes');
             console.log(err);
@@ -81,18 +102,6 @@ module.exports = {
             }
             ret[u].path = path;
           }
-
-          // filter out blacklisted ips except to those people
-          var srcIp = req.query.ip || req.ip; // use ip arg to test this
-          ret = ret.filter(function(note) {
-            return srcIp == '::1' || blacklist.indexOf(note.ip) == -1 || note.ip.slice(-3) == srcIp;
-          })
-
-          // don't reveal ip through api
-          ret = ret.map(function(note) {
-            delete note.ip;
-            return note;
-          })
 
           res.send(ret)
         })
