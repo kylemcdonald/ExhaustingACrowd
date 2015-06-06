@@ -58,8 +58,6 @@ module.exports = {
       var startTime = Math.round(req.query.timeframeStart);
       var endTime = Math.round(req.query.timeframeEnd);
 
-      //if(endTime - startTime > )
-
       query('SELECT ip, notes.id, time_begin, time_end, note, path ' +
         'FROM "notes" ' +
         'where time_end >= $1 and time_begin <= $2 ' +
@@ -87,7 +85,7 @@ module.exports = {
           // filter out blacklisted ips except to those people
           var srcIp = req.query.ip || req.ip; // use ip arg to test this
           ret = ret.filter(function(note) {
-            return srcIp == '::1' || blacklist.indexOf(note.ip) == -1 || note.ip == srcIp;
+            return srcIp == '::1' || blacklist.indexOf(note.ip) == -1 || note.ip.slice(-3) == srcIp;
           })
 
           // don't reveal ip through api
