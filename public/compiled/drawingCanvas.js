@@ -124,9 +124,10 @@ var DrawingCanvas = (function () {
             var p = note.path.getPosAtTime(video.currentTime);
             if (p) {
                 if (!note.elm) {
-                    note.elm = $('<div class="note">');
-                    //  note.elm.append('<div class="note-white">');
-                    note.elm.append('<div class="note-text">' + note.text + '</div>');
+                    note.elm = $('<div class="note"/>');
+                    var noteText = $('<div class="note-text"/>');
+                    noteText.text(note.text);
+                    note.elm.append(noteText);
                     $('#notes').append(note.elm);
                     note.elm.attr('id', note.id);
                     note.line = this.linedrawing.polyline([]).fill('none').stroke({ width: 2, color: 'rgba(0,0,0,0.5)' });
