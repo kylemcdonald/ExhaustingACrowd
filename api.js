@@ -1,3 +1,4 @@
+var boring = require('./boring');
 var query = require('pg-query');
 var express = require('express');
 var bodyParser = require("body-parser");
@@ -164,38 +165,26 @@ module.exports = {
                 return;
               }
 
-              request('http://www.wdyl.com/profanity?q='+text, function(err, profanityTest){
-                var profanity = false;
-                try {
-                  var p = JSON.parse(profanityTest.body);
-                  profanity = (p.response != "false");
-                } catch(e){};
+              var hidden = boring.check(text);
+              query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path", "hidden") VALUES ($1, $2, $3, $4, now(), $5, $6) RETURNING id',
+                [
+                  Math.round(paths[0].time),
+                  Math.round(paths[paths.length-1].time),
+                  text,
+                  req.ip,
+                  "{"+ q.join(",")+"}",
+                  hidden ? true : null
+                ], function(err, ret) {
 
-                if(profanity){
-                  console.log(profanityTest.body, text);
-                  res.status(500).send('Note contains profanity');
-                  return;
-                }
+                  if(err || ret.length == 0){
+                    res.status(500).send('Could not submit note');
+                    console.log(err);
+                    return;
+                  }
 
-                query('INSERT INTO "public"."notes" ("time_begin", "time_end", "note", "ip", "timestamp", "path") VALUES ($1, $2, $3, $4, now(), $5) RETURNING id',
-                  [
-                    Math.round(paths[0].time),
-                    Math.round(paths[paths.length-1].time),
-                    text,
-                    req.ip,
-                    "{"+ q.join(",")+"}"
-                  ], function(err, ret) {
-
-                    if(err || ret.length == 0){
-                      res.status(500).send('Could not submit note');
-                      console.log(err);
-                      return;
-                    }
-
-                    var note_id = ret[0].id;
-                    res.send({id:note_id});
-                  })
-              })
+                  var note_id = ret[0].id;
+                  res.send({id:note_id});
+                })
             }
           );
         })
