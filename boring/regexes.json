@@ -4,6 +4,7 @@
 "\\brape",
 "\\bsex|s e x",
 "\\btest",
+"^[a-z0-9!#$\\'*,./<>?@^_`]$",
 "(sd|df|ds|as|fs|ff|gh|gf|fa|fg|fd|hg|sf|jg|da|hj|ad|kj|jh|jk|dg|af|iu|gs){2}",
 "4chan",
 "===",

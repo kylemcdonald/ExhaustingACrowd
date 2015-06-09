@@ -14,5 +14,7 @@ module.exports = {
 		} else {
 			return null;
 		}
-	}
+	},
+	regexes: regexes,
+	regex: regex
 }
