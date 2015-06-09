@@ -74,7 +74,9 @@ module.exports = {
 
     this.api.get('/clean', function (req, res) {
       console.log('Cleaning: marking all boring content in database hidden.');
-      var psqlRegex = boring.regex.toString().replace("'", "''");
+      var psqlRegex = boring.regex.toString()
+        .replace("'", "''")
+        .replace("\\b", "\\y");
       query('update notes set hidden = true where hidden is null and lower(note) ~ $1 returning note',
         [psqlRegex], function(err, ret) {
           if(err){
