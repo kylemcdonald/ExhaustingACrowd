@@ -178,6 +178,10 @@ module.exports = {
         return;
       }
 
+      if(text.length > 140) {
+        text = text.substr(0, 140);
+      }
+
       // TODO value testing
       var q = [];
       for(var i=0;i<paths.length;i++){
