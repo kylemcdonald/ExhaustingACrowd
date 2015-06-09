@@ -72,19 +72,19 @@ module.exports = {
       });
     })
 
-    // this.api.get('/clean', function (req, res) {
-    //   console.log('Cleaning: marking all boring content in database hidden.');
-    //   var psqlRegex = boring.regex.toString().replace("'", "''");
-    //   query('update notes set hidden = true where hidden is null and lower(note) ~ $1 returning note',
-    //     [psqlRegex], function(err, ret) {
-    //       if(err){
-    //         res.status(500).send('Could not select notes');
-    //         console.log(err);
-    //         return;
-    //       }
-    //       res.send(ret);
-    //   })
-    // })
+    this.api.get('/clean', function (req, res) {
+      console.log('Cleaning: marking all boring content in database hidden.');
+      var psqlRegex = boring.regex.toString().replace("'", "''");
+      query('update notes set hidden = true where hidden is null and lower(note) ~ $1 returning note',
+        [psqlRegex], function(err, ret) {
+          if(err){
+            res.status(500).send('Could not select notes');
+            console.log(err);
+            return;
+          }
+          res.send(ret);
+      })
+    })
 
     this.api.get('/notes/recent/hidden', function (req, res) {
       var limit = Math.min((req.query.limit || 250), 1000);
