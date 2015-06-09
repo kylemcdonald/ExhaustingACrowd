@@ -15,6 +15,11 @@ module.exports = {
 			return null;
 		}
 	},
-	regexes: regexes,
-	regex: regex
+	getRegexes: function() { return regexes; },
+	getRegex: function() { return regex.toString(); },
+	getPsqlRegex: function() {
+		return regex.toString()
+	        .replace(/'/g, "''")
+	        .replace(/\\b/g, "\\y")
+	}
 }

@@ -64,19 +64,16 @@ module.exports = {
     })
 
     this.api.get('/regex', function (req, res) {
-      var regex = boring.regex.toString();
       res.json({
-        all: regex,
-        psql: regex.replace("'", "''"),
-        parts: boring.regexes
+        all: boring.getRegex(),
+        psql: boring.getPsqlRegex(),
+        parts: boring.getRegexes()
       });
     })
 
     this.api.get('/clean', function (req, res) {
       console.log('Cleaning: marking all boring content in database hidden.');
-      var psqlRegex = boring.regex.toString()
-        .replace("'", "''")
-        .replace("\\b", "\\y");
+      var psqlRegex = boring.getPsqlRegex();
       query('update notes set hidden = true where hidden is null and lower(note) ~ $1 returning note',
         [psqlRegex], function(err, ret) {
           if(err){
