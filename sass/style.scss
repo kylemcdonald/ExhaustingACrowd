@@ -252,6 +252,7 @@ body {
 
     position:absolute;
     max-width: $noteTextWidth;
+    word-wrap: break-word;
     @include no-select;
     cursor: crosshair;
 
