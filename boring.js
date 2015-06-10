@@ -1,6 +1,9 @@
 'use strict'
 
 var regexes = require('./boring/regexes.json');
+var psqlRegex = regexes.join('|')
+	.replace(/'/g, "''")
+	.replace(/\\b/g, "\\y");
 require('./boring/literals.json').forEach(function(literal) {
 	regexes.push('\\b' + literal + '\\b');
 })
@@ -17,9 +20,5 @@ module.exports = {
 	},
 	getRegexes: function() { return regexes; },
 	getRegex: function() { return regex.toString(); },
-	getPsqlRegex: function() {
-		return regex.toString()
-	        .replace(/'/g, "''")
-	        .replace(/\\b/g, "\\y")
-	}
+	getPsqlRegex: function() { return psqlRegex; }
 }

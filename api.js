@@ -81,7 +81,9 @@ module.exports = {
             console.log(err);
             return;
           }
-          res.send(ret);
+          res.send(ret.map(function(result) {
+            return result.note;
+          }));
       })
     })
 
