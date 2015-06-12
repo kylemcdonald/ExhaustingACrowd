@@ -189,35 +189,23 @@ class VideoPlayer {
         if (ms > this.totalDur) { // this is possible between 2:27 - 3:00
             ms %= this.totalDur; // loops back around to 3:00 - 3:27
         }
-        var switchingVideos = false;
         var relativeMs;
         for(var i=0;i<this.startTimes.length-1;i++){
             if (ms < this.startTimes[i + 1]) {
                 if (this.ytplayer.getPlaylistIndex() != i) {
                     this.ytplayer.playVideoAt(i);
-                    switchingVideos = true;
                 }
                 relativeMs = ms - this.startTimes[i];
+                this.ytplayer.seekTo(relativeMs / 1000, true);
                 break;
             }
-        }
-
-        if (!switchingVideos) {
-            console.log('seeking to relativeMs in current video' + relativeMs);
-            this.ytplayer.seekTo(relativeMs / 1000, true);
         }
         this.currentTime = ms;
 
         // Start an interval and wait for the video to play again
         var interval = setInterval(()=>{
             if(this.ytplayer.getPlayerState() == 1){
-                if (switchingVideos) {
-                    console.log('seeking to relativeMs in current video ' + relativeMs);
-                    this.ytplayer.seekTo(relativeMs / 1000, true);
-                }
-
                 clearInterval(interval);
-
                 if(dontFetchApi != true) {
                     api.fetchNotes(ms);
                 }
@@ -260,9 +248,17 @@ class VideoPlayer {
         // use the startTime data
         var target = moment(Clock.startTime);
         // use the time hours, minutes, seconds
-        target.hour((time.hour() % 12) + 12); // always assume afternoon 
+        target.hour(time.hour() % 12);
         target.minute(time.minute());
         target.second(time.second());
+
+        // bermuda triangle modifies hour randomly after 2:27
+        var sincetwo = time.minute() * 60 + time.second();
+        if (target.hour() == 2 && sincetwo > 1642) {
+            target.hour(Math.floor(Math.random() * 12));
+        }
+
+        target.hour(12 + target.hour()); // always assume afternoon 
 
         if(target.isBefore(moment(Clock.startTime))){
             target = target.add(12, 'hours');
