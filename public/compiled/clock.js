@@ -31,8 +31,6 @@ var Clock = (function () {
         $('#minute').html(minutesString.replace(/0/g, 'O') + ' ' + ampm);
     };
     Clock.prototype.frameUpdate = function (ytplayer) {
-        //console.log(ytplayer.currentTime);
-        //console.log(ytplayer.currentTime);
         this.clockTime = new Date(Clock.startTime);
         this.clockTime.setSeconds(this.clockTime.getSeconds() + ytplayer.currentTime / 1000.0);
     };

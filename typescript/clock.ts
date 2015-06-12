@@ -41,11 +41,8 @@ class Clock {
 
 
     frameUpdate(ytplayer : VideoPlayer) {
-        //console.log(ytplayer.currentTime);
-        //console.log(ytplayer.currentTime);
         this.clockTime = new Date(Clock.startTime);
         this.clockTime.setSeconds(this.clockTime.getSeconds()+ ytplayer.currentTime/1000.0)
-
     }
 
 

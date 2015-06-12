@@ -16,7 +16,7 @@ var clock;
 var onYouTubePlayerAPIReady = function () {
     video = new VideoPlayer({
         onLoadComplete: function () {
-            video.setClock(moment().format('H:mm'), function () {
+            video.setTime(moment(), function () {
                 setTimeout(function () {
                     ui.hideLoadingScreen();
                 }, 300);

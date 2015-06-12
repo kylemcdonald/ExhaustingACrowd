@@ -109,7 +109,6 @@ var VideoPlayer = (function () {
     };
     VideoPlayer.prototype.frameUpdate = function () {
         var time_update = this.ytplayer.getCurrentTime() * 1000;
-        //console.log(time_update);
         var playing = this.ytplayer.getPlayerState();
         if (playing == 1) {
             if (this._last_time_update == time_update) {
@@ -132,35 +131,37 @@ var VideoPlayer = (function () {
     };
     VideoPlayer.prototype.seek = function (ms, cb, dontFetchApi) {
         var _this = this;
-        var origMs = ms;
-        ms = ms % this.totalDur;
-        console.log(ms, this.startTimes);
+        console.log('seek: ' + ms);
+        if (ms > this.totalDur) {
+            ms %= this.totalDur; // loops back around to 3:00 - 3:27
+        }
+        var switchingVideos = false;
+        var relativeMs;
         for (var i = 0; i < this.startTimes.length - 1; i++) {
             if (ms < this.startTimes[i + 1]) {
                 if (this.ytplayer.getPlaylistIndex() != i) {
-                    console.log("Play video at " + i);
                     this.ytplayer.playVideoAt(i);
+                    switchingVideos = true;
                 }
-                if (this.startTimes[i]) {
-                    ms -= this.startTimes[i];
-                }
+                relativeMs = ms - this.startTimes[i];
                 break;
             }
         }
-        if (ms < 0) {
-            ms = 0;
+        if (!switchingVideos) {
+            console.log('seeking to relativeMs in current video' + relativeMs);
+            this.ytplayer.seekTo(relativeMs / 1000, true);
         }
-        this.ytplayer.seekTo(ms / 1000, true);
         this.currentTime = ms;
-        if (this.startTimes[this.ytplayer.getPlaylistIndex()]) {
-            this.currentTime += this.startTimes[this.ytplayer.getPlaylistIndex()];
-        }
         // Start an interval and wait for the video to play again
         var interval = setInterval(function () {
             if (_this.ytplayer.getPlayerState() == 1) {
+                if (switchingVideos) {
+                    console.log('seeking to relativeMs in current video ' + relativeMs);
+                    _this.ytplayer.seekTo(relativeMs / 1000, true);
+                }
                 clearInterval(interval);
                 if (dontFetchApi != true) {
-                    api.fetchNotes(origMs);
+                    api.fetchNotes(ms);
                 }
                 if (cb)
                     cb();
@@ -188,18 +189,22 @@ var VideoPlayer = (function () {
             }, 10);
         }
     };
+    // use this from the frontend for testing
     VideoPlayer.prototype.setClock = function (time, cb) {
-        var t = moment(time, ['H:mm', 'HH:mm', 'HH:mm:ss', 'H:mm:ss']);
-        var t2 = moment(Clock.startTime);
-        t2.hour(t.hour());
-        t2.minute(t.minute());
-        t2.second(t.second());
-        if (t2.isBefore(moment(Clock.startTime))) {
-            t2 = t2.add(1, 'days');
+        this.setTime(moment(time, ['H:mm', 'HH:mm', 'HH:mm:ss', 'H:mm:ss']));
+    };
+    // use this from the backend to avoid time parsing problems
+    VideoPlayer.prototype.setTime = function (time, cb) {
+        // use the startTime data
+        var target = moment(Clock.startTime);
+        // use the time hours, minutes, seconds
+        target.hour((time.hour() % 12) + 12); // always assume afternoon 
+        target.minute(time.minute());
+        target.second(time.second());
+        if (target.isBefore(moment(Clock.startTime))) {
+            target = target.add(12, 'hours');
         }
-        var diff = -moment(Clock.startTime).diff(t2) % (1000 * 60 * 60 * 12);
-        if (diff < 0)
-            diff += video.totalDur;
+        var diff = target.diff(moment(Clock.startTime));
         video.seek(diff, cb);
     };
     return VideoPlayer;
