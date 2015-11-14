@@ -53,6 +53,7 @@ class Interface {
 
     showCredits(){
         $('#overlay').animate({opacity:"0"},250);
+        $('#linedrawing').animate({opacity:"0"},250);
         $('#credits')
             .show()
             .animate({opacity:"1"}, 500);
@@ -64,6 +65,7 @@ class Interface {
             $('#credits').hide();
         })
         $('#overlay').animate({opacity:"1"},500);
+        $('#linedrawing').animate({opacity:"1"},500);
 
     }
 

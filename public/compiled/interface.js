@@ -39,6 +39,7 @@ var Interface = (function () {
     };
     Interface.prototype.showCredits = function () {
         $('#overlay').animate({ opacity: "0" }, 250);
+        $('#linedrawing').animate({ opacity: "0" }, 250);
         $('#credits')
             .show()
             .animate({ opacity: "1" }, 500);
@@ -49,6 +50,7 @@ var Interface = (function () {
             $('#credits').hide();
         });
         $('#overlay').animate({ opacity: "1" }, 500);
+        $('#linedrawing').animate({ opacity: "1" }, 500);
     };
     return Interface;
 })();
