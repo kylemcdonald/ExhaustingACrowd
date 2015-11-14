@@ -181,12 +181,12 @@ var DrawingCanvas = (function () {
                 };
                 note.curPos.x += goalDir.x * 0.1;
                 note.curPos.y += goalDir.y * 0.1;
-                var offset = { x: 0, y: 0 };
+                var offset = { x: -1, y: -1 };
                 if (dirUnitVec.x > 0.1) {
-                    offset.x = -note.elm.children(".note-text").outerWidth() + 4;
+                    offset.x = -note.elm.children(".note-text").outerWidth() + 1;
                 }
                 if (dirUnitVec.y > 0.5) {
-                    offset.y = -note.elm.children(".note-text").outerHeight() + 4;
+                    offset.y = -note.elm.children(".note-text").outerHeight() + 1;
                 }
                 var playerSize = video.calculatePlayerSize();
                 if (note.curPos.y + offset.y > playerSize.height) {
@@ -215,7 +215,7 @@ var DrawingCanvas = (function () {
                 var scaleX = c.width();
                 var scaleY = c.height();
                 var p2 = video.clientToVideoCoord(note.curPos.x, note.curPos.y);
-                note.line.plot([[p2.x * scaleX + 2.0, p2.y * scaleY + 2],
+                note.line.plot([[Math.floor(p2.x * scaleX), Math.floor(p2.y * scaleY)],
                     [p.x * scaleX, p.y * scaleY]]);
             }
         }
