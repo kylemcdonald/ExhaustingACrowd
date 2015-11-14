@@ -6,10 +6,27 @@
 /// <reference path="drawingCanvas.ts" />
 /// <reference path="clock.ts" />
 
+var sites = {
+    london: {
+        id: 0,
+        playlist: 'PLscUku2aaZnFE-7wKovrbi76b26VKxIT-',
+        videoDurations: [7650, 4941, 7424, 7264, 6835, 7128],
+        startTime: "April 15, 2015 15:00:00",
+        modulusHours: 12
+    },
+    site2: {
+        id: 1,
+        playlist: 'PL2peHYz2YwqXz7W0DZXWVt1psY51Cu6U0',
+        videoDurations: [1*60*60+2*60+15],
+        startTime: "April 15, 2015 12:00:00",
+        modulusHours: 1
+    }
+};
 
+var site = location.pathname.replace("/",'');
 
 // Fetch every 15sec, fetch 20sec of data
-var api = new NotesApi();
+var api = new NotesApi(sites[site].id);
 api.startFetching(15000, 20000);
 
 var drawingCanvas : DrawingCanvas;
@@ -17,11 +34,17 @@ var ui : Interface;
 var video : VideoPlayer;
 var clock : Clock;
 
+Clock.startTime = sites[site].startTime;
+
 // Wait for a go from youtube api
 var onYouTubePlayerAPIReady = () => {
-    video = new VideoPlayer({
+    video = new VideoPlayer(
+        sites[site].playlist,
+        sites[site].videoDurations,
+        sites[site].modulusHours,
+        {
         onLoadComplete : () => {
-            video.setTime(moment(), () => {
+	    video.setTime(moment(), () => {
                 setTimeout(()=>{
                     ui.hideLoadingScreen();
                 }, 300);
@@ -33,16 +56,13 @@ var onYouTubePlayerAPIReady = () => {
             drawingCanvas.updateNotes(api.notes);
             drawingCanvas.updateAnimation();
 
-
             clock.frameUpdate(video);
-
             updateVideoLoop();
         }
     });
 
-
-
     $(document).ready(()=>{
+
         ui = new Interface({
             onResize: () => {
                 video.updatePlayerSize();
@@ -77,9 +97,8 @@ var onYouTubePlayerAPIReady = () => {
                 });
             })
         })
-    }); 
-
-}
+    });
+};
 
 
 

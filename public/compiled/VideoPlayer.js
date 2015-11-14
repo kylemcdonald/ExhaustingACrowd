@@ -1,19 +1,21 @@
 /// <reference path="../typings/tsd.d.ts" />
 var VideoPlayer = (function () {
-    function VideoPlayer(events) {
+    function VideoPlayer(playlist, durations, modulusHours, events) {
         var _this = this;
         this.aspect = 16.0 / 9.0;
         this.zoom = 1.0;
         this.zoomPos = { x: 0, y: 0 };
         this.loading = true;
         this.startTimes = [];
-        this.durations = [7650, 4941, 7424, 7264, 6835, 7128];
+        this.durations = [];
+        this.modulusHours = 1;
         this.totalDur = 0;
         /** Current time in millis **/
         this.currentTime = 0;
         // onStateChange callback
-        this.stateChangeCallback = function (state) {
-        };
+        this.stateChangeCallback = function (state) { };
+        this.durations = durations;
+        this.modulusHours = modulusHours;
         // Populate the startTimes array
         var _dur = 0;
         for (var i = 0; i < this.durations.length; i++) {
@@ -37,17 +39,13 @@ var VideoPlayer = (function () {
                 origin: 'localhost',
                 rel: 0,
                 showinfo: 0,
-                list: 'PLscUku2aaZnFE-7wKovrbi76b26VKxIT-',
+                list: playlist,
                 listType: 'playlist',
                 start: 0
             },
             events: {
-                'onReady': function () {
-                    _this.onPlayerReady();
-                },
-                'onStateChange': function () {
-                    _this.onPlayerStateChange();
-                }
+                'onReady': function () { _this.onPlayerReady(); },
+                'onStateChange': function () { _this.onPlayerStateChange(); }
             }
         });
     }
@@ -131,7 +129,7 @@ var VideoPlayer = (function () {
     };
     VideoPlayer.prototype.seek = function (ms, cb, dontFetchApi) {
         var _this = this;
-        console.log('seek: ' + ms);
+        //console.log('seek: ' + ms);
         if (ms > this.totalDur) {
             ms %= this.totalDur; // loops back around to 3:00 - 3:27
         }
@@ -175,9 +173,7 @@ var VideoPlayer = (function () {
             if (this.events.onLoadComplete) {
                 this.events.onLoadComplete(this);
             }
-            setInterval(function () {
-                _this.frameUpdate();
-            }, 10);
+            setInterval(function () { _this.frameUpdate(); }, 10);
         }
     };
     // use this from the frontend for testing
@@ -189,19 +185,22 @@ var VideoPlayer = (function () {
         // use the startTime data
         var target = moment(Clock.startTime);
         // use the time hours, minutes, seconds
-        target.hour(time.hour() % 12);
+        target.hour(time.hour());
         target.minute(time.minute());
         target.second(time.second());
-        // bermuda triangle modifies hour randomly after 2:27
-        var sincetwo = time.minute() * 60 + time.second();
-        if (target.hour() == 2 && sincetwo > 1642) {
-            target.hour(Math.floor(Math.random() * 12));
-        }
-        target.hour(12 + target.hour()); // always assume afternoon 
+        // If the target is before the start clock of the video (its in the morning)
         if (target.isBefore(moment(Clock.startTime))) {
-            target = target.add(12, 'hours');
+            target = target.add(24, 'hours');
         }
+        var hourMillis = 60 * 60 * 1000;
         var diff = target.diff(moment(Clock.startTime));
+        // modulus with the number of hours specified
+        diff %= this.modulusHours * hourMillis;
+        // Handle the case where the time is longer then the playlist, then pick a random hour
+        if (diff > this.totalDur) {
+            diff -= Math.floor(Math.random() * this.modulusHours) * hourMillis;
+        }
+        console.log(moment(Clock.startTime).add(diff, 'milliseconds').format());
         video.seek(diff, cb);
     };
     return VideoPlayer;

@@ -33,7 +33,6 @@ class Interface {
 
 
     hideVideo(cb?:()=>void){
-        console.log("Hide video");
         var e = $('#persistent-spinner');
         e.show();
         e.animate({ opacity: "1" }, 250, ()=>{
@@ -43,7 +42,6 @@ class Interface {
     }
 
     showVideo(cb?:()=>void){
-        console.log("show video");
         var e = $('#persistent-spinner');
         e.animate({ opacity: "0" }, 250, ()=>{
             e.hide();

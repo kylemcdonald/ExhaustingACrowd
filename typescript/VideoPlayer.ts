@@ -19,7 +19,8 @@ class VideoPlayer {
     zoomPos = {x:0, y:0};
     loading = true;
     startTimes = [];
-    durations = [7650, 4941, 7424, 7264, 6835, 7128];
+    durations = [];
+    modulusHours = 1;
     public totalDur  = 0;
     /** Current time in millis **/
     currentTime: number = 0;
@@ -30,8 +31,13 @@ class VideoPlayer {
     // onStateChange callback
     stateChangeCallback = (state)=>{};
 
-    constructor(events : IVideoPlayerCallbacks){
+    constructor(playlist : string,
+                durations: number[],
+                modulusHours: number,
+                events : IVideoPlayerCallbacks){
 
+        this.durations = durations;
+        this.modulusHours = modulusHours;
         // Populate the startTimes array
         var _dur=0;
         for(var i=0;i<this.durations.length;i++){
@@ -43,7 +49,6 @@ class VideoPlayer {
         this.totalDur = _dur;
 
         this.events = events;
-
         this.ytplayer = new YT.Player('ytplayer', {
             height: 390,
             width: 640,
@@ -58,7 +63,7 @@ class VideoPlayer {
                 origin:'localhost', // Should be set for security
                 rel: 0,          //< Dont show related videos
                 showinfo: 0,    //< Hide info
-                list: 'PLscUku2aaZnFE-7wKovrbi76b26VKxIT-',
+                list: playlist,
                 listType: 'playlist',
                 start:0
             },
@@ -185,7 +190,7 @@ class VideoPlayer {
     }
 
     seek(ms: number, cb?: (() => void), dontFetchApi?: boolean) {
-        console.log('seek: ' + ms);
+        //console.log('seek: ' + ms);
         if (ms > this.totalDur) { // this is possible between 2:27 - 3:00
             ms %= this.totalDur; // loops back around to 3:00 - 3:27
         }
@@ -240,7 +245,7 @@ class VideoPlayer {
 
     // use this from the frontend for testing
     setClock(time: string, cb?: (() => void)){
-        this.setTime(moment(time, ['H:mm', 'HH:mm', 'HH:mm:ss', 'H:mm:ss']));
+	    this.setTime(moment(time, ['H:mm', 'HH:mm', 'HH:mm:ss', 'H:mm:ss']));
     }
 
     // use this from the backend to avoid time parsing problems
@@ -248,23 +253,27 @@ class VideoPlayer {
         // use the startTime data
         var target = moment(Clock.startTime);
         // use the time hours, minutes, seconds
-        target.hour(time.hour() % 12);
+        target.hour(time.hour());
         target.minute(time.minute());
         target.second(time.second());
 
-        // bermuda triangle modifies hour randomly after 2:27
-        var sincetwo = time.minute() * 60 + time.second();
-        if (target.hour() == 2 && sincetwo > 1642) {
-            target.hour(Math.floor(Math.random() * 12));
-        }
-
-        target.hour(12 + target.hour()); // always assume afternoon 
-
+        // If the target is before the start clock of the video (its in the morning)
         if(target.isBefore(moment(Clock.startTime))){
-            target = target.add(12, 'hours');
+            target = target.add(24, 'hours');
         }
 
+        var hourMillis = 60*60*1000;
         var diff = target.diff(moment(Clock.startTime));
+
+        // modulus with the number of hours specified
+        diff %= this.modulusHours * hourMillis;
+
+        // Handle the case where the time is longer then the playlist, then pick a random hour
+        if(diff > this.totalDur){
+            diff -= Math.floor(Math.random() * this.modulusHours)*hourMillis;
+        }
+        console.log(moment(Clock.startTime).add(diff,'milliseconds').format());
+
         video.seek(diff, cb);
     }
 }

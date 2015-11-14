@@ -305,7 +305,7 @@ class DrawingCanvas {
 
 
     removeNote(note : Note){
-        console.log("Remove ", note);
+        //console.log("Remove ", note);
         note.elm.remove();
         note.line.plot([]);
         delete note.line;

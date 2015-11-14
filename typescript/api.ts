@@ -9,8 +9,10 @@ class NotesApi {
     fetchRate:number;
     fetchWindowSize:number;
 
-    constructor() {
+    siteId:number;
 
+    constructor(site:number) {
+        this.siteId = site;
     }
 
     startFetching(fetchRate:number, fetchWindowSize:number){
@@ -26,13 +28,14 @@ class NotesApi {
         if(_currentTime){
             this.currentTime = _currentTime;
         }
-        console.log("Fetch",this.fetchWindowSize,this.currentTime);
+        //console.log("Fetch",this.fetchWindowSize,this.currentTime);
         $.ajax({
             dataType: "json",
             url: "/api/notes",
             data: {
                 timeframeStart: this.currentTime-2000,
-                timeframeEnd: this.currentTime+this.fetchWindowSize
+                timeframeEnd: this.currentTime+this.fetchWindowSize,
+                site: this.siteId
             },
             success: (data:any)=>{
                 for(var i=0;i<data.length;i++) {
@@ -49,14 +52,14 @@ class NotesApi {
     }
 
     private submitNoteThrottle = _.throttle((note:Note) =>{
-            console.log("Submit ", note.path.points, note.text);
+            //console.log("Submit ", note.path.points, note.text);
 
             ga('send', 'event', 'API', 'SubmitNote', 'submit');
             $.ajax({
                 type: "POST",
                 dataType: "json",
                 url: "/api/notes",
-                data: JSON.stringify({path: note.path.points, text: note.text}),
+                data: JSON.stringify({path: note.path.points, text: note.text, site:this.siteId}),
                 contentType: "application/json; charset=utf-8",
                 success: () => {
                     setTimeout(()=>{

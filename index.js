@@ -53,15 +53,20 @@ app.use(sassMiddleware({
 
 app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348'));
 
-app.get('/', function(req, res){
-  md = new MobileDetect(req.headers['user-agent']);
-  if(md.mobile()) {
-    res.sendFile(__dirname + '/public/mobile.html');
-  } else {
-    res.sendFile(__dirname + '/public/index.html');
-    // want to use "next()" here
-  }
-})
+
+
+app.get('/', function(req, res) {
+  res.redirect('/london');
+});
+
+app.get('/site2', function(req, res) {
+  returnSite(req,res);
+});
+
+app.get('/london', function(req, res) {
+  returnSite(req,res);
+});
+
 
 app.use('/', express.static(__dirname + '/public'));
 
@@ -72,3 +77,13 @@ app.use('/api', api.api);
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
 });
+
+
+function returnSite(req,res){
+  md = new MobileDetect(req.headers['user-agent']);
+  if(md.mobile()) {
+    res.sendFile(__dirname + '/public/mobile.html');
+  } else {
+    res.sendFile(__dirname + '/public/index.html');
+  }
+}

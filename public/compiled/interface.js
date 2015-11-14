@@ -22,7 +22,6 @@ var Interface = (function () {
         });
     };
     Interface.prototype.hideVideo = function (cb) {
-        console.log("Hide video");
         var e = $('#persistent-spinner');
         e.show();
         e.animate({ opacity: "1" }, 250, function () {
@@ -31,7 +30,6 @@ var Interface = (function () {
         });
     };
     Interface.prototype.showVideo = function (cb) {
-        console.log("show video");
         var e = $('#persistent-spinner');
         e.animate({ opacity: "0" }, 250, function () {
             e.hide();
@@ -41,7 +39,9 @@ var Interface = (function () {
     };
     Interface.prototype.showCredits = function () {
         $('#overlay').animate({ opacity: "0" }, 250);
-        $('#credits').show().animate({ opacity: "1" }, 500);
+        $('#credits')
+            .show()
+            .animate({ opacity: "1" }, 500);
     };
     Interface.prototype.hideCredits = function () {
         var e = $('#credits');

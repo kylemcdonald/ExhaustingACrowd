@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.1.2",
-  "description": "A sample Node.js app using Express 4",
+  "name": "exhausting-a-crowd",
+  "version": "0.2.0",
+  "description": "Exhausting a crowd",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -11,7 +11,7 @@
     "body-parser": "^1.12.2",
     "express": "~4.9.x",
     "mobile-detect": "^1.2.0",
-    "node-sass-middleware": "^0.5.0",
+    "node-sass-middleware": "^0.9.7",
     "pg": "^4.3.0",
     "pg-query": "^0.11.0",
     "raven": "^0.7.3",
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/kylemcdonald/exhaustingacrowd"
   },
   "keywords": [
     "node",
