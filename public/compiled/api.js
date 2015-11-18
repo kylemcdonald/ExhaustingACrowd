@@ -27,7 +27,9 @@ var NotesApi = (function () {
         var _this = this;
         this.fetchRate = fetchRate;
         this.fetchWindowSize = fetchWindowSize;
-        setInterval(function () { _this.fetchNotes(); }, 15000);
+        setInterval(function () {
+            _this.fetchNotes();
+        }, 15000);
         this.fetchNotes();
     };
     NotesApi.prototype.fetchNotes = function (_currentTime) {

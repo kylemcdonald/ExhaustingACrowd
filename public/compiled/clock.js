@@ -5,7 +5,9 @@ var Clock = (function () {
         var _this = this;
         this.clockTime = new Date(Clock.startTime);
         this.colon = $('#colon');
-        setInterval(function () { _this.updateClock(); }, 1000);
+        setInterval(function () {
+            _this.updateClock();
+        }, 1000);
     }
     Clock.prototype.blink = function (elm) {
         if (elm.css('opacity') == '1') {

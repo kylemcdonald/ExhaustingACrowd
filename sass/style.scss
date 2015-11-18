@@ -45,6 +45,9 @@ body {
   background-color: black;
 }
 
+.local {
+  display: none;
+}
 
 #videocontainer {
   position:absolute;
@@ -156,7 +159,7 @@ body {
   z-index: 96;
 }
 
-.credits {
+#credits {
   opacity:0;
   display:none;
   background-color: $transparentBlack;

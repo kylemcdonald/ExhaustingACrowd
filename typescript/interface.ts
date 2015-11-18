@@ -54,15 +54,15 @@ class Interface {
     showCredits(){
         $('#overlay').animate({opacity:"0"},250);
         $('#linedrawing').animate({opacity:"0"},250);
-        $('#credits-'+site)
+        $('#credits')
             .show()
             .animate({opacity:"1"}, 500);
     }
 
     hideCredits(){
-        var e = $('#credits-'+site);
+        var e = $('#credits');
         e.animate({ opacity: "0" }, 500, ()=>{
-            $('#credits-'+site).hide();
+            $('#credits').hide();
         });
         $('#overlay').animate({opacity:"1"},500);
         $('#linedrawing').animate({opacity:"1"},500);

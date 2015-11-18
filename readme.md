@@ -38,6 +38,8 @@ $ npm start
 
 The app should now be running on [localhost:5000](http://localhost:5000/).
 
+To make TypeScript automatically recompile changes to the .ts definitions, run `tsc -w --outDir public/compiled/ typescript/*`.
+
 To attach to the remote database, you will need to set the `DATABASE_URL` and `export PGSSLMODE='require'`. After making changes you can deploy to Heroku:
 
 ```sh

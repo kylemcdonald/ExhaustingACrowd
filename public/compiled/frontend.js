@@ -62,12 +62,13 @@ var onYouTubePlayerAPIReady = function () {
         window.onhashchange = function () {
             video.seek(parseInt(location.hash.substring(1)));
         };
+        $('.' + site).show();
         $('#back').click(function () {
             gotoVideo(video.currentTime);
         });
         $('#vaHeader').click(ui.showCredits);
         $('#infoHeader').click(ui.showCredits);
-        $('.credits').click(ui.hideCredits);
+        $('#credits').click(ui.hideCredits);
         // Rewind button
         $('#rewind').click(function () {
             ui.hideVideo(function () {

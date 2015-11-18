@@ -13,7 +13,8 @@ var VideoPlayer = (function () {
         /** Current time in millis **/
         this.currentTime = 0;
         // onStateChange callback
-        this.stateChangeCallback = function (state) { };
+        this.stateChangeCallback = function (state) {
+        };
         this.durations = durations;
         this.modulusHours = modulusHours;
         // Populate the startTimes array
@@ -44,8 +45,12 @@ var VideoPlayer = (function () {
                 start: 0
             },
             events: {
-                'onReady': function () { _this.onPlayerReady(); },
-                'onStateChange': function () { _this.onPlayerStateChange(); }
+                'onReady': function () {
+                    _this.onPlayerReady();
+                },
+                'onStateChange': function () {
+                    _this.onPlayerStateChange();
+                }
             }
         });
     }
@@ -173,7 +178,9 @@ var VideoPlayer = (function () {
             if (this.events.onLoadComplete) {
                 this.events.onLoadComplete(this);
             }
-            setInterval(function () { _this.frameUpdate(); }, 10);
+            setInterval(function () {
+                _this.frameUpdate();
+            }, 10);
         }
     };
     // use this from the frontend for testing
