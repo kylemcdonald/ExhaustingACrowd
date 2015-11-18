@@ -83,6 +83,7 @@ module.exports = {
             return;
           }
           res.send(ret.map(function(result) {
+            console.log("Done cleaning");
             return result.note;
           }));
       })

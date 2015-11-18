@@ -59,7 +59,7 @@ app.get('/', function(req, res) {
   res.redirect('/london');
 });
 
-app.get('/site2', function(req, res) {
+app.get('/netherlands', function(req, res) {
   returnSite(req,res);
 });
 

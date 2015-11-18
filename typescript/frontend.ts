@@ -14,7 +14,7 @@ var sites = {
         startTime: "April 15, 2015 15:00:00",
         modulusHours: 12
     },
-    site2: {
+    netherlands: {
         id: 1,
         playlist: 'PL2peHYz2YwqXz7W0DZXWVt1psY51Cu6U0',
         videoDurations: [1*60*60+2*60+15],
