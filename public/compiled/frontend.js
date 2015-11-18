@@ -67,7 +67,7 @@ var onYouTubePlayerAPIReady = function () {
         });
         $('#vaHeader').click(ui.showCredits);
         $('#infoHeader').click(ui.showCredits);
-        $('#credits').click(ui.hideCredits);
+        $('.credits').click(ui.hideCredits);
         // Rewind button
         $('#rewind').click(function () {
             ui.hideVideo(function () {

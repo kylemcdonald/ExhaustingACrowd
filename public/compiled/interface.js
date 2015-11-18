@@ -40,14 +40,14 @@ var Interface = (function () {
     Interface.prototype.showCredits = function () {
         $('#overlay').animate({ opacity: "0" }, 250);
         $('#linedrawing').animate({ opacity: "0" }, 250);
-        $('#credits')
+        $('#credits-' + site)
             .show()
             .animate({ opacity: "1" }, 500);
     };
     Interface.prototype.hideCredits = function () {
-        var e = $('#credits');
+        var e = $('#credits-' + site);
         e.animate({ opacity: "0" }, 500, function () {
-            $('#credits').hide();
+            $('#credits-' + site).hide();
         });
         $('#overlay').animate({ opacity: "1" }, 500);
         $('#linedrawing').animate({ opacity: "1" }, 500);

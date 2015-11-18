@@ -156,7 +156,7 @@ body {
   z-index: 96;
 }
 
-#credits {
+.credits {
   opacity:0;
   display:none;
   background-color: $transparentBlack;
@@ -174,12 +174,12 @@ body {
   @include no-select;
   cursor: default;
   
-  #credits-content {
+  .credits-content {
     position: relative;
     top: 30vh;
   }
 
-  #credits-divider {
+  .credits-divider {
     span {
       border-bottom: 1px solid white;
       position: relative;
