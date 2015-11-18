@@ -66,7 +66,7 @@ var onYouTubePlayerAPIReady = function () {
         $('#back').click(function () {
             gotoVideo(video.currentTime);
         });
-        $('#vaHeader').click(ui.showCredits);
+        $('#logoHeader').click(ui.showCredits);
         $('#infoHeader').click(ui.showCredits);
         $('#credits').click(ui.hideCredits);
         // Rewind button
@@ -93,7 +93,7 @@ function gotoEditor(path) {
         // Update the interface
         $('#notes').hide();
         $('#linedrawing').hide();
-        $('#vaHeader').hide();
+        $('#logoHeader').hide();
         $('#timeAndDate').hide();
         $('#addNoteInterface').show();
         $('#note-text').val('').focus();
@@ -150,7 +150,7 @@ function gotoVideo(seekTime) {
         $('#timeAndDate').show();
         $('#rewind').show();
         $('#back').hide();
-        $('#vaHeader').show();
+        $('#logoHeader').show();
     });
 }
 function updateVideoLoop() {

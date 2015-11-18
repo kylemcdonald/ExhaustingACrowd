@@ -106,20 +106,19 @@ body {
   }
 }
 
-#vaHeader {
+#logoHeader {
   position:absolute;
   top: $edgePad;
   right: $edgePad;
   display: inline-block;
   padding: $innerPad;
   height: 4vmin;
-  width: 7vmin;
   img {
     height:100%;
   }
 }
 
-#vaHeader, #infoHeader {
+#logoHeader, #infoHeader {
   z-index: 100;
   @include no-select;
   cursor: pointer;
@@ -377,14 +376,16 @@ body {
     * {
       margin: 2vh;
     }
-
     p {
+      font-size: 2vh;
       margin: 0;
+    }
+    .title {
+      margin-bottom: -1vh;
       font-size: 5vh;
     }
-
-    .subtext {
-      font-size: 2vh;
+    .location {
+      font-size: 3vh;
     }
   }
 }
