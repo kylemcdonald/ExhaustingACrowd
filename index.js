@@ -56,7 +56,7 @@ app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b
 
 
 app.get('/', function(req, res) {
-  res.redirect('/london');
+  res.redirect('/netherlands');
 });
 
 app.get('/netherlands', function(req, res) {
