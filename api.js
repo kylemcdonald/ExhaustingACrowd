@@ -49,7 +49,9 @@ module.exports = {
     });
 
     this.api.get('/notes/count', function (req, res) {
-      query('SELECT count(*) FROM notes', [], function(err, ret){
+      var site = req.query.site || 0;
+      query('SELECT count(*) FROM notes ' +
+        'where site = $1', [site], function(err, ret){
         if(err){
           res.status(500).send('Could not select notes');
           console.log(err);
