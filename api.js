@@ -93,8 +93,9 @@ module.exports = {
 
     this.api.get('/notes/recent/hidden', function (req, res) {
       var limit = Math.min((req.query.limit || 250), 1000);
-      query('select note from notes where hidden = true order by timestamp desc limit $1',
-        [limit], function(err, ret) {
+      var site = req.query.site || 0;
+      query('select note from notes where hidden = true and site = $1 order by timestamp desc limit $2',
+        [site, limit], function(err, ret) {
           if(err){
             res.status(500).send('Could not select notes');
             console.log(err);
@@ -108,8 +109,9 @@ module.exports = {
 
     this.api.get('/notes/recent/visible', function (req, res) {
       var limit = Math.min((req.query.limit || 250), 1000);
-      query('select note from notes where hidden is null order by timestamp desc limit $1',
-        [limit], function(err, ret) {
+      var site = req.query.site || 0;
+      query('select note from notes where hidden is null and site = $1 order by timestamp desc limit $2',
+        [site, limit], function(err, ret) {
           if(err){
             res.status(500).send('Could not select notes');
             console.log(err);
