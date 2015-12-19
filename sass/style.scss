@@ -118,12 +118,32 @@ body {
   }
 }
 
-#logoHeader, #infoHeader {
+#locationHeader {
+  position:absolute;
+  top: $edgePad;
+  left: $edgePad;
+  display: inline-block;
+  padding: $innerPad/2;
+  font-size: 0.8em;
+  cursor: crosshair;
+  * {
+    cursor: inherit;
+  }
+  a {
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+  }
+}
+
+#logoHeader, #infoHeader, #locationHeader {
   z-index: 100;
   @include no-select;
-  cursor: pointer;
   background-color: $transparentBlack;
+}
 
+#logoHeader, #infoHeader {
+  cursor: pointer;
   &:hover {
     background-color: $transparentBlackHover;
   }
@@ -141,6 +161,7 @@ body {
   font-weight: 200;
   text-align: center;
   text-rendering: geometricPrecision;
+  @include no-select;
   #colon {
     position: relative;
     top: -.5vmin;
