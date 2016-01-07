@@ -48,3 +48,18 @@ $ heroku open
 ```
 
 If your computer is connected to AirPlay, the pause function is delayed (in order to sync the audio).
+
+## Credits
+
+These are the credits for the piece as it was initially created for London:
+
+```
+EXHAUSTING A CROWD (2015)
+by KYLE MCDONALD
+with JONAS JONGEJAN
+
+COLLABORATION & SITE DEVELOPMENT / JONAS JONGEJAN
+COMMISSIONED by VICTORIA AND ALBERT MUSEUM for ALL OF THIS BELONGS TO YOU
+NICO TURNER / VIDEO
+SPECIAL THANKS to CORINNA GARDNER, DAN JOYCE, HELLICAR & LEWIS
+```
