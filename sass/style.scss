@@ -29,7 +29,7 @@
 $edgePad: 3vmin;
 $innerPad: 1vmin;
 
-$noteTextWidth: 150px;
+$noteTextWidth: 165px;
 
 $transparentBlack: rgba(0,0,0,0.8);
 $transparentBlackHover: rgba(0,0,0,0.9);
@@ -40,7 +40,7 @@ body {
   overflow:hidden;
   font-family: 'Dosis', sans-serif;
   @include font-smoothing(on); /* good for light text on dark bg */
-  font-weight: 300;
+  font-weight: 400;
   color: white;
   background-color: black;
 }
@@ -289,7 +289,7 @@ body {
     .note-text {
       background-color: $transparentBlack;
       padding: 0.2em 0.4em 0.4em;
-      font-size: 0.9em;
+      font-size: 1.0em;
     }
 
   }
