@@ -53,20 +53,17 @@ app.use(sassMiddleware({
 
 app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348'));
 
-
-
 app.get('/', function(req, res) {
+  // To redirect the main page during an exhibition, modify the next line.
   res.redirect('/london');
 });
 
-app.get('/netherlands', function(req, res) {
-  returnSite(req,res);
+var sites = ['london', 'netherlands'];
+sites.forEach(site => {
+  app.get('/' + site, function(req, res) {
+    returnSite(req,res);
+  });
 });
-
-app.get('/london', function(req, res) {
-  returnSite(req,res);
-});
-
 
 app.use('/', express.static(__dirname + '/public'));
 
