@@ -17,7 +17,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
     <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>
 
-    <script>var public_sites = ['london', 'netherlands', 'birmingham'];</script>
+    <script>
+    var public_sites = [
+        { id: 'london', text: 'london' },
+        { id: 'netherlands', text: 'netherlands' },
+        { id: 'birmingham', text: 'birmingham, uk' }
+    ];
+    </script>
 </head>
 <body>
 <div id="videocontainer">
@@ -31,13 +37,13 @@
     <div id="locationHeader">
         <script>
         public_sites.forEach(outer => {
-            var html = '<div class="local ' + outer + '">';
+            var html = '<div class="local ' + outer.id + '">';
             var pieces = [];
             public_sites.forEach(inner => {
                 if(inner == outer) {
-                    pieces.push('<b>' + inner + '</b>');
+                    pieces.push('<b>' + inner.id + '</b>');
                 } else {
-                    pieces.push('<a href="./' + inner + '">' + inner + '</a>');
+                    pieces.push('<a href="./' + inner.id + '">' + inner.id + '</a>');
                 }
             });
             html += pieces.join(' | ');
@@ -50,7 +56,7 @@
     <div id="logoHeader">
         <script>
         public_sites.forEach(site => {
-            document.write('<img src="logo-' + site + '.png" class="local ' + site + '"/>');
+            document.write('<img src="logo-' + site.id + '.png" class="local ' + site.id + '"/>');
         });
         </script>
     </div>
@@ -88,7 +94,7 @@
             <p class="location">
             <script>
             public_sites.forEach(site => {
-                document.write('<span class="local ' + site + '">' + site + '</span>');
+                document.write('<span class="local ' + site.id + '">' + site.text + '</span>');
             });
             </script>
             </p>
@@ -130,11 +136,11 @@
     </div>
     <div class="credits-content local birmingham">
         <h1>EXHAUSTING A CROWD</h1>
-        <p>BIRMINGHAM</p>
+        <p>BIRMINGHAM, UK</p>
         <div class="credits-divider"><span></span>2O17<span></span></div>
         <p><span class="for">by</span> <a href="http://kylemcdonald.net/">KYLE MCDONALD</a></p>
         <p><span class="for">with</span> <a href="http://halfdanj.dk/">JONAS JONGEJAN</a> / COLLABORATION &amp; SITE DEVELOPMENT</p>
-        <p>SPONSORED <span class="for">by</span> <a href="http://www.bom.org.uk/">BIRMINGHAM OPEN MEDIA</a></p>
+        <p>COMMISSIONED <span class="for">by</span> <a href="http://www.bom.org.uk/">BIRMINGHAM OPEN MEDIA</a></p>
         <p>FIRST COMMISSIONED <span class="for">by</span> <a href="http://www.vam.ac.uk/">VICTORIA AND ALBERT MUSEUM</a> <span class="for">for</span> <a href="http://www.vam.ac.uk/content/exhibitions/all-of-this-belongs-to-you/">ALL OF THIS BELONGS TO YOU</a></p>
         <p><a href="https://twitter.com/carlscottdavies">CARL DAVIES</a> <span class="for">/</span> VIDEO</p>
         <p>SPECIAL THANKS <span class="for">to</span> LOUISE LATTER</p>
