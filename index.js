@@ -60,7 +60,7 @@ app.get('/', function(req, res) {
 
 // Add new locations here.
 var sites = ['london', 'netherlands', 'birmingham'];
-sites.forEach(site => {
+sites.forEach(function(site) {
   app.get('/' + site, function(req, res) {
     returnSite(req,res);
   });
