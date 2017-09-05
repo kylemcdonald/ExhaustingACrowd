@@ -58,7 +58,8 @@ app.get('/', function(req, res) {
   res.redirect('/london');
 });
 
-var sites = ['london', 'netherlands'];
+// Add new locations here.
+var sites = ['london', 'netherlands', 'birmingham'];
 sites.forEach(site => {
   app.get('/' + site, function(req, res) {
     returnSite(req,res);

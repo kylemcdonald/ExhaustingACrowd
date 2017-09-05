@@ -24,6 +24,14 @@ With 4k footage there was some concern about privacy. Legally, there are no priv
 
 All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified with a [12mm lens](http://peauproductions.com/store/index.php?main_page=product_info&products_id=690), and two [Lexar 64GB High-speed MicroSD cards](http://www.bhphotovideo.com/c/product/1031506-REG/lexar_lsdmi64gbsbna633r_64gb_micro_sdhc_card.html) that were swapped every two hours while the GoPro ran off USB power. The GoPro outputs a sequence of short videos that are then stripped of audio and concatenated with `ffmpeg`. Before being concatenated the videos are copied to a temporary folder on the internal SSD which changes the processing time from days to minutes. Finally, all six videos (approximately two hours each) are uploaded to YouTube, which will accept up to 128GB or 11 hour videos after verification. All the videos are added to a playlist, and YouTube handles the streaming and buffering.
 
+## Adding a new location
+
+* Upload video and create a playlist for it.
+* Add new location name to `index.js` (line 61)
+* Add new location metadata to `typescript/frontend.ts` (line 9).
+* Add new location to `index.html` in the `public_sites` variable.
+* Create a new logo for the top right corner called `logo-site.png` where `site` is the name.
+
 ## Software details
 
 The frontend is written with TypeScript, and is getting definitions with `tsd`. Install these with `npm install -g typescript@1.4 tsd@next`

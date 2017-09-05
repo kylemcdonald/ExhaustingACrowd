@@ -5,6 +5,7 @@
 /// <reference path="global.ts" />
 /// <reference path="drawingCanvas.ts" />
 /// <reference path="clock.ts" />
+// Add new locations here.
 var sites = {
     london: {
         id: 0,
@@ -16,7 +17,14 @@ var sites = {
     netherlands: {
         id: 1,
         playlist: 'PLscUku2aaZnEISIU_BFatpXUd91DFyRVA',
-        videoDurations: [1 * 60 * 60 + 2 * 60 + 15],
+        videoDurations: [(1 * 60 * 60) + (2 * 60) + 15],
+        startTime: "April 15, 2015 12:00:00",
+        modulusHours: 1
+    },
+    birmingham: {
+        id: 2,
+        playlist: 'PLscUku2aaZnGRbIOS1LGUt9GeDBX159yY',
+        videoDurations: [(1 * 60 * 60) + (0 * 60) + 1],
         startTime: "April 15, 2015 12:00:00",
         modulusHours: 1
     }

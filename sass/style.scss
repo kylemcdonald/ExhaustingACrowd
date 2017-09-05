@@ -126,6 +126,7 @@ body {
   padding: $innerPad/2;
   font-size: 0.8em;
   cursor: crosshair;
+  text-transform: uppercase;
   * {
     cursor: inherit;
   }
@@ -407,6 +408,7 @@ body {
     }
     .location {
       font-size: 3vh;
+      text-transform: uppercase;
     }
   }
 }

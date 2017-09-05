@@ -16,6 +16,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/1.0.1/svg.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
     <script src="//cdn.ravenjs.com/1.1.15/jquery,native/raven.min.js"></script>
+
+    <script>var public_sites = ['london', 'netherlands', 'birmingham'];</script>
 </head>
 <body>
 <div id="videocontainer">
@@ -27,13 +29,30 @@
 <div id="overlay">
 
     <div id="locationHeader">
-        <div class="local london"><b>LONDON</b> | <a href="./netherlands">NETHERLANDS</a></div>
-        <div class="local netherlands"><a href="./london">LONDON</a> | <b>NETHERLANDS</b></div>
+        <script>
+        public_sites.forEach(outer => {
+            var html = '<div class="local ' + outer + '">';
+            var pieces = [];
+            public_sites.forEach(inner => {
+                if(inner == outer) {
+                    pieces.push('<b>' + inner + '</b>');
+                } else {
+                    pieces.push('<a href="./' + inner + '">' + inner + '</a>');
+                }
+            });
+            html += pieces.join(' | ');
+            html += '</div>';
+            document.write(html);
+        });
+        </script>
     </div>
 
     <div id="logoHeader">
-        <img src="logo-london.png" class="local london"/>
-        <img src="logo-netherlands.png" class="local netherlands"/>
+        <script>
+        public_sites.forEach(site => {
+            document.write('<img src="logo-' + site + '.png" class="local ' + site + '"/>');
+        });
+        </script>
     </div>
 
     <div id="timeAndDate">
@@ -66,7 +85,13 @@
     <div id="loading">
         <div id="loading-middle">
             <p class="title">EXHAUSTING A CROWD</p>
-            <p class="location"><span class="local london">LONDON</span><span class="local netherlands">NETHERLANDS</span></p>
+            <p class="location">
+            <script>
+            public_sites.forEach(site => {
+                document.write('<span class="local ' + site + '">' + site + '</span>');
+            });
+            </script>
+            </p>
             <p>by KYLE MCDONALD</p>
             <img id="initial-spinner" class="spinner" src="spinner.gif"/>
             <p>&mdash; CLICK &amp; FOLLOW EVERYONE &mdash;</p>
@@ -76,6 +101,19 @@
 </div>
 
 <div id="credits">
+    <div class="credits-content local london">
+        <h1>EXHAUSTING A CROWD</h1>
+        <p>LONDON</p>
+        <div class="credits-divider"><span></span>2O15<span></span></div>
+        <p><span class="for">by</span> <a href="http://kylemcdonald.net/">KYLE MCDONALD</a> <span class="for">for</span> <a href="http://www.vam.ac.uk/content/exhibitions/all-of-this-belongs-to-you/">ALL OF THIS BELONGS TO YOU</a></p>
+        <p><span class="for">with</span> <a href="http://halfdanj.dk/">JONAS JONGEJAN</a> / COLLABORATION &amp; SITE DEVELOPMENT</p>
+        <p>COMMISSIONED <span class="for">by</span> <a href="http://www.vam.ac.uk/">VICTORIA AND ALBERT MUSEUM</a></p>
+        <p><a href="http://www.nicoturner.co.uk/">NICO TURNER</a> <span class="for">/</span> VIDEO</p>
+        <p>SPECIAL THANKS <span class="for">to</span> CORINNA GARDNER, <a href="http://www.joycedivision.com/">DAN JOYCE</a>, <a href="http://www.hellicarandlewis.com/">HELLICAR &amp; LEWIS</a></p>
+        <div class="credits-divider"><span></span>on location at<span></span></div>
+        <p><a href="http://www.lillywhites.com/">LILLYWHITES</a>, <a href="https://www.google.com/maps/place/Piccadilly+Circus,+London">PICCADILLY CIRCUS</a> <span class="for">from</span> 3PM&ndash;3AM, MAY 17&ndash;18</p>
+        <p>INSPIRED <span class="for">by</span> <a href="http://wakefieldpress.com/perec_attempt.html">GEORGES PEREC</a></p>
+    </div>
     <div class="credits-content local netherlands">
         <h1>EXHAUSTING A CROWD</h1>
         <p>NETHERLANDS</p>
@@ -90,17 +128,18 @@
         <p>AMSTERDAM, ROTTERDAM, UTRECHT <span class="for">on</span> NOVEMBER 13</p>
         <p>INSPIRED <span class="for">by</span> <a href="http://wakefieldpress.com/perec_attempt.html">GEORGES PEREC</a></p>
     </div>
-    <div class="credits-content local london">
+    <div class="credits-content local birmingham">
         <h1>EXHAUSTING A CROWD</h1>
-        <p>LONDON</p>
-        <div class="credits-divider"><span></span>2O15<span></span></div>
-        <p><span class="for">by</span> <a href="http://kylemcdonald.net/">KYLE MCDONALD</a> <span class="for">for</span> <a href="http://www.vam.ac.uk/content/exhibitions/all-of-this-belongs-to-you/">ALL OF THIS BELONGS TO YOU</a></p>
+        <p>BIRMINGHAM</p>
+        <div class="credits-divider"><span></span>2O17<span></span></div>
+        <p><span class="for">by</span> <a href="http://kylemcdonald.net/">KYLE MCDONALD</a></p>
         <p><span class="for">with</span> <a href="http://halfdanj.dk/">JONAS JONGEJAN</a> / COLLABORATION &amp; SITE DEVELOPMENT</p>
-        <p>COMMISSIONED <span class="for">by</span> <a href="http://www.vam.ac.uk/">VICTORIA AND ALBERT MUSEUM</a></p>
-        <p><a href="http://www.nicoturner.co.uk/">NICO TURNER</a> <span class="for">/</span> VIDEO</p>
-        <p>SPECIAL THANKS <span class="for">to</span> CORINNA GARDNER, <a href="http://www.joycedivision.com/">DAN JOYCE</a>, <a href="http://www.hellicarandlewis.com/">HELLICAR &amp; LEWIS</a></p>
+        <p>SPONSORED <span class="for">by</span> <a href="http://www.bom.org.uk/">BIRMINGHAM OPEN MEDIA</a></p>
+        <p>FIRST COMMISSIONED <span class="for">by</span> <a href="http://www.vam.ac.uk/">VICTORIA AND ALBERT MUSEUM</a> <span class="for">for</span> <a href="http://www.vam.ac.uk/content/exhibitions/all-of-this-belongs-to-you/">ALL OF THIS BELONGS TO YOU</a></p>
+        <p><a href="https://twitter.com/carlscottdavies">CARL DAVIES</a> <span class="for">/</span> VIDEO</p>
+        <p>SPECIAL THANKS <span class="for">to</span> LOUISE LATTER</p>
         <div class="credits-divider"><span></span>on location at<span></span></div>
-        <p><a href="http://www.lillywhites.com/">LILLYWHITES</a>, <a href="https://www.google.com/maps/place/Piccadilly+Circus,+London">PICCADILLY CIRCUS</a> <span class="for">from</span> 3PM&ndash;3AM, MAY 17&ndash;18</p>
+        <p>VICTORIA SQUARE, BIRMINGHAM <span class="for">on</span> AUGUST 21</p>
         <p>INSPIRED <span class="for">by</span> <a href="http://wakefieldpress.com/perec_attempt.html">GEORGES PEREC</a></p>
     </div>
 </div>
