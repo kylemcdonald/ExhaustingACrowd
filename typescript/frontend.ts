@@ -28,6 +28,13 @@ var sites = {
         videoDurations: [(1*60*60)+(0*60)+1],
         startTime: "April 15, 2015 12:00:00",
         modulusHours: 1
+    },
+    gwangju: {
+        id: 3,
+        playlist: 'PLscUku2aaZnE7jj8SNk1nxWTTSXlOYLpP',
+        videoDurations: [(1*60*60)+(0*60)+1],
+        startTime: "April 15, 2015 12:00:00",
+        modulusHours: 1
     }
 };
 

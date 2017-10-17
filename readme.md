@@ -29,8 +29,9 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 * Upload video and create a playlist for it.
 * Add new location name to `index.js` (line 61)
 * Add new location metadata to `typescript/frontend.ts` (line 9).
-* Add new location to `index.html` in the `public_sites` variable.
+* Add new location to `public/index.html` in the `public_sites` variable.
 * Create a new logo for the top right corner called `logo-site.png` where `site` is the name.
+* Add credits to `public/index.html`.
 
 ## Software details
 
