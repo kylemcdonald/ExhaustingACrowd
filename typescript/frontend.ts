@@ -44,6 +44,13 @@ var site = location.pathname.replace("/",'');
 var api = new NotesApi(sites[site].id);
 api.startFetching(15000, 20000);
 
+var timeUntilReload = 20 * 60 * 1000; // reload every 20 minutes
+function createMovementTimeout() {
+	return setTimeout(function () {
+		location.reload();
+	}, timeUntilReload);
+}
+
 var drawingCanvas : DrawingCanvas;
 var ui : Interface;
 var video : VideoPlayer;
@@ -114,6 +121,14 @@ var onYouTubePlayerAPIReady = () => {
                 });
             })
         })
+
+        // reload the page every so often if the visitor doesn't move their mouse
+        var movementTimeout = createMovementTimeout();
+        document.onmousemove = function() {
+            clearTimeout(movementTimeout);
+            movementTimeout = createMovementTimeout();
+        }
+
     });
 };
 

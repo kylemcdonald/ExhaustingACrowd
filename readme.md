@@ -32,7 +32,8 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 * Add new location to `public/index.html` in the `public_sites` variable.
 * Create a new logo for the top right corner called `logo-site.png` where `site` is the name.
 * Add credits to `public/index.html`.
-* Run `tsc --outDir public/compiled/ typescript/*` to update TypeScript definitions.
+* Run `tsc --outDir public/compiled/ typescript/*` to update TypeScript definitions. It will print an error, but it can be ignored.
+* Edit the `res.redirect` for the root directory in `index.js`.
 
 ## Software details
 
