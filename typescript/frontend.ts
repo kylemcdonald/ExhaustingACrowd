@@ -106,7 +106,7 @@ var onYouTubePlayerAPIReady = () => {
         $('.' + site).show();
 
         $('#back').click(function(){
-            gotoVideo(video.currentTime);
+            gotoVideo(video.currentTime - 1000);
         });
 
         $('#logoHeader').click(ui.showCredits);

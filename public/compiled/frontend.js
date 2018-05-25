@@ -85,7 +85,7 @@ var onYouTubePlayerAPIReady = function () {
         };
         $('.' + site).show();
         $('#back').click(function () {
-            gotoVideo(video.currentTime);
+            gotoVideo(video.currentTime - 1000);
         });
         $('#logoHeader').click(ui.showCredits);
         $('#infoHeader').click(ui.showCredits);
