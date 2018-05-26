@@ -144,7 +144,7 @@ module.exports = {
                 'select 1 ' +
                 'from blacklist ' +
                 'where ip = notes.ip)))) ' +
-        'limit 100',
+        'limit 250',
         [startTime, endTime, site, ip], function(err, ret){
           if(err ){
             res.status(500).send('Could not select notes');
