@@ -163,7 +163,14 @@ var VideoPlayer = (function () {
         }, 100);
     };
     VideoPlayer.prototype.onPlayerReady = function () {
+        var _this = this;
         this.updatePlayerSize();
+        setInterval(function () {
+            console.log(_this.ytplayer.getPlayerState());
+        }, 100);
+        setTimeout(function () {
+            _this.ytplayer.playVideo();
+        }, 5000);
     };
     VideoPlayer.prototype.onPlayerStateChange = function () {
         var _this = this;

@@ -221,6 +221,8 @@ class VideoPlayer {
 
     onPlayerReady(){
         this.updatePlayerSize();
+        setInterval(()=>{console.log(this.ytplayer.getPlayerState());}, 100);
+        setTimeout(() => {this.ytplayer.playVideo();}, 5000)
     }
 
     onPlayerStateChange(){
