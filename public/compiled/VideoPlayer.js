@@ -165,12 +165,11 @@ var VideoPlayer = (function () {
     VideoPlayer.prototype.onPlayerReady = function () {
         var _this = this;
         this.updatePlayerSize();
-        setInterval(function () {
-            console.log(_this.ytplayer.getPlayerState());
-        }, 100);
-        setTimeout(function () {
+        var id = setInterval(function () {
             _this.ytplayer.playVideo();
-        }, 5000);
+            if (_this.ytplayer.getPlayerState() == 1)
+                clearInterval(id);
+        }, 10);
     };
     VideoPlayer.prototype.onPlayerStateChange = function () {
         var _this = this;
