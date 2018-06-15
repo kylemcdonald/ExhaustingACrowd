@@ -221,6 +221,10 @@ class VideoPlayer {
 
     onPlayerReady(){
         this.updatePlayerSize();
+        var id = setInterval(() => {
+            this.ytplayer.playVideo();
+            if (this.ytplayer.getPlayerState() == 1) clearInterval(id);
+        }, 10);
     }
 
     onPlayerStateChange(){
