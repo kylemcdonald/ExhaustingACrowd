@@ -42,7 +42,8 @@ var VideoPlayer = (function () {
                 showinfo: 0,
                 list: playlist,
                 listType: 'playlist',
-                start: 0
+                start: 0,
+                mute: 1
             },
             events: {
                 'onReady': function () {

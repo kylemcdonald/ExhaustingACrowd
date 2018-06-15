@@ -65,7 +65,8 @@ class VideoPlayer {
                 showinfo: 0,    //< Hide info
                 list: playlist,
                 listType: 'playlist',
-                start:0
+                start: 0,
+                mute: 1
             },
             events: {
                 'onReady': () => {this.onPlayerReady()},
