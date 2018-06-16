@@ -55,7 +55,7 @@ app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b
 
 app.get('/', function(req, res) {
   // To redirect the main page during an exhibition, modify the next line.
-  res.redirect('/london');
+  res.redirect('/birmingham');
 });
 
 // Add new locations here.
