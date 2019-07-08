@@ -7,7 +7,6 @@ var path = require('path');
 var raven = require('raven');
 
 
-
 var client = new raven.Client('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348');
 client.patchGlobal();
 
@@ -59,7 +58,7 @@ app.get('/', function(req, res) {
 });
 
 // Add new locations here.
-var sites = ['london', 'netherlands', 'birmingham', 'gwangju'];
+var sites = ['london', 'netherlands', 'birmingham', 'gwangju', 'beijing'];
 sites.forEach(function(site) {
   app.get('/' + site, function(req, res) {
     returnSite(req,res);

@@ -34,6 +34,13 @@ var sites = {
         videoDurations: [(1 * 60 * 60) + (0 * 60) + 1],
         startTime: "April 15, 2015 12:00:00",
         modulusHours: 1
+    },
+    beijing: {
+        id: 4,
+        playlist: 'PLscUku2aaZnFTPxiEpcZHVCqhCFb_x4az',
+        videoDurations: [(1 * 60 * 60) + (0 * 60) + 1],
+        startTime: "April 15, 2015 12:00:00",
+        modulusHours: 1
     }
 };
 var site = location.pathname.replace("/", '');
