@@ -117,6 +117,7 @@ var onYouTubePlayerAPIReady = () => {
                 $("img[src='rewind.png']").remove();
                 $("#locationHeader").remove();
                 $("#logoHeader").remove();
+                $('#clickArea').css('cursor', 'none');
             }
         };
 
