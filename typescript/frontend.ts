@@ -45,6 +45,7 @@ var sites = {
     }
 };
 
+var recording = false;
 var site = location.pathname.replace("/",'');
 
 // Fetch every 15sec, fetch 20sec of data
@@ -54,7 +55,9 @@ api.startFetching(15000, 20000);
 var timeUntilReload = 20 * 60 * 1000; // reload every 20 minutes
 function createMovementTimeout() {
 	return setTimeout(function () {
-		location.reload();
+        if (!recording) {
+            location.reload();
+        }
 	}, timeUntilReload);
 }
 
@@ -108,6 +111,13 @@ var onYouTubePlayerAPIReady = () => {
 
         window.onhashchange = () => {
             video.seek(parseInt(location.hash.substring(1)));
+            var lastCharacter = location.hash.substring(location.hash.length-1);
+            if (lastCharacter == '-') {
+                recording = true;
+                $("img[src='rewind.png']").remove();
+                $("#locationHeader").remove();
+                $("#logoHeader").remove();
+            }
         };
 
         $('.' + site).show();

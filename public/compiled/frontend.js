@@ -43,6 +43,7 @@ var sites = {
         modulusHours: 1
     }
 };
+var recording = false;
 var site = location.pathname.replace("/", '');
 // Fetch every 15sec, fetch 20sec of data
 var api = new NotesApi(sites[site].id);
@@ -50,7 +51,9 @@ api.startFetching(15000, 20000);
 var timeUntilReload = 20 * 60 * 1000; // reload every 20 minutes
 function createMovementTimeout() {
     return setTimeout(function () {
-        location.reload();
+        if (!recording) {
+            location.reload();
+        }
     }, timeUntilReload);
 }
 var drawingCanvas;
@@ -89,6 +92,13 @@ var onYouTubePlayerAPIReady = function () {
         clock = new Clock();
         window.onhashchange = function () {
             video.seek(parseInt(location.hash.substring(1)));
+            var lastCharacter = location.hash.substring(location.hash.length - 1);
+            if (lastCharacter == '-') {
+                recording = true;
+                $("img[src='rewind.png']").remove();
+                $("#locationHeader").remove();
+                $("#logoHeader").remove();
+            }
         };
         $('.' + site).show();
         $('#back').click(function () {
