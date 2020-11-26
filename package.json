@@ -7,11 +7,16 @@
     "start": "node index.js"
   },
   "dependencies": {
+    "@types/google.analytics": "0.0.40",
+    "@types/jquery": "^3.5.4",
+    "@types/moment": "^2.13.0",
+    "@types/underscore": "^1.10.24",
+    "@types/youtube": "0.0.40",
     "basic-auth": "^1.0.1",
     "body-parser": "^1.12.2",
     "express": "~4.9.x",
     "mobile-detect": "^1.2.0",
-    "node-sass-middleware": "^0.9.7",
+    "node-sass-middleware": "^0.11.0",
     "pg": "^4.3.0",
     "pg-query": "^0.11.0",
     "raven": "^0.7.3",

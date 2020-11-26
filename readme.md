@@ -37,19 +37,16 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 
 ## Software details
 
-The frontend is written with TypeScript, and is getting definitions with `tsd`. Install these with `npm install -g typescript@1.4 tsd@next`
+The frontend is written with TypeScript. Install TypeScript with `npm install -g typescript`
 
 Then, to run locally, execute:
 
 ```sh
 $ npm install
-$ tsd reinstall
 $ npm start
 ```
 
 The app should now be running on [localhost:5000](http://localhost:5000/).
-
-To make TypeScript automatically recompile changes to the .ts definitions, run `tsc -w --outDir public/compiled/ typescript/*`.
 
 To attach to the remote database, you will need to set the `DATABASE_URL` and `export PGSSLMODE='require'`. After making changes you can deploy to Heroku:
 
