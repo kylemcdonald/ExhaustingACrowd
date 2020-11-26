@@ -112,9 +112,8 @@ body {
   right: $edgePad;
   display: inline-block;
   padding: $innerPad;
-  height: 4vmin;
   img {
-    height:100%;
+    height: 4vmin;
   }
 }
 
