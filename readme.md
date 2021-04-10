@@ -37,16 +37,19 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 
 ## Software details
 
-The frontend is written with TypeScript. Install TypeScript with `npm install -g typescript`
+The frontend is written with TypeScript, and is getting definitions with `tsd`. Install these with `npm install -g typescript@1.4 tsd@next`
 
 Then, to run locally, execute:
 
 ```sh
 $ npm install
+$ tsd reinstall
 $ npm start
 ```
 
 The app should now be running on [localhost:5000](http://localhost:5000/).
+
+To make TypeScript automatically recompile changes to the .ts definitions, run `tsc -w --outDir public/compiled/ typescript/*`.
 
 To attach to the remote database, you will need to set the `DATABASE_URL` and `export PGSSLMODE='require'`. After making changes you can deploy to Heroku:
 
@@ -56,6 +59,10 @@ $ heroku open
 ```
 
 If your computer is connected to AirPlay, the pause function is delayed (in order to sync the audio).
+
+### Problems Building
+
+* 2021-4-10 Currently on Node v12.18.3. After running `npm start` I saw the message `Error: Node Sass does not yet support your current environment: OS X 64-bit with Unsupported runtime`. Tried `npm rebuild node-sass`. Then saw the error `No Xcode or CLT version detected!`. Ran Xcode and let it install "additional components". Then ran `sudo xcode-select --reset` and ran `npm rebuild node-sass` again. Found [this explanation](https://github.com/nodejs/node-gyp/issues/1763) and tried upgrading `npm install node-sass@4.12.0 --save`. Seems like it didn't actually try upgrading. [Node support for node-sass](https://github.com/sass/node-sass#node-version-support-policy) says Node 12+ requires node-sass 4.12+. Tried adding `--force` flag. Installed the correct version, but `npm start` still failed. Switched to new machine, same Node version. Pulled repo and ran `npm install` from empty. `npm start` works. The original reason to try fixing this is that the notes weren't showing up anymore. But it works fine locally, which means there is a distinction between the Heroku and local versions. Turns out this can be fixed by setting the config variable `PGSSLMODE` to `require`. The hint was in the message `heroku "error: no pg_hba.conf entry for host"` and the side note: `"SSL off"`.
 
 ## Credits
 
