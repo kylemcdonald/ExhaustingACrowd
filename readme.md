@@ -32,18 +32,21 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 * Add new location to `public/index.html` in the `public_sites` variable.
 * Create a new logo for the top right corner called `logo-site.png` where `site` is the name. It should be a white logo with transparent background in a PNG no more than 187px wide.
 * Add credits to `public/index.html`.
-* Run `tsc --outDir public/compiled/ typescript/*` to update TypeScript definitions. It will print an error, but it can be ignored.
+* Run `tsc --outDir public/compiled/ typescript/*` to update TypeScript definitions. It will print an error, `not assignable to parameter of type 'PlayerOptions'.`, but it can be ignored.
 * Edit the `res.redirect` for the root directory in `index.js`.
 
 ## Software details
 
 The frontend is written with TypeScript, and is getting definitions with `tsd`. Install these with `npm install -g typescript@1.4 tsd@next`
 
-Then, to run locally, execute:
+Then, to run locally, first set up config vars to attach to the remote database. You will need to set the `export DATABASE_URL='...'` (using the variables in Heroku) and `export PGSSLMODE='require'`. Execute:
 
 ```sh
+$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+$ nvm install 12.18.3
+$ npm install -g typescript@1.4 tsd@0.31.1
 $ npm install
-$ tsd reinstall
+$ tsc --outDir public/compiled/ typescript/*
 $ npm start
 ```
 
@@ -51,7 +54,7 @@ The app should now be running on [localhost:5000](http://localhost:5000/).
 
 To make TypeScript automatically recompile changes to the .ts definitions, run `tsc -w --outDir public/compiled/ typescript/*`.
 
-To attach to the remote database, you will need to set the `DATABASE_URL` and `export PGSSLMODE='require'`. After making changes you can deploy to Heroku:
+After making changes you can deploy to Heroku:
 
 ```sh
 $ git push heroku master
@@ -62,6 +65,7 @@ If your computer is connected to AirPlay, the pause function is delayed (in orde
 
 ### Problems Building
 
+* 2021-8-30 `tsd reinstall` yields `ReferenceError: primordials is not defined` in `fs.js:36`. Googling yields info about gulp and graceful-fs incompatibilities, but not using gulp here. Instead looked into `tsd` version as culprit, uninstalled `@next` and looked at [version history](https://www.npmjs.com/package/tsd). Picked version 0.17.0 instead, from 6/3/2021, 3 months ago, instead of `@next` which is 0.6.0-beta.5 from six years ago and seems very uncommonly used. Get the error `The type definition index.d.ts does not exist. Create one and try again.` and instead try 0.13.1 from 7/4/2020. Same issue. Finally realized I only need to use `tsc` not `tsd reinstall` and 0.13.1 worked fine.
 * 2021-4-10 Currently on Node v12.18.3. After running `npm start` I saw the message `Error: Node Sass does not yet support your current environment: OS X 64-bit with Unsupported runtime`. Tried `npm rebuild node-sass`. Then saw the error `No Xcode or CLT version detected!`. Ran Xcode and let it install "additional components". Then ran `sudo xcode-select --reset` and ran `npm rebuild node-sass` again. Found [this explanation](https://github.com/nodejs/node-gyp/issues/1763) and tried upgrading `npm install node-sass@4.12.0 --save`. Seems like it didn't actually try upgrading. [Node support for node-sass](https://github.com/sass/node-sass#node-version-support-policy) says Node 12+ requires node-sass 4.12+. Tried adding `--force` flag. Installed the correct version, but `npm start` still failed. Switched to new machine, same Node version. Pulled repo and ran `npm install` from empty. `npm start` works. The original reason to try fixing this is that the notes weren't showing up anymore. But it works fine locally, which means there is a distinction between the Heroku and local versions. Turns out this can be fixed by setting the config variable `PGSSLMODE` to `require`. The hint was in the message `heroku "error: no pg_hba.conf entry for host"` and the side note: `"SSL off"`.
 
 ## Credits

@@ -41,6 +41,13 @@ var sites = {
         videoDurations: [(1 * 60 * 60) + (0 * 60) + 1],
         startTime: "April 15, 2015 12:00:00",
         modulusHours: 1
+    },
+    saintbrieuc: {
+        id: 5,
+        playlist: 'PLscUku2aaZnHu_gyAtviCfndE_T8E7dk8',
+        videoDurations: [(1 * 60 * 60)],
+        startTime: "April 15, 2015 12:00:00",
+        modulusHours: 1
     }
 };
 var recording = false;

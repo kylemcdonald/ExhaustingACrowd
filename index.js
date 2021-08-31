@@ -53,7 +53,7 @@ app.use(sassMiddleware({
 app.use(raven.middleware.express('https://edf1ff6b26ca41b0a9bbb280902b8c4e:e709b93edcdf49aabf54f637c90bf6b0@app.getsentry.com/41348'));
 
 // Add new locations here.
-var sites = ['london', 'netherlands', 'birmingham', 'gwangju', 'beijing'];
+var sites = ['london', 'netherlands', 'birmingham', 'gwangju', 'beijing', 'saintbrieuc'];
 
 function randomChoice(array) {
   return array[Math.floor(Math.random()*array.length)];
