@@ -4,7 +4,7 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var request = require('request');
 
-query.connectionParameters = process.env.DATABASE_URL;
+query.connectionParameters = process.env.HEROKU_POSTGRESQL_AQUA_URL;
 
 
 module.exports = {

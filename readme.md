@@ -39,7 +39,7 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 
 The frontend is written with TypeScript, and is getting definitions with `tsd`. Install these with `npm install -g typescript@1.4 tsd@next`
 
-Then, to run locally, first set up config vars to attach to the remote database. You will need to set the `export DATABASE_URL='...'` (using the variables in Heroku) and `export PGSSLMODE='require'`. Execute:
+Then, to run locally, first set up config vars to attach to the remote database. You will need to set the `export HEROKU_POSTGRESQL_AQUA_URL='...'` (using the variables in Heroku) and `export PGSSLMODE='require'`. Execute:
 
 ```sh
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
