@@ -1,7 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 /// <reference path="global.ts" />
 /// <reference path="api.ts" />
-/// <reference path="note.ts" />
+/// <reference path="Note.ts" />
 
 
 

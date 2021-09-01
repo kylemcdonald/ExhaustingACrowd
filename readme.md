@@ -63,6 +63,70 @@ $ heroku open
 
 If your computer is connected to AirPlay, the pause function is delayed (in order to sync the audio).
 
+### Setting up on a fresh machine
+
+Create an Ubuntu 20.04 machine and [create a non-root user and login as that user](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-20-04) and enable ufw.
+
+[Install PostgreSQL](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04):
+
+```
+sudo apt install postgresql postgresql-contrib
+sudo systemctl start postgresql@12-main
+sudo -i -u postgres
+createuser --interactive
+# "kyle" and "y"
+# ctrl-c
+createdb exhausting
+pg_dump "$DATABASE_URL" > dump.psql
+psql exhausting < dump.psql
+```
+
+Pull the repo:
+
+```
+sudo apt update && sudo apt install -y git
+git clone https://github.com/kylemcdonald/ExhaustingACrowd.git
+```
+
+Install and prepare Node:
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+nvm install 12.18.3
+npm install -g typescript@1.4 tsd@next
+cd ExhaustingACrowd
+npm install
+tsc --outDir public/compiled/ typescript/*
+npm start # make sure it's working
+```
+
+Keep running with pm2, and [pm2 on startup](https://pm2.keymetrics.io/docs/usage/startup/):
+
+```
+npm install pm2 -g
+pm2 start index.js
+sudo env PATH=$PATH:/home/kyle/.nvm/versions/node/v12.18.3/bin /home/kyle/.nvm/versions/node/v12.18.3/lib/node_modules/pm2/bin/pm2 startup systemd -u kyle --hp /home/kyle
+pm2 save
+```
+
+Install [nginx](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04):
+
+```
+sudo apt update
+sudo apt install nginx
+sudo ufw allow 'Nginx Full'
+sudo cp .nginx /etc/nginx/sites-available/exhaustingacrowd.com
+sudo ln -s /etc/nginx/sites-available/exhaustingacrowd.com /etc/nginx/sites-enabled/
+sudo systemctl reload nginx
+```
+
+Setup the DNS A record and install and configure [Let's Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-20-04):
+
+```
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d exhaustingacrowd.com -d www.exhaustingacrowd.com
+```
+
 ### Problems Building
 
 * 2021-8-30 `tsd reinstall` yields `ReferenceError: primordials is not defined` in `fs.js:36`. Googling yields info about gulp and graceful-fs incompatibilities, but not using gulp here. Instead looked into `tsd` version as culprit, uninstalled `@next` and looked at [version history](https://www.npmjs.com/package/tsd). Picked version 0.17.0 instead, from 6/3/2021, 3 months ago, instead of `@next` which is 0.6.0-beta.5 from six years ago and seems very uncommonly used. Get the error `The type definition index.d.ts does not exist. Create one and try again.` and instead try 0.13.1 from 7/4/2020. Same issue. Finally realized I only need to use `tsc` not `tsd reinstall` and 0.13.1 worked fine.

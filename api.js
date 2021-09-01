@@ -4,8 +4,14 @@ var express = require('express');
 var bodyParser = require("body-parser");
 var request = require('request');
 
-query.connectionParameters = process.env.HEROKU_POSTGRESQL_AQUA_URL;
+// use the heroku database
+// query.connectionParameters = process.env.HEROKU_POSTGRESQL_AQUA_URL;
 
+// use the local socket connection
+query.connectionParameters = {
+  host: '/var/run/postgresql',
+  database: 'exhausting'
+};
 
 module.exports = {
   setup: function(){

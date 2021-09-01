@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-/// <reference path="note.ts" />
+/// <reference path="Note.ts" />
 
 
 class NotesApi {

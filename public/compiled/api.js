@@ -1,5 +1,5 @@
 /// <reference path="../typings/tsd.d.ts" />
-/// <reference path="note.ts" />
+/// <reference path="Note.ts" />
 var NotesApi = (function () {
     function NotesApi(site) {
         var _this = this;
