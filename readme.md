@@ -28,6 +28,7 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 
 * Upload video and create a playlist for it.
 * Add new location name to `index.js` (line 61)
+* Toggle comments between line 64 and line 65 in `index.js` to redirect visitors to the new location.
 * Add new location metadata to `typescript/frontend.ts` (line 9).
 * Add new location to `public/index.html` in the `public_sites` variable.
 * Create a new logo for the top right corner called `logo-site.png` where `site` is the name. It should be a white logo with transparent background in a PNG no more than 187px wide.
@@ -39,7 +40,7 @@ All footage was recorded over 12 hours at 4k 30fps on a GoPro Hero 4, modified w
 
 The frontend is written with TypeScript, and is getting definitions with `tsd`. Install these with `npm install -g typescript@1.4 tsd@next`
 
-Then, to run locally, first set up config vars to attach to the remote database. You will need to set the `export HEROKU_POSTGRESQL_AQUA_URL='...'` (using the variables in Heroku) and `export PGSSLMODE='require'`. Execute:
+Then, to run locally, you will need to modify the code to attach to the remote database.
 
 ```sh
 $ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
@@ -53,13 +54,6 @@ $ npm start
 The app should now be running on [localhost:5000](http://localhost:5000/).
 
 To make TypeScript automatically recompile changes to the .ts definitions, run `tsc -w --outDir public/compiled/ typescript/*`.
-
-After making changes you can deploy to Heroku:
-
-```sh
-$ git push heroku master
-$ heroku open
-```
 
 If your computer is connected to AirPlay, the pause function is delayed (in order to sync the audio).
 

@@ -61,8 +61,8 @@ function randomChoice(array) {
 
 app.get('/', function(req, res) {
   // To redirect the main page during an exhibition, modify the next line.
-  // var location = 'beijing';
-  var location = randomChoice(sites);
+  var location = 'saintbrieuc';
+  // var location = randomChoice(sites);
   res.redirect('/' + location);
 });
 
