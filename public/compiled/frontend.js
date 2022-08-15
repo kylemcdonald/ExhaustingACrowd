@@ -48,6 +48,13 @@ var sites = {
         videoDurations: [(1 * 60 * 60)],
         startTime: "April 15, 2015 12:00:00",
         modulusHours: 1
+    },
+    berlin: {
+        id: 6,
+        playlist: 'PLscUku2aaZnH3SMUCBxlaxPJnXyTEB1cM',
+        videoDurations: [(1 * 60 * 60)],
+        startTime: "April 15, 2015 12:00:00",
+        modulusHours: 1
     }
 };
 var recording = false;
