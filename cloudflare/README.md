@@ -22,9 +22,7 @@ cd cloudflare
 npm run export:prod
 npm run split:prod
 npm run d1:migrate:remote
-for file in tmp/prod-d1-data-chunks/*.sql; do
-  npx wrangler d1 execute exhausting-a-crowd --remote --file="$file"
-done
+npm run import:prod:remote
 ```
 
 ## Deploy

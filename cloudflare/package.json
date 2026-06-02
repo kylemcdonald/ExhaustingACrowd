@@ -8,7 +8,8 @@
     "d1:migrate:local": "wrangler d1 migrations apply exhausting-a-crowd --local",
     "d1:migrate:remote": "wrangler d1 migrations apply exhausting-a-crowd --remote",
     "export:prod": "node scripts/export-postgres-to-d1-sql.mjs --ssh root@165.227.84.216 --out tmp/prod-d1-data.sql",
-    "split:prod": "node scripts/split-d1-sql.mjs --in tmp/prod-d1-data.sql --out-dir tmp/prod-d1-data-chunks"
+    "split:prod": "node scripts/split-d1-sql.mjs --in tmp/prod-d1-data.sql --out-dir tmp/prod-d1-data-chunks",
+    "import:prod:remote": "node scripts/import-d1-chunks.mjs --dir tmp/prod-d1-data-chunks --database exhausting-a-crowd --remote"
   },
   "devDependencies": {
     "wrangler": "^4.96.0"
