@@ -15,6 +15,11 @@ export default {
       }
 
       const url = new URL(request.url);
+      if (url.protocol === "http:") {
+        url.protocol = "https:";
+        return Response.redirect(url, 301);
+      }
+
       const pathname = normalizePath(url.pathname);
 
       if (pathname.startsWith("/api/")) {
