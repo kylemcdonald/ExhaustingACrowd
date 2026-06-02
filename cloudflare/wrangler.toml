@@ -22,4 +22,4 @@ run_worker_first = [
 [[d1_databases]]
 binding = "DB"
 database_name = "exhausting-a-crowd"
-database_id = "local-placeholder"
+database_id = "a64aa7e0-500a-463e-a0a5-f7ef58efa955"
