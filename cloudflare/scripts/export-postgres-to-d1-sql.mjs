@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 import { createInterface } from "node:readline";
 
 const BUCKET_MS = 5000;
-const MAX_INSERT_BYTES = 80000;
+const MAX_INSERT_BYTES = 20000;
 
 class InsertWriter {
   constructor(stream) {

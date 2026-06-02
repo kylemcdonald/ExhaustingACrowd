@@ -7,7 +7,7 @@ import { createInterface } from "node:readline";
 const args = parseArgs(process.argv.slice(2));
 const input = args.in || "tmp/prod-d1-data.sql";
 const outDir = args["out-dir"] || "tmp/prod-d1-data-chunks";
-const maxBytes = Number(args["max-bytes"] || 512 * 1024);
+const maxBytes = Number(args["max-bytes"] || 128 * 1024);
 
 if (!Number.isFinite(maxBytes) || maxBytes < 100000) {
   usage("Invalid --max-bytes value.");
