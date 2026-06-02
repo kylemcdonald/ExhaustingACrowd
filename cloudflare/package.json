@@ -1,0 +1,15 @@
+{
+  "name": "exhausting-a-crowd-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --local --port 8787",
+    "deploy": "wrangler deploy",
+    "d1:migrate:local": "wrangler d1 migrations apply exhausting-a-crowd --local",
+    "d1:migrate:remote": "wrangler d1 migrations apply exhausting-a-crowd --remote",
+    "export:prod": "node scripts/export-postgres-to-d1-sql.mjs --ssh root@165.227.84.216 --out tmp/prod-d1-data.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^4.96.0"
+  }
+}

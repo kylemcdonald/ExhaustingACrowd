@@ -1,0 +1,25 @@
+name = "exhausting-a-crowd"
+main = "src/worker.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+
+[assets]
+directory = "../public"
+binding = "ASSETS"
+html_handling = "none"
+run_worker_first = [
+  "/",
+  "/london",
+  "/netherlands",
+  "/birmingham",
+  "/gwangju",
+  "/beijing",
+  "/saintbrieuc",
+  "/berlin",
+  "/api/*"
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "exhausting-a-crowd"
+database_id = "local-placeholder"

@@ -1,0 +1,9 @@
+node_modules/
+tmp/
+.wrangler/
+*.local
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+!migrations/*.sql
